@@ -21,11 +21,6 @@ export default function TrustBar() {
             </div>
           ))}
         </div>
-
-        {/* Testimonial placeholder — see note */}
-        <div className="mt-8 rounded-2xl border border-dashed border-white/15 bg-white/[0.015] p-6 text-center">
-          <p className="text-sm text-faint">{t.trust.testimonialPlaceholder}</p>
-        </div>
       </div>
     </section>
   );

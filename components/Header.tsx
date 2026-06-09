@@ -13,6 +13,7 @@ export default function Header() {
     { label: t.header.nav.accounts, href: "#accounts" },
     { label: t.header.nav.rules, href: "#rules" },
     { label: t.header.nav.payouts, href: "#payouts" },
+    { label: t.header.nav.reviews, href: "#testimonials" },
     { label: t.header.nav.faq, href: "#faq" },
   ];
 

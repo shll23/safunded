@@ -7,6 +7,7 @@ import Rules from "@/components/Rules";
 import Payouts from "@/components/Payouts";
 import DashboardPreview from "@/components/DashboardPreview";
 import Comparison from "@/components/Comparison";
+import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
 import Disclaimer from "@/components/Disclaimer";
@@ -25,6 +26,7 @@ export default function Page() {
         <Payouts />
         <DashboardPreview />
         <Comparison />
+        <Testimonials />
         <FAQ />
         <CTA />
         <Disclaimer />

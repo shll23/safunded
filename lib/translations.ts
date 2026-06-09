@@ -24,7 +24,7 @@ export interface Dictionary {
     ariaLabel: string;
   };
   header: {
-    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; faq: string };
+    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string };
     cta: string;
     menu: string;
   };
@@ -174,6 +174,7 @@ export const translations: Record<Language, Dictionary> = {
         accounts: "Accounts",
         rules: "Rules",
         payouts: "Payouts",
+        reviews: "Reviews",
         faq: "FAQ",
       },
       cta: "Get Funded",
@@ -392,6 +393,7 @@ export const translations: Record<Language, Dictionary> = {
         accounts: "Konten",
         rules: "Regeln",
         payouts: "Auszahlungen",
+        reviews: "Bewertungen",
         faq: "FAQ",
       },
       cta: "Konto erhalten",
