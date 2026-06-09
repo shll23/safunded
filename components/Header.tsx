@@ -7,6 +7,7 @@ const navLinks = [
   { label: "Accounts", href: "#accounts" },
   { label: "Rules", href: "#rules" },
   { label: "Payouts", href: "#payouts" },
+  { label: "Reviews", href: "#testimonials" },
   { label: "FAQ", href: "#faq" },
 ];
 

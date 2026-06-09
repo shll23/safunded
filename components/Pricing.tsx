@@ -76,9 +76,9 @@ export default function Pricing() {
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-faint">
           All accounts operate in a simulated trading environment unless
-          explicitly stated otherwise. Prices, splits and risk limits shown are
-          placeholders — confirm final values before launch. Payouts are not
-          guaranteed and are subject to the Terms &amp; Conditions.
+          explicitly stated otherwise. Prices shown are display values — confirm
+          final pricing before launch. Payouts are not guaranteed and are
+          subject to the Terms &amp; Conditions.
         </p>
       </div>
     </section>

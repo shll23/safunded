@@ -45,10 +45,10 @@ export const plans: Plan[] = [
     capitalValue: 25000,
     accountType: "Instant Funded",
     profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "placeholder", // EDIT-ME e.g. "4% ($1,000)"
-    maxOverallLoss: "placeholder", // EDIT-ME e.g. "8% ($2,000)"
-    minTradingDays: "placeholder", // EDIT-ME e.g. "5 trading days"
-    payoutCycle: "placeholder", // EDIT-ME e.g. "Bi-weekly on request"
+    maxDailyLoss: "5%",
+    maxOverallLoss: "10%",
+    minTradingDays: "3 days",
+    payoutCycle: "2 weeks",
     price: "$249", // EDIT-ME display price
     priceValue: 249,
     priceEnvKey: "STRIPE_25K_PRICE_ID",
@@ -66,10 +66,10 @@ export const plans: Plan[] = [
     capitalValue: 50000,
     accountType: "Instant Funded",
     profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "placeholder", // EDIT-ME
-    maxOverallLoss: "placeholder", // EDIT-ME
-    minTradingDays: "placeholder", // EDIT-ME
-    payoutCycle: "placeholder", // EDIT-ME
+    maxDailyLoss: "5%",
+    maxOverallLoss: "10%",
+    minTradingDays: "3 days",
+    payoutCycle: "2 weeks",
     price: "$399", // EDIT-ME
     priceValue: 399,
     priceEnvKey: "STRIPE_50K_PRICE_ID",
@@ -88,10 +88,10 @@ export const plans: Plan[] = [
     capitalValue: 100000,
     accountType: "Instant Funded",
     profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "placeholder", // EDIT-ME
-    maxOverallLoss: "placeholder", // EDIT-ME
-    minTradingDays: "placeholder", // EDIT-ME
-    payoutCycle: "placeholder", // EDIT-ME
+    maxDailyLoss: "5%",
+    maxOverallLoss: "10%",
+    minTradingDays: "3 days",
+    payoutCycle: "2 weeks",
     price: "$699", // EDIT-ME
     priceValue: 699,
     priceEnvKey: "STRIPE_100K_PRICE_ID",
@@ -120,19 +120,19 @@ export interface RuleItem {
 export const rules: RuleItem[] = [
   {
     label: "Max Daily Loss",
-    value: "placeholder", // EDIT-ME
+    value: "5%",
     detail:
       "The maximum simulated loss permitted within a single trading day, measured against the defined balance/equity reference.",
   },
   {
     label: "Max Overall Loss",
-    value: "placeholder", // EDIT-ME
+    value: "10%",
     detail:
       "The maximum total simulated drawdown permitted on the account over its lifetime.",
   },
   {
     label: "Minimum Trading Days",
-    value: "placeholder", // EDIT-ME
+    value: "3 days",
     detail:
       "The minimum number of active trading days required before a reward request may be reviewed.",
   },
@@ -144,33 +144,27 @@ export const rules: RuleItem[] = [
   },
   {
     label: "News Trading Policy",
-    value: "placeholder", // EDIT-ME
+    value: "Not permitted",
     detail:
-      "Policy regarding opening or managing positions around high-impact news events. (EDIT-ME: allowed / restricted / time-window.)",
+      "Opening, closing or managing positions within a 5-minute window around high-impact news events is not permitted.",
   },
   {
     label: "Weekend Holding Policy",
-    value: "placeholder", // EDIT-ME
+    value: "Allowed",
     detail:
-      "Policy regarding holding positions over the weekend market closure. (EDIT-ME.)",
+      "Positions may be held over the weekend market closure.",
   },
   {
     label: "Expert Advisors (EA) Policy",
-    value: "placeholder", // EDIT-ME
+    value: "On approval",
     detail:
-      "Policy regarding automated strategies / Expert Advisors. (EDIT-ME: allowed / restricted / case-by-case.)",
+      "Automated strategies / Expert Advisors are permitted once approved by the SAFunded team.",
   },
   {
     label: "Consistency Rule",
-    value: "placeholder", // EDIT-ME
+    value: "None",
     detail:
-      "Any rule limiting the share of total performance that may come from a single day or trade. (EDIT-ME.)",
-  },
-  {
-    label: "Payout Eligibility",
-    value: "Rule-dependent",
-    detail:
-      "Reward eligibility requires full compliance with the trading rules and the applicable Terms & Conditions. (LEGAL.)",
+      "SAFunded applies no consistency rule. Your performance is not capped by single-day or single-trade limits.",
   },
 ];
 
@@ -179,9 +173,9 @@ export const rules: RuleItem[] = [
  */
 export const payoutInfo = {
   profitSplit: "up to 80%", // EDIT-ME / LEGAL
-  payoutCycle: "placeholder", // EDIT-ME
-  reviewProcess: "placeholder", // EDIT-ME e.g. "Internal compliance review within X business days"
-  firstPayoutWindow: "placeholder", // EDIT-ME
+  payoutCycle: "2 weeks",
+  reviewProcess: "24h",
+  firstPayoutWindow: "14 days after first trade",
 };
 
 export const faqs: { q: string; a: string }[] = [
@@ -251,3 +245,58 @@ export const comparisonPoints: string[] = [
   "Built for disciplined, serious traders",
   "Scalable account sizes (25K / 50K / 100K)",
 ];
+
+/**
+ * ⚠️ PLACEHOLDER / SAMPLE CONTENT — NOT REAL CUSTOMER REVIEWS.
+ *
+ * These entries exist only to demonstrate the testimonials layout. They are
+ * NOT verified trader feedback. Before launch you MUST replace them with real,
+ * consented, verifiable reviews — publishing fabricated testimonials for a
+ * financial product is a legal and regulatory risk (e.g. FTC endorsement
+ * rules). Until then the section renders with a visible "sample" disclaimer.
+ */
+export interface Testimonial {
+  name: string;
+  role: string;
+  rating: number; // 1–5 stars
+  quote: string;
+}
+
+export const testimonials: Testimonial[] = [
+  {
+    name: "Daniel R.",
+    role: "Swing trader",
+    rating: 5,
+    quote:
+      "Best instant-funded experience I've had. Every rule is published up front and the split was exactly as advertised — no surprises.",
+  },
+  {
+    name: "Mei L.",
+    role: "Day trader",
+    rating: 5,
+    quote:
+      "Reward request was reviewed within a day and processed on the next cycle. The whole process felt transparent and fair.",
+  },
+  {
+    name: "Tomás G.",
+    role: "Futures trader",
+    rating: 5,
+    quote:
+      "No consistency rule choking my edge — that alone sets SAFunded apart. I scaled up once I'd proven I could trade within the limits.",
+  },
+  {
+    name: "Aisha K.",
+    role: "Algo trader",
+    rating: 5,
+    quote:
+      "Clean dashboard, clear risk limits, and EA approval from the team was painless. Exactly the structure a systematic trader wants.",
+  },
+  {
+    name: "Sofia M.",
+    role: "Forex trader",
+    rating: 3,
+    quote:
+      "I hit my max daily loss and lost my challenge — gutted, honestly. But the rules were fair and clearly explained, so I'm giving it another shot.",
+  },
+];
+
