@@ -36,9 +36,8 @@ export default function Rules() {
         </div>
 
         <p className="mx-auto mt-6 max-w-3xl text-center text-xs text-faint">
-          Values marked &ldquo;placeholder&rdquo; must be replaced with your
-          finalised rules. The full, binding rules live in the Terms &amp;
-          Conditions.
+          These are the current trading rules. The full, binding rules live in
+          the Terms &amp; Conditions.
         </p>
       </div>
     </section>
