@@ -1,13 +1,10 @@
-import CheckoutButton from "./CheckoutButton";
+"use client";
 
-const trustBadges = [
-  "Instant Funded Accounts",
-  "Clear Trading Rules",
-  "Fast Stripe Checkout",
-  "Performance-Based Rewards",
-];
+import CheckoutButton from "./CheckoutButton";
+import { useT } from "@/lib/i18n";
 
 export default function Hero() {
+  const t = useT();
   return (
     <section
       id="top"
@@ -24,35 +21,33 @@ export default function Hero() {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Instant Funded Accounts — now available
+            {t.hero.badge}
           </span>
 
           <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.07] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Get instant access to{" "}
-            <span className="text-accent">simulated trading capital</span>.
+            {t.hero.titleLead}
+            <span className="text-accent">{t.hero.titleAccent}</span>
+            {t.hero.titleTail}
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            SAFunded lets disciplined traders start with an Instant Funded
-            Account straight away — clear risk rules from day one, and
-            eligibility for performance-based rewards when you trade within
-            them.
+            {t.hero.desc}
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <div className="sm:w-56">
-              <CheckoutButton planId="25k" label="Start with 25K" />
+              <CheckoutButton planId="25k" label={t.hero.ctaStart} />
             </div>
             <a
               href="#accounts"
               className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
             >
-              View Account Options
+              {t.hero.viewOptions}
             </a>
           </div>
 
           <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-3 sm:max-w-lg">
-            {trustBadges.map((b) => (
+            {t.hero.trustBadges.map((b) => (
               <li key={b} className="flex items-center gap-2.5 text-sm text-muted">
                 <CheckIcon />
                 {b}
@@ -69,39 +64,40 @@ export default function Hero() {
 }
 
 function HeroMockup() {
+  const t = useT();
   return (
     <div className="relative">
       <div className="absolute -inset-4 -z-10 rounded-[28px] bg-gradient-to-br from-accent/15 to-transparent blur-2xl" />
       <div className="glass rounded-2xl p-5 shadow-card">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-muted">Account · Instant Funded</p>
+            <p className="text-xs text-muted">{t.hero.mock.accountLabel}</p>
             <p className="font-display text-lg font-semibold text-white">
-              50K Simulated
+              {t.hero.mock.accountName}
             </p>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Active
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {t.hero.mock.active}
           </span>
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <Stat label="Balance" value="$50,000.00" />
-          <Stat label="Equity" value="$50,840.20" accent />
-          <Stat label="Daily Loss Limit" value="placeholder" muted />
-          <Stat label="Overall Loss Limit" value="placeholder" muted />
+          <Stat label={t.hero.mock.balance} value="$50,000.00" />
+          <Stat label={t.hero.mock.equity} value="$50,840.20" accent />
+          <Stat label={t.hero.mock.dailyLossLimit} value="placeholder" muted />
+          <Stat label={t.hero.mock.overallLossLimit} value="placeholder" muted />
         </div>
 
         <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <div className="flex items-center justify-between text-xs text-muted">
-            <span>Profit split</span>
-            <span className="font-mono text-accent">up to 80%</span>
+            <span>{t.hero.mock.profitSplit}</span>
+            <span className="font-mono text-accent">{t.hero.mock.profitSplitValue}</span>
           </div>
           <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
             <div className="h-full w-[62%] rounded-full bg-gradient-to-r from-accent to-emerald-400" />
           </div>
           <p className="mt-2 text-[11px] text-faint">
-            Reward eligibility subject to rules &amp; T&amp;Cs.
+            {t.hero.mock.rewardNote}
           </p>
         </div>
       </div>

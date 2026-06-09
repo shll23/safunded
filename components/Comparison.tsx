@@ -1,18 +1,21 @@
-import { comparisonPoints } from "@/lib/plans";
+"use client";
+
 import { SectionHeading } from "./HowItWorks";
+import { useT } from "@/lib/i18n";
 
 export default function Comparison() {
+  const t = useT();
   return (
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Why SAFunded"
-          title="A streamlined path to simulated funding"
-          sub="Unlike complex multi-step evaluation models, SAFunded focuses on a streamlined instant funding experience."
+          eyebrow={t.comparison.eyebrow}
+          title={t.comparison.title}
+          sub={t.comparison.sub}
         />
 
         <div className="mx-auto mt-14 grid max-w-4xl gap-4 sm:grid-cols-2">
-          {comparisonPoints.map((p) => (
+          {t.comparison.points.map((p) => (
             <div
               key={p}
               className="flex items-start gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5"

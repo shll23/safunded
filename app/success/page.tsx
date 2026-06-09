@@ -1,12 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import { Logo } from "@/components/Header";
+import { Logo, LanguageToggle } from "@/components/Header";
+import { useT } from "@/lib/i18n";
 
 export default function SuccessPage() {
+  const t = useT();
   return (
     <main className="grid min-h-screen place-items-center px-5 py-16">
       <div className="w-full max-w-lg text-center">
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex items-center justify-between">
           <Logo />
+          <LanguageToggle />
         </div>
 
         <div className="rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.06] to-transparent p-10 shadow-glow">
@@ -17,31 +22,23 @@ export default function SuccessPage() {
           </div>
 
           <h1 className="mt-6 font-display text-3xl font-semibold tracking-tight text-white">
-            Payment successful
+            {t.success.title}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Thank you for purchasing your SAFunded account. Your onboarding
-            details will be sent to your email shortly.
+            {t.success.desc}
           </p>
 
           {/* Next steps card */}
           <div className="mt-7 rounded-2xl border border-white/10 bg-white/[0.02] p-5 text-left">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-faint">
-              What happens next
+              {t.success.whatNext}
             </p>
             <ol className="mt-3 space-y-2 text-sm text-muted">
-              <li className="flex gap-2">
-                <span className="font-mono text-accent">1.</span> Check your
-                inbox for the onboarding email.
-              </li>
-              <li className="flex gap-2">
-                <span className="font-mono text-accent">2.</span> Review your
-                account&rsquo;s risk rules before trading.
-              </li>
-              <li className="flex gap-2">
-                <span className="font-mono text-accent">3.</span> Log in and
-                start trading within the rules.
-              </li>
+              {t.success.steps.map((step, i) => (
+                <li key={i} className="flex gap-2">
+                  <span className="font-mono text-accent">{i + 1}.</span> {step}
+                </li>
+              ))}
             </ol>
             {/* EDIT-ME: replace with your real onboarding steps / links */}
           </div>
@@ -51,22 +48,19 @@ export default function SuccessPage() {
               href="/"
               className="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
             >
-              Back to Home
+              {t.success.backHome}
             </Link>
             {/* EDIT-ME: point to your real dashboard URL */}
             <a
               href="#"
               className="inline-flex flex-1 items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
             >
-              Go to Dashboard
+              {t.success.goDashboard}
             </a>
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-faint">
-          Rewards are subject to rule compliance and Terms &amp; Conditions.
-          Trading involves risk.
-        </p>
+        <p className="mt-6 text-xs text-faint">{t.success.note}</p>
       </div>
     </main>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { PlanId } from "@/lib/plans";
+import { useT } from "@/lib/i18n";
 
 interface CheckoutButtonProps {
   planId: PlanId;
@@ -16,6 +17,7 @@ export default function CheckoutButton({
   variant = "primary",
   className = "",
 }: CheckoutButtonProps) {
+  const t = useT();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,13 +34,13 @@ export default function CheckoutButton({
       const data = await res.json();
 
       if (!res.ok || !data.url) {
-        throw new Error(data.error || "Could not start checkout.");
+        throw new Error(data.error || t.checkout.couldNotStart);
       }
 
       // Redirect to Stripe-hosted checkout.
       window.location.href = data.url;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong.");
+      setError(e instanceof Error ? e.message : t.checkout.genericError);
       setLoading(false);
     }
   }
@@ -61,7 +63,7 @@ export default function CheckoutButton({
         {loading ? (
           <>
             <Spinner />
-            Starting checkout…
+            {t.checkout.starting}
           </>
         ) : (
           label

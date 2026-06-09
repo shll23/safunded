@@ -1,14 +1,18 @@
-import { Logo } from "./Header";
+"use client";
 
-const footerLinks = [
-  { label: "Terms & Conditions", href: "#" }, // EDIT-ME: link to real T&C
-  { label: "Privacy Policy", href: "#" }, // EDIT-ME
-  { label: "Risk Disclosure", href: "#" }, // EDIT-ME
-  { label: "Contact", href: "#" }, // EDIT-ME
-  { label: "FAQ", href: "#faq" },
-];
+import { Logo } from "./Header";
+import { useT } from "@/lib/i18n";
 
 export default function Footer() {
+  const t = useT();
+  const footerLinks = [
+    { label: t.footer.links.terms, href: "#" }, // EDIT-ME: link to real T&C
+    { label: t.footer.links.privacy, href: "#" }, // EDIT-ME
+    { label: t.footer.links.risk, href: "#" }, // EDIT-ME
+    { label: t.footer.links.contact, href: "#" }, // EDIT-ME
+    { label: t.footer.links.faq, href: "#faq" },
+  ];
+
   return (
     <footer className="border-t border-white/[0.08] bg-white/[0.01]">
       <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
@@ -16,9 +20,7 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              SAFunded offers Instant Funded simulated trading accounts for
-              disciplined traders, with transparent rules and performance-based
-              reward eligibility.
+              {t.footer.desc}
             </p>
           </div>
 
@@ -36,8 +38,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-3 border-t border-white/[0.07] pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 SAFunded. All rights reserved.</p>
-          <p>All trading accounts are simulated unless explicitly stated.</p>
+          <p>{t.footer.copyright}</p>
+          <p>{t.footer.simulatedNote}</p>
         </div>
       </div>
     </footer>

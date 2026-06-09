@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/i18n";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 const display = Space_Grotesk({
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
       <body className="bg-base font-body text-white antialiased">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );
