@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import type { PlanId } from "@/lib/plans";
-import { useT } from "@/lib/i18n";
 
 interface CheckoutButtonProps {
   planId: PlanId;
@@ -11,42 +10,19 @@ interface CheckoutButtonProps {
   className?: string;
 }
 
+/**
+ * Preis-Button für ein Konto. Leitet den Besucher zur Registrierung weiter
+ * (/signup?plan=<id>), statt direkt einen Stripe-Checkout zu starten. Die
+ * Kontoauswahl wird über den Query-Parameter `plan` mitgegeben.
+ */
 export default function CheckoutButton({
   planId,
   label,
   variant = "primary",
   className = "",
 }: CheckoutButtonProps) {
-  const t = useT();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleClick() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planId }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.url) {
-        throw new Error(data.error || t.checkout.couldNotStart);
-      }
-
-      // Redirect to Stripe-hosted checkout.
-      window.location.href = data.url;
-    } catch (e) {
-      setError(e instanceof Error ? e.message : t.checkout.genericError);
-      setLoading(false);
-    }
-  }
-
   const base =
-    "relative inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60";
+    "relative inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
   const styles =
     variant === "primary"
       ? "bg-accent text-ink shadow-glow hover:bg-accent-bright hover:shadow-glow-lg"
@@ -54,51 +30,12 @@ export default function CheckoutButton({
 
   return (
     <div className="w-full">
-      <button
-        onClick={handleClick}
-        disabled={loading}
-        aria-busy={loading}
+      <Link
+        href={`/signup?plan=${planId}`}
         className={`${base} ${styles} ${className}`}
       >
-        {loading ? (
-          <>
-            <Spinner />
-            {t.checkout.starting}
-          </>
-        ) : (
-          label
-        )}
-      </button>
-      {error && (
-        <p role="alert" className="mt-2 text-xs text-rose-400">
-          {error}
-        </p>
-      )}
+        {label}
+      </Link>
     </div>
-  );
-}
-
-function Spinner() {
-  return (
-    <svg
-      className="h-4 w-4 animate-spin"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-90"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-      />
-    </svg>
   );
 }
