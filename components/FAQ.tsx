@@ -1,25 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { faqs } from "@/lib/plans";
 import { SectionHeading } from "./HowItWorks";
+import { useT } from "@/lib/i18n";
 
 export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
+  const t = useT();
 
   return (
     <section id="faq" className="border-t border-white/[0.06] py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="FAQ"
-          title="Questions, answered plainly"
-        />
+        <SectionHeading eyebrow={t.faq.eyebrow} title={t.faq.title} />
 
         <div className="mt-12 divide-y divide-white/[0.08] overflow-hidden rounded-2xl border border-white/[0.08]">
-          {faqs.map((f, i) => {
+          {t.faq.items.map((f, i) => {
             const isOpen = open === i;
             return (
-              <div key={i} className="bg-white/[0.02]">
+              <div key={f.q} className="bg-white/[0.02]">
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}

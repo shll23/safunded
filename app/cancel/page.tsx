@@ -1,12 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import { Logo } from "@/components/Header";
+import { Logo, LanguageToggle } from "@/components/Header";
+import { useT } from "@/lib/i18n";
 
 export default function CancelPage() {
+  const t = useT();
   return (
     <main className="grid min-h-screen place-items-center px-5 py-16">
       <div className="w-full max-w-lg text-center">
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex items-center justify-between">
           <Logo />
+          <LanguageToggle />
         </div>
 
         <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-10">
@@ -17,11 +22,10 @@ export default function CancelPage() {
           </div>
 
           <h1 className="mt-6 font-display text-3xl font-semibold tracking-tight text-white">
-            Checkout cancelled
+            {t.cancel.title}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Your payment was not completed. You can return to the account
-            selection and try again whenever you&rsquo;re ready.
+            {t.cancel.desc}
           </p>
 
           <div className="mt-8">
@@ -29,14 +33,12 @@ export default function CancelPage() {
               href="/#accounts"
               className="inline-flex items-center justify-center rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
             >
-              View Accounts
+              {t.cancel.viewAccounts}
             </Link>
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-faint">
-          No charge was made. Trading involves risk.
-        </p>
+        <p className="mt-6 text-xs text-faint">{t.cancel.note}</p>
       </div>
     </main>
   );

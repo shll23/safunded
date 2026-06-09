@@ -1,20 +1,24 @@
+"use client";
+
 import { SectionHeading } from "./HowItWorks";
+import { useT } from "@/lib/i18n";
 
 const recentTrades = [
-  { sym: "EUR/USD", side: "Long", pnl: "+$214.50", up: true },
-  { sym: "XAU/USD", side: "Short", pnl: "-$88.20", up: false },
-  { sym: "US100", side: "Long", pnl: "+$430.10", up: true },
-  { sym: "GBP/JPY", side: "Long", pnl: "+$96.40", up: true },
+  { sym: "EUR/USD", side: "long" as const, pnl: "+$214.50", up: true },
+  { sym: "XAU/USD", side: "short" as const, pnl: "-$88.20", up: false },
+  { sym: "US100", side: "long" as const, pnl: "+$430.10", up: true },
+  { sym: "GBP/JPY", side: "long" as const, pnl: "+$96.40", up: true },
 ];
 
 export default function DashboardPreview() {
+  const t = useT();
   return (
     <section className="border-y border-white/[0.06] bg-white/[0.015] py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Platform preview"
-          title="A clear view of your account"
-          sub="Track balance, equity, risk limits and reward eligibility at a glance. (Visual preview — figures are illustrative.)"
+          eyebrow={t.dashboard.eyebrow}
+          title={t.dashboard.title}
+          sub={t.dashboard.sub}
         />
 
         <div className="relative mx-auto mt-14 max-w-4xl">
@@ -27,11 +31,11 @@ export default function DashboardPreview() {
                   SA
                 </span>
                 <p className="text-sm font-medium text-white">
-                  Instant Funded · 100K
+                  {t.dashboard.accountLabel}
                 </p>
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Active
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {t.dashboard.active}
               </span>
             </div>
 
@@ -39,17 +43,17 @@ export default function DashboardPreview() {
               {/* Left: metrics + chart */}
               <div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  <Metric label="Balance" value="$100,000.00" />
-                  <Metric label="Equity" value="$101,268.40" accent />
-                  <Metric label="Open P/L" value="+$652.80" accent />
-                  <Metric label="Daily loss limit" value="placeholder" muted />
-                  <Metric label="Overall loss limit" value="placeholder" muted />
-                  <Metric label="Reward target" value="placeholder" muted />
+                  <Metric label={t.dashboard.metrics.balance} value="$100,000.00" />
+                  <Metric label={t.dashboard.metrics.equity} value="$101,268.40" accent />
+                  <Metric label={t.dashboard.metrics.openPl} value="+$652.80" accent />
+                  <Metric label={t.dashboard.metrics.dailyLossLimit} value="placeholder" muted />
+                  <Metric label={t.dashboard.metrics.overallLossLimit} value="placeholder" muted />
+                  <Metric label={t.dashboard.metrics.rewardTarget} value="placeholder" muted />
                 </div>
 
                 <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted">Equity curve (illustrative)</span>
+                    <span className="text-muted">{t.dashboard.equityCurve}</span>
                     <span className="font-mono text-accent">+1.27%</span>
                   </div>
                   <Sparkline />
@@ -59,30 +63,32 @@ export default function DashboardPreview() {
               {/* Right: recent trades */}
               <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
                 <p className="text-xs uppercase tracking-wide text-faint">
-                  Recent trades
+                  {t.dashboard.recentTrades}
                 </p>
                 <ul className="mt-3 divide-y divide-white/[0.06]">
-                  {recentTrades.map((t, i) => (
+                  {recentTrades.map((trade, i) => (
                     <li
                       key={i}
                       className="flex items-center justify-between py-2.5"
                     >
                       <div>
-                        <p className="text-sm font-medium text-white">{t.sym}</p>
-                        <p className="text-[11px] text-faint">{t.side}</p>
+                        <p className="text-sm font-medium text-white">{trade.sym}</p>
+                        <p className="text-[11px] text-faint">
+                          {t.dashboard.sides[trade.side]}
+                        </p>
                       </div>
                       <span
                         className={`font-mono text-sm ${
-                          t.up ? "text-accent" : "text-rose-400"
+                          trade.up ? "text-accent" : "text-rose-400"
                         }`}
                       >
-                        {t.pnl}
+                        {trade.pnl}
                       </span>
                     </li>
                   ))}
                 </ul>
                 <p className="mt-3 text-[11px] text-faint">
-                  Recent trades placeholder.
+                  {t.dashboard.recentTradesNote}
                 </p>
               </div>
             </div>
