@@ -1,5 +1,8 @@
+"use client";
+
 import { testimonials } from "@/lib/plans";
 import { SectionHeading } from "./HowItWorks";
+import { useT } from "@/lib/i18n";
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -24,6 +27,7 @@ function Stars({ rating }: { rating: number }) {
 }
 
 export default function Testimonials() {
+  const t = useT();
   return (
     <section
       id="testimonials"
@@ -31,18 +35,15 @@ export default function Testimonials() {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="What traders say"
-          title="Feedback from the SAFunded community"
-          sub="Real, consented trader feedback will appear here at launch."
+          eyebrow={t.reviews.eyebrow}
+          title={t.reviews.title}
+          sub={t.reviews.sub}
         />
 
         {/* Sample-content disclaimer — these are NOT real reviews. */}
         <div className="mx-auto mt-10 max-w-3xl rounded-xl border border-dashed border-white/15 bg-white/[0.015] px-5 py-3 text-center">
           <p className="text-xs leading-relaxed text-faint">
-            Sample layout only — the reviews below are illustrative placeholders,
-            not verified trader feedback. They must be replaced with real,
-            consented reviews before launch. No fabricated reviews will be
-            published.
+            {t.reviews.sampleDisclaimer}
           </p>
         </div>
 
@@ -65,8 +66,7 @@ export default function Testimonials() {
         </div>
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-faint">
-          Trading involves risk. Individual results are not typical and are not a
-          promise of future performance. Payouts are not guaranteed.
+          {t.reviews.riskNote}
         </p>
       </div>
     </section>

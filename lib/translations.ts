@@ -121,6 +121,13 @@ export interface Dictionary {
     sub: string;
     points: string[];
   };
+  reviews: {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    sampleDisclaimer: string;
+    riskNote: string;
+  };
   faq: {
     eyebrow: string;
     title: string;
@@ -258,17 +265,16 @@ export const translations: Record<Language, Dictionary> = {
       eyebrow: "Trading rules",
       title: "Clear rules, published up front",
       sub: "SAFunded is built for disciplined traders. Clear rules protect both the trader and the platform.",
-      note: "Values marked “placeholder” must be replaced with your finalised rules. The full, binding rules live in the Terms & Conditions.",
+      note: "These are SAFunded’s current trading rules. The full, binding rules live in the Terms & Conditions.",
       items: [
-        { label: "Max Daily Loss", value: "placeholder", detail: "The maximum simulated loss permitted within a single trading day, measured against the defined balance/equity reference." },
-        { label: "Max Overall Loss", value: "placeholder", detail: "The maximum total simulated drawdown permitted on the account over its lifetime." },
-        { label: "Minimum Trading Days", value: "placeholder", detail: "The minimum number of active trading days required before a reward request may be reviewed." },
+        { label: "Max Daily Loss", value: "5%", detail: "The maximum simulated loss permitted within a single trading day, measured against the defined balance/equity reference." },
+        { label: "Max Overall Loss", value: "10%", detail: "The maximum total simulated drawdown permitted on the account over its lifetime." },
+        { label: "Minimum Trading Days", value: "3 days", detail: "The minimum number of active trading days required before a reward request may be reviewed." },
         { label: "Prohibited Practices", value: "Not permitted", detail: "Practices such as latency/arbitrage abuse, copy-trading across accounts, or exploiting simulated feed errors are not permitted. (LEGAL: define exhaustively in T&Cs.)" },
-        { label: "News Trading Policy", value: "placeholder", detail: "Policy regarding opening or managing positions around high-impact news events. (EDIT-ME: allowed / restricted / time-window.)" },
-        { label: "Weekend Holding Policy", value: "placeholder", detail: "Policy regarding holding positions over the weekend market closure. (EDIT-ME.)" },
-        { label: "Expert Advisors (EA) Policy", value: "placeholder", detail: "Policy regarding automated strategies / Expert Advisors. (EDIT-ME: allowed / restricted / case-by-case.)" },
-        { label: "Consistency Rule", value: "placeholder", detail: "Any rule limiting the share of total performance that may come from a single day or trade. (EDIT-ME.)" },
-        { label: "Payout Eligibility", value: "Rule-dependent", detail: "Reward eligibility requires full compliance with the trading rules and the applicable Terms & Conditions. (LEGAL.)" },
+        { label: "News Trading Policy", value: "Not permitted", detail: "Opening, closing or managing positions within a 5-minute window around high-impact news events is not permitted." },
+        { label: "Weekend Holding Policy", value: "Allowed", detail: "Positions may be held over the weekend market closure." },
+        { label: "Expert Advisors (EA) Policy", value: "On approval", detail: "Automated strategies / Expert Advisors are permitted once approved by the SAFunded team." },
+        { label: "Consistency Rule", value: "None", detail: "SAFunded applies no consistency rule — your performance is not capped by single-day or single-trade limits." },
       ],
     },
     payouts: {
@@ -315,6 +321,15 @@ export const translations: Record<Language, Dictionary> = {
         "Built for disciplined, serious traders",
         "Scalable account sizes (25K / 50K / 100K)",
       ],
+    },
+    reviews: {
+      eyebrow: "What traders say",
+      title: "Feedback from the SAFunded community",
+      sub: "Real, consented trader feedback will appear here at launch.",
+      sampleDisclaimer:
+        "Sample layout only — the reviews below are illustrative placeholders, not verified trader feedback. They must be replaced with real, consented reviews before launch. No fabricated reviews will be published.",
+      riskNote:
+        "Trading involves risk. Individual results are not typical and are not a promise of future performance. Payouts are not guaranteed.",
     },
     faq: {
       eyebrow: "FAQ",
@@ -477,17 +492,16 @@ export const translations: Record<Language, Dictionary> = {
       eyebrow: "Trading-Regeln",
       title: "Klare Regeln, offen kommuniziert",
       sub: "SAFunded ist für disziplinierte Trader gemacht. Klare Regeln schützen sowohl den Trader als auch die Plattform.",
-      note: "Mit „placeholder“ markierte Werte müssen durch deine endgültigen Regeln ersetzt werden. Die vollständigen, verbindlichen Regeln stehen in den AGB.",
+      note: "Dies sind die aktuellen Trading-Regeln von SAFunded. Die vollständigen, verbindlichen Regeln stehen in den AGB.",
       items: [
-        { label: "Max. Tagesverlust", value: "placeholder", detail: "Der maximal zulässige simulierte Verlust innerhalb eines einzelnen Trading-Tages, gemessen am definierten Kontostand-/Eigenkapital-Referenzwert." },
-        { label: "Max. Gesamtverlust", value: "placeholder", detail: "Der maximal zulässige simulierte Gesamtverlust (Drawdown) des Kontos über seine gesamte Laufzeit." },
-        { label: "Mindestanzahl Trading-Tage", value: "placeholder", detail: "Die Mindestanzahl aktiver Trading-Tage, die erforderlich ist, bevor ein Belohnungsantrag geprüft werden kann." },
+        { label: "Max. Tagesverlust", value: "5 %", detail: "Der maximal zulässige simulierte Verlust innerhalb eines einzelnen Trading-Tages, gemessen am definierten Kontostand-/Eigenkapital-Referenzwert." },
+        { label: "Max. Gesamtverlust", value: "10 %", detail: "Der maximal zulässige simulierte Gesamtverlust (Drawdown) des Kontos über seine gesamte Laufzeit." },
+        { label: "Mindestanzahl Trading-Tage", value: "3 Tage", detail: "Die Mindestanzahl aktiver Trading-Tage, die erforderlich ist, bevor ein Belohnungsantrag geprüft werden kann." },
         { label: "Verbotene Praktiken", value: "Nicht erlaubt", detail: "Praktiken wie Latenz-/Arbitrage-Missbrauch, Copy-Trading über mehrere Konten hinweg oder das Ausnutzen von Fehlern im simulierten Datenfeed sind nicht erlaubt. (LEGAL: in den AGB abschließend definieren.)" },
-        { label: "Richtlinie für News-Trading", value: "placeholder", detail: "Richtlinie zum Eröffnen oder Verwalten von Positionen rund um Nachrichtenereignisse mit hoher Auswirkung. (EDIT-ME: erlaubt / eingeschränkt / Zeitfenster.)" },
-        { label: "Richtlinie für Wochenend-Positionen", value: "placeholder", detail: "Richtlinie zum Halten von Positionen über die Marktschließung am Wochenende. (EDIT-ME.)" },
-        { label: "Richtlinie für Expert Advisors (EA)", value: "placeholder", detail: "Richtlinie zu automatisierten Strategien / Expert Advisors. (EDIT-ME: erlaubt / eingeschränkt / Einzelfallprüfung.)" },
-        { label: "Konsistenzregel", value: "placeholder", detail: "Jede Regel, die den Anteil der Gesamtperformance begrenzt, der aus einem einzelnen Tag oder Trade stammen darf. (EDIT-ME.)" },
-        { label: "Auszahlungsberechtigung", value: "Regelabhängig", detail: "Die Belohnungsberechtigung setzt die vollständige Einhaltung der Trading-Regeln und der geltenden AGB voraus. (LEGAL.)" },
+        { label: "Richtlinie für News-Trading", value: "Nicht erlaubt", detail: "Das Eröffnen, Schließen oder Verwalten von Positionen innerhalb eines 5-Minuten-Fensters rund um Nachrichtenereignisse mit hoher Auswirkung ist nicht erlaubt." },
+        { label: "Richtlinie für Wochenend-Positionen", value: "Erlaubt", detail: "Positionen dürfen über die Marktschließung am Wochenende gehalten werden." },
+        { label: "Richtlinie für Expert Advisors (EA)", value: "Nach Freigabe", detail: "Automatisierte Strategien / Expert Advisors sind erlaubt, sobald sie vom SAFunded-Team freigegeben wurden." },
+        { label: "Konsistenzregel", value: "Keine", detail: "SAFunded wendet keine Konsistenzregel an — deine Performance wird nicht durch Tages- oder Einzeltrade-Limits begrenzt." },
       ],
     },
     payouts: {
@@ -534,6 +548,15 @@ export const translations: Record<Language, Dictionary> = {
         "Für disziplinierte, ernsthafte Trader gemacht",
         "Skalierbare Kontogrößen (25K / 50K / 100K)",
       ],
+    },
+    reviews: {
+      eyebrow: "Was Trader sagen",
+      title: "Feedback aus der SAFunded-Community",
+      sub: "Echtes, ausdrücklich freigegebenes Trader-Feedback erscheint hier zum Start.",
+      sampleDisclaimer:
+        "Nur Beispiel-Layout — die untenstehenden Bewertungen sind illustrative Platzhalter, kein verifiziertes Trader-Feedback. Sie müssen vor dem Start durch echte, freigegebene Bewertungen ersetzt werden. Es werden keine erfundenen Bewertungen veröffentlicht.",
+      riskNote:
+        "Trading ist mit Risiken verbunden. Individuelle Ergebnisse sind nicht typisch und kein Versprechen für zukünftige Leistungen. Auszahlungen sind nicht garantiert.",
     },
     faq: {
       eyebrow: "FAQ",
