@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
 import { createClient } from "@/lib/supabase/client";
 import { getPlan } from "@/lib/plans";
+import { getAppUrl } from "@/lib/site";
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint transition-colors focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/40";
@@ -32,7 +33,7 @@ function SignupForm() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/confirm`,
+        emailRedirectTo: `${getAppUrl()}/auth/confirm`,
         data: {
           full_name: name,
           plan: plan?.id ?? null,

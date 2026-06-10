@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { widerrufHtml, widerrufPlainText } from "@/lib/widerruf";
+import { getAppUrl } from "@/lib/site";
 
 /**
  * Server-side order-confirmation e-mail (durable medium per § 312f BGB).
@@ -41,13 +42,6 @@ export interface OrderConfirmationParams {
 
 const SUBJECT =
   "Deine Bestellung bei SAFunded – Bestätigung & Widerrufsbelehrung";
-
-function getAppUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ??
-    "https://safunded.com"
-  );
-}
 
 /** Builds the nodemailer transport from environment variables. */
 function createTransport() {
