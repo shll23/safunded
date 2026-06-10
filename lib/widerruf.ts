@@ -356,17 +356,45 @@ export function widerrufPlainText(): string {
   return out.join("\n").trim() + "\n";
 }
 
+/** Colour theme for the e-mail HTML fragment. */
+export type WiderrufTheme = "light" | "dark";
+
+interface WiderrufPalette {
+  /** Body / paragraph text. */
+  text: string;
+  /** Headings. */
+  heading: string;
+  /** Muted text (note + footer). */
+  muted: string;
+  /** Horizontal-rule / divider colour. */
+  hr: string;
+}
+
+/**
+ * Palettes for the two render targets. `light` matches the previous default
+ * (dark text on a white card); `dark` matches the branded confirmation e-mail
+ * (light text on a dark navy container). Only colours differ between the two —
+ * the wording is identical (single source of truth above).
+ */
+const WIDERRUF_PALETTES: Record<WiderrufTheme, WiderrufPalette> = {
+  light: { text: "#1f2937", heading: "#0f172a", muted: "#6b7280", hr: "#e5e7eb" },
+  dark: { text: "#A6B0C2", heading: "#EDF1F7", muted: "#8C96A8", hr: "#263048" },
+};
+
 /**
  * Renders the Widerrufsbelehrung as an HTML fragment (durable-medium copy for
  * the e-mail HTML part). Inline styles only, for broad e-mail-client support.
+ * Pass `theme` to colour the text for a light or dark container; the wording is
+ * unchanged in both cases.
  */
-export function widerrufHtml(): string {
-  const p = "margin:0 0 12px;line-height:1.6;color:#1f2937;font-size:14px;";
-  const h2 = "margin:24px 0 10px;font-size:16px;color:#0f172a;";
+export function widerrufHtml(theme: WiderrufTheme = "light"): string {
+  const c = WIDERRUF_PALETTES[theme];
+  const p = `margin:0 0 12px;line-height:1.6;color:${c.text};font-size:14px;`;
+  const h2 = `margin:24px 0 10px;font-size:16px;color:${c.heading};`;
   const parts: string[] = [];
 
   parts.push(
-    `<h2 style="margin:0 0 12px;font-size:18px;color:#0f172a;">${escapeHtml(
+    `<h2 style="margin:0 0 12px;font-size:18px;color:${c.heading};">${escapeHtml(
       WIDERRUF_TITLE
     )}</h2>`
   );
@@ -383,14 +411,14 @@ export function widerrufHtml(): string {
     switch (b.t) {
       case "note":
         parts.push(
-          `<p style="${p}font-style:italic;color:#6b7280;">${escapeHtml(
+          `<p style="${p}font-style:italic;color:${c.muted};">${escapeHtml(
             b.text
           )}</p>`
         );
         break;
       case "hr":
         parts.push(
-          `<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">`
+          `<hr style="border:none;border-top:1px solid ${c.hr};margin:20px 0;">`
         );
         break;
       case "h2":
@@ -406,7 +434,7 @@ export function widerrufHtml(): string {
         break;
       case "ol":
         parts.push(
-          `<ol style="margin:0 0 12px;padding-left:20px;color:#1f2937;font-size:14px;line-height:1.6;">${b.items
+          `<ol style="margin:0 0 12px;padding-left:20px;color:${c.text};font-size:14px;line-height:1.6;">${b.items
             .map((it) => `<li>${escapeHtml(it)}</li>`)
             .join("")}</ol>`
         );
@@ -418,14 +446,14 @@ export function widerrufHtml(): string {
         break;
       case "fields":
         parts.push(
-          `<ul style="margin:0 0 12px;padding-left:20px;color:#1f2937;font-size:14px;line-height:1.6;">${b.items
+          `<ul style="margin:0 0 12px;padding-left:20px;color:${c.text};font-size:14px;line-height:1.6;">${b.items
             .map((it) => `<li>${escapeHtml(it)}</li>`)
             .join("")}</ul>`
         );
         break;
       case "footer":
         parts.push(
-          `<p style="${p}font-style:italic;color:#6b7280;">${escapeHtml(
+          `<p style="${p}font-style:italic;color:${c.muted};">${escapeHtml(
             b.text
           )}</p>`
         );

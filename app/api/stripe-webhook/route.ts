@@ -124,7 +124,9 @@ export async function POST(req: Request) {
 
     const sent = await sendOrderConfirmationEmail({
       to: email,
+      customerName: session.customer_details?.name ?? undefined,
       productName,
+      accountSize: metadata.simulatedCapital ?? plan?.simulatedCapital,
       price,
       orderDate: formatDate(session.created),
       orderId: session.id,

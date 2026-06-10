@@ -132,6 +132,7 @@ export async function POST(req: Request) {
     const sent = await sendOrderConfirmationEmail({
       to: account.email,
       productName: plan?.name ?? "SAFunded Account",
+      accountSize: plan?.simulatedCapital,
       price: plan?.price ?? "—",
       orderDate: formatDate(new Date()),
       orderId,
