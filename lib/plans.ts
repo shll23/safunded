@@ -151,59 +151,71 @@ export const rules: RuleItem[] = [
 export const faqs: { q: string; a: string }[] = [
   {
     q: "What is an Instant Funded Account?",
-    a: "An Instant Funded Account gives you access to a simulated trading environment with a defined amount of simulated capital, without a separate multi-step evaluation. You trade within clearly defined risk rules from day one.",
+    a: "After purchase, a simulated MT5 account with a defined account reference value (25K, 50K or 100K) is provided to you immediately — with no separate multi-step evaluation. You trade within clearly defined risk rules from day one.",
   },
   {
     q: "Is the capital real or simulated?",
-    a: "All trading takes place in a simulated environment using simulated capital, unless explicitly stated otherwise. You are not trading live client funds and SAFunded does not provide brokerage services. (LEGAL: confirm wording matches your operating model.)",
+    a: "All trading takes place in a simulated environment. No real capital is deposited, held or traded; displayed balances are notional reference values used to measure performance. SAFunded does not provide investment or financial advice and does not offer brokerage services.",
   },
   {
-    q: "How do I purchase an account?",
-    a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed by Stripe; SAFunded does not store your card details.",
+    q: "Which instruments can I trade, and what leverage applies?",
+    a: "You can trade Forex, precious metals (in particular gold), indices and other CFDs available via MT5 and approved by SAFunded. Single stocks are not tradable. The standard leverage is 1:100; SAFunded may adjust leverage depending on the instrument, account model or market conditions.",
   },
   {
-    q: "How does Stripe Checkout work?",
-    a: "When you select an account, you are redirected to Stripe's hosted checkout page to complete payment securely. After payment, you are returned to SAFunded.",
+    q: "How do I purchase and pay for an account?",
+    a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or Confirmo (crypto); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined.",
   },
   {
     q: "When do I receive my account access?",
-    a: "After a successful payment, onboarding details are sent to the email associated with your purchase. (EDIT-ME: state your real delivery timeframe.)",
+    a: "Account access is provided after successful payment — generally immediately or shortly thereafter. Onboarding details are sent to the email address associated with your purchase.",
   },
   {
     q: "What are the risk rules?",
-    a: "Each account has a maximum daily loss, a maximum overall loss, and other defined parameters. The full, current rules are listed in the Rules section and the Terms & Conditions.",
-  },
-  {
-    q: "How does the profit split work?",
-    a: "Eligible performance-based rewards may be shared according to the stated profit split (e.g. up to 80%). The exact split and conditions are defined in the payout policy and Terms & Conditions. (LEGAL.)",
-  },
-  {
-    q: "Are payouts guaranteed?",
-    a: "No. Payouts are not guaranteed. Any performance-based reward is subject to rule compliance, eligibility requirements, and the applicable Terms & Conditions. Trading involves risk.",
-  },
-  {
-    q: "Can I use Expert Advisors?",
-    a: "This is governed by the Expert Advisors policy. (EDIT-ME: state your policy.)",
-  },
-  {
-    q: "Can I trade news?",
-    a: "This is governed by the News Trading policy. (EDIT-ME: state your policy.)",
+    a: "A maximum daily loss of 5% and a maximum overall loss of 10% of the respective account reference value apply. Open positions count, and even a temporary breach of a limit is treated as a violation. The daily reset time is UTC+2 (Berlin-Prague time).",
   },
   {
     q: "Can I hold trades overnight or over the weekend?",
-    a: "This is governed by the Weekend Holding policy. (EDIT-ME: state your policy.)",
+    a: "Yes. Overnight holding and weekend trading are permitted. The trader bears the risk from gaps, slippage, spread widening and swaps, and such positions are fully included in the drawdown monitoring.",
+  },
+  {
+    q: "Can I trade news?",
+    a: "Within a window of 5 minutes before and 5 minutes after relevant high-impact news, positions may not be opened, closed or modified. Outside this window, news trading is allowed. SAFunded determines relevant news using recognised economic calendars and internal risk assessment.",
+  },
+  {
+    q: "Can I use Expert Advisors (EAs) or bots?",
+    a: "Automated systems, EAs, bots and scripts are only permitted after prior approval. SAFunded may review the strategy, functionality and risk logic, and may withdraw approval for previously approved systems.",
+  },
+  {
+    q: "Which trading practices are prohibited?",
+    a: "Prohibited practices include scalping, martingale, grid, hedging, latency and tick arbitrage, exploiting platform or price errors, unapproved bots, multi-account abuse and the artificial creation of profitable days. Copy trading is allowed as long as it is transparent, rule-compliant and not used to circumvent the rules.",
+  },
+  {
+    q: "Is there a consistency rule?",
+    a: "No. SAFunded applies no consistency rule — your performance is not capped by single-day or single-trade limits.",
+  },
+  {
+    q: "What are the requirements for a payout?",
+    a: "The following are required cumulatively: compliance with all rules, a minimum duration of 14 calendar days, at least 3 profitable trading days with ≥ 1% profit of the account reference value each, and a successful KYC, AML and anti-fraud review. After a successful review, payouts are processed within 24 hours; SAFunded charges no additional payout fees.",
+  },
+  {
+    q: "How does the profit split work — and are payouts guaranteed?",
+    a: "The recognised profit share is split 80% (trader) / 20% (SAFunded). However, a payout is not an automatic or guaranteed entitlement: in the event of a rule violation, manipulation or false information, there is no payout entitlement. Trading involves risk.",
   },
   {
     q: "What happens if I breach a rule?",
-    a: "A breach of a risk rule may result in the account becoming ineligible for rewards or being closed, as defined in the Terms & Conditions. (LEGAL: state your exact consequence policy.)",
+    a: "A rule violation may lead to disqualification, refusal of a payout and the blocking, closure or termination of the account. In these cases there is no entitlement to a payout.",
   },
   {
-    q: "Can I upgrade from 25K to 50K or 100K?",
-    a: "Account sizes are purchased individually. (EDIT-ME: describe any upgrade or scaling path you offer, if applicable.)",
+    q: "Can I withdraw from the contract or get a refund?",
+    a: "Consumers generally have a 14-day right of withdrawal from the conclusion of the contract. For digital services it expires early if, during the order process, you expressly consent to performance beginning immediately and confirm that you thereby lose your right of withdrawal. A refund may be considered in particular if the service is not provided or a fault attributable to SAFunded occurs; in the event of a rule violation, fraud or chargeback abuse there is no refund entitlement.",
   },
   {
-    q: "Where can I read the Terms & Conditions?",
-    a: "The full Terms & Conditions, Privacy Policy and Risk Disclosure are linked in the footer. (EDIT-ME: link these to your real documents before launch.)",
+    q: "Who can open an account?",
+    a: "Opening an account requires that you are of legal age (at least 18) and have full legal capacity. Users from or residing in Ukraine, Iran, Israel and Afghanistan may not open or use accounts; SAFunded may extend this list for legal or regulatory reasons.",
+  },
+  {
+    q: "Who operates SAFunded, and where can I read the terms and rules?",
+    a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer.",
   },
 ];
 
