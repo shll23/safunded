@@ -46,9 +46,9 @@ export default function DashboardPreview() {
                   <Metric label={t.dashboard.metrics.balance} value="$100,000.00" />
                   <Metric label={t.dashboard.metrics.equity} value="$101,268.40" accent />
                   <Metric label={t.dashboard.metrics.openPl} value="+$652.80" accent />
-                  <Metric label={t.dashboard.metrics.dailyLossLimit} value="placeholder" muted />
-                  <Metric label={t.dashboard.metrics.overallLossLimit} value="placeholder" muted />
-                  <Metric label={t.dashboard.metrics.rewardTarget} value="placeholder" muted />
+                  <Metric label={t.dashboard.metrics.dailyLossLimit} value="5%" muted />
+                  <Metric label={t.dashboard.metrics.overallLossLimit} value="10%" muted />
+                  <Metric label={t.dashboard.metrics.rewardTarget} value="3 days × 1%" muted />
                 </div>
 
                 <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">

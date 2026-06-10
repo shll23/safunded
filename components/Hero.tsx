@@ -84,8 +84,8 @@ function HeroMockup() {
         <div className="mt-5 grid grid-cols-2 gap-3">
           <Stat label={t.hero.mock.balance} value="$50,000.00" />
           <Stat label={t.hero.mock.equity} value="$50,840.20" accent />
-          <Stat label={t.hero.mock.dailyLossLimit} value="placeholder" muted />
-          <Stat label={t.hero.mock.overallLossLimit} value="placeholder" muted />
+          <Stat label={t.hero.mock.dailyLossLimit} value="5%" muted />
+          <Stat label={t.hero.mock.overallLossLimit} value="10%" muted />
         </div>
 
         <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">
