@@ -2,9 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Frischt die Supabase-Session bei jeder Anfrage auf und schützt den
- * /dashboard-Bereich. Nicht eingeloggte Besucher werden zur Anmeldung
- * (/login) umgeleitet.
+ * Frischt die Supabase-Session bei jeder Anfrage auf und schützt die
+ * angemeldeten Bereiche (/dashboard und /checkout). Nicht eingeloggte Besucher
+ * werden zur Anmeldung (/login) umgeleitet.
  *
  * Wird aus der Root-Datei middleware.ts heraus aufgerufen.
  */
@@ -39,11 +39,19 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Geschützter Bereich: /dashboard nur für eingeloggte Nutzer.
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+  // Geschützte Bereiche: /dashboard und /checkout nur für eingeloggte Nutzer.
+  const { pathname } = request.nextUrl;
+  const isProtected =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/checkout");
+  if (!user && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("redirectedFrom", request.nextUrl.pathname);
+    // Pfad inkl. Query (z. B. ?plan=50k) erhalten, damit der Nutzer nach der
+    // Anmeldung direkt zum gewünschten Schritt zurückgeführt wird.
+    url.searchParams.set(
+      "redirectedFrom",
+      pathname + (request.nextUrl.search || "")
+    );
     return NextResponse.redirect(url);
   }
 

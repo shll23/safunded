@@ -67,12 +67,21 @@ export default async function DashboardPage() {
               : ""}
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="/#accounts"
-              className="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
-            >
-              Konten ansehen
-            </a>
+            {selectedPlan ? (
+              <a
+                href={`/checkout?plan=${encodeURIComponent(selectedPlan)}`}
+                className="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
+              >
+                Kauf abschließen
+              </a>
+            ) : (
+              <a
+                href="/#accounts"
+                className="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
+              >
+                Konten ansehen
+              </a>
+            )}
             <a
               href="/#how-it-works"
               className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"

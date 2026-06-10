@@ -161,6 +161,7 @@ export interface Dictionary {
   };
   footer: {
     desc: string;
+    legalHeading: string;
     links: { terms: string; privacy: string; risk: string; contact: string; faq: string };
     copyright: string;
     simulatedNote: string;
@@ -390,6 +391,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     footer: {
       desc: "SAFunded offers Instant Funded simulated trading accounts for disciplined traders, with transparent rules and performance-based reward eligibility.",
+      legalHeading: "Legal",
       links: {
         terms: "Terms & Conditions",
         privacy: "Privacy Policy",
@@ -628,6 +630,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     footer: {
       desc: "SAFunded bietet disziplinierten Tradern Instant-Funded-Konten für simuliertes Trading — mit transparenten Regeln und Berechtigung für leistungsbasierte Belohnungen.",
+      legalHeading: "Rechtliches",
       links: {
         terms: "AGB",
         privacy: "Datenschutzerklärung",
