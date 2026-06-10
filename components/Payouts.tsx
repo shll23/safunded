@@ -1,16 +1,15 @@
 "use client";
 
-import { payoutInfo } from "@/lib/plans";
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
 
 export default function Payouts() {
   const t = useT();
   const values = [
-    payoutInfo.profitSplit,
-    payoutInfo.payoutCycle,
-    payoutInfo.reviewProcess,
-    payoutInfo.firstPayoutWindow,
+    t.payouts.values.profitSplit,
+    t.payouts.values.payoutCycle,
+    t.payouts.values.reviewProcess,
+    t.payouts.values.firstPayoutWindow,
   ];
 
   return (

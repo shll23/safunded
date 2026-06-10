@@ -11,6 +11,8 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@supabase/ssr@0.12",
+        "npm:@supabase/supabase-js@^2.108.1",
         "npm:@types/node@20.14.10",
         "npm:@types/react-dom@18.3.0",
         "npm:@types/react@18.3.3",

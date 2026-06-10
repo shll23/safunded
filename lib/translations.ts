@@ -75,6 +75,14 @@ export interface Dictionary {
       minTradingDays: string;
       payoutCycle: string;
     };
+    /** Localized display values for the rows above (shared across plans) */
+    values: {
+      profitSplit: string;
+      maxDailyLoss: string;
+      maxOverallLoss: string;
+      minTradingDays: string;
+      payoutCycle: string;
+    };
     oneTimeFee: string;
     exclTaxes: string;
     note: string;
@@ -94,6 +102,13 @@ export interface Dictionary {
     title: string;
     sub: string;
     cards: { title: string; desc: string }[];
+    /** Localized headline value for each card, same order as `cards` */
+    values: {
+      profitSplit: string;
+      payoutCycle: string;
+      reviewProcess: string;
+      firstPayoutWindow: string;
+    };
     disclaimer: string;
   };
   dashboard: {
@@ -110,6 +125,8 @@ export interface Dictionary {
       overallLossLimit: string;
       rewardTarget: string;
     };
+    /** Localized demo value for the reward-target metric */
+    rewardTargetValue: string;
     equityCurve: string;
     recentTrades: string;
     recentTradesNote: string;
@@ -250,6 +267,13 @@ export const translations: Record<Language, Dictionary> = {
         minTradingDays: "Min. trading days",
         payoutCycle: "Payout cycle",
       },
+      values: {
+        profitSplit: "up to 80%",
+        maxDailyLoss: "5%",
+        maxOverallLoss: "10%",
+        minTradingDays: "3 days",
+        payoutCycle: "2 weeks",
+      },
       oneTimeFee: "One-time fee",
       exclTaxes: "excl. taxes",
       note: "All accounts operate in a simulated trading environment unless explicitly stated otherwise. Prices, splits and risk limits shown are placeholders — confirm final values before launch. Payouts are not guaranteed and are subject to the Terms & Conditions.",
@@ -285,6 +309,12 @@ export const translations: Record<Language, Dictionary> = {
         { title: "Review process", desc: "Each request goes through a compliance review against the trading rules before approval." },
         { title: "First reward window", desc: "The earliest point at which an account may request its first reward." },
       ],
+      values: {
+        profitSplit: "up to 80%",
+        payoutCycle: "2 weeks",
+        reviewProcess: "24h",
+        firstPayoutWindow: "14 days after first trade",
+      },
       disclaimer:
         "Payout eligibility is subject to compliance with SAFunded’s trading rules and the applicable Terms & Conditions. Payouts are not guaranteed, there is no guaranteed income, and all rewards are subject to eligibility requirements. Trading involves risk.",
     },
@@ -302,6 +332,7 @@ export const translations: Record<Language, Dictionary> = {
         overallLossLimit: "Overall loss limit",
         rewardTarget: "Reward target",
       },
+      rewardTargetValue: "3 days × 1%",
       equityCurve: "Equity curve (illustrative)",
       recentTrades: "Recent trades",
       recentTradesNote: "Recent trades placeholder.",
@@ -474,6 +505,13 @@ export const translations: Record<Language, Dictionary> = {
         minTradingDays: "Min. Trading-Tage",
         payoutCycle: "Auszahlungszyklus",
       },
+      values: {
+        profitSplit: "bis zu 80 %",
+        maxDailyLoss: "5 %",
+        maxOverallLoss: "10 %",
+        minTradingDays: "3 Tage",
+        payoutCycle: "2 Wochen",
+      },
       oneTimeFee: "Einmalige Gebühr",
       exclTaxes: "zzgl. Steuern",
       note: "Alle Konten arbeiten in einer simulierten Trading-Umgebung, sofern nicht ausdrücklich anders angegeben. Angezeigte Preise, Beteiligungen und Risikolimits sind Platzhalter — endgültige Werte vor dem Launch bestätigen. Auszahlungen sind nicht garantiert und unterliegen den AGB.",
@@ -509,6 +547,12 @@ export const translations: Record<Language, Dictionary> = {
         { title: "Prüfprozess", desc: "Jeder Antrag durchläuft vor der Genehmigung eine Compliance-Prüfung anhand der Trading-Regeln." },
         { title: "Erstes Belohnungsfenster", desc: "Der früheste Zeitpunkt, zu dem ein Konto seine erste Belohnung beantragen kann." },
       ],
+      values: {
+        profitSplit: "bis zu 80 %",
+        payoutCycle: "2 Wochen",
+        reviewProcess: "24 Std.",
+        firstPayoutWindow: "14 Tage nach dem ersten Trade",
+      },
       disclaimer:
         "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Belohnungen unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
     },
@@ -526,6 +570,7 @@ export const translations: Record<Language, Dictionary> = {
         overallLossLimit: "Gesamtverlustlimit",
         rewardTarget: "Belohnungsziel",
       },
+      rewardTargetValue: "3 Tage × 1 %",
       equityCurve: "Eigenkapitalkurve (beispielhaft)",
       recentTrades: "Letzte Trades",
       recentTradesNote: "Platzhalter für letzte Trades.",

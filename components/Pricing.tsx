@@ -52,11 +52,11 @@ export default function Pricing() {
                 </div>
 
                 <dl className="mt-6 space-y-2.5 border-t border-white/[0.07] pt-6 text-sm">
-                  <Row label={t.pricing.rows.profitSplit} value={plan.profitSplit} accent />
-                  <Row label={t.pricing.rows.maxDailyLoss} value={plan.maxDailyLoss} />
-                  <Row label={t.pricing.rows.maxOverallLoss} value={plan.maxOverallLoss} />
-                  <Row label={t.pricing.rows.minTradingDays} value={plan.minTradingDays} />
-                  <Row label={t.pricing.rows.payoutCycle} value={plan.payoutCycle} />
+                  <Row label={t.pricing.rows.profitSplit} value={t.pricing.values.profitSplit} accent />
+                  <Row label={t.pricing.rows.maxDailyLoss} value={t.pricing.values.maxDailyLoss} />
+                  <Row label={t.pricing.rows.maxOverallLoss} value={t.pricing.values.maxOverallLoss} />
+                  <Row label={t.pricing.rows.minTradingDays} value={t.pricing.values.minTradingDays} />
+                  <Row label={t.pricing.rows.payoutCycle} value={t.pricing.values.payoutCycle} />
                 </dl>
 
                 <div className="mt-6 flex items-end justify-between">
