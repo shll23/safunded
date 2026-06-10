@@ -37,15 +37,7 @@ export default function Testimonials() {
         <SectionHeading
           eyebrow={t.reviews.eyebrow}
           title={t.reviews.title}
-          sub={t.reviews.sub}
         />
-
-        {/* Sample-content disclaimer — these are NOT real reviews. */}
-        <div className="mx-auto mt-10 max-w-3xl rounded-xl border border-dashed border-white/15 bg-white/[0.015] px-5 py-3 text-center">
-          <p className="text-xs leading-relaxed text-faint">
-            {t.reviews.sampleDisclaimer}
-          </p>
-        </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t) => (
