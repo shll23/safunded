@@ -28,6 +28,30 @@ export interface Dictionary {
     cta: string;
     menu: string;
   };
+  /** Slim launch-sale strip pinned above the header. */
+  announcement: {
+    badge: string;
+    text: string;
+    cta: string;
+    dismiss: string;
+  };
+  /** Promo / discount-code banner shown above the pricing grid. */
+  promo: {
+    badge: string;
+    headline: string;
+    codeLabel: string;
+    code: string;
+    copy: string;
+    copied: string;
+  };
+  /** Compact Trustpilot rating badge (social proof). */
+  trustpilot: {
+    rated: string;
+    score: string;
+    outOf: string;
+    brand: string;
+    count: string;
+  };
   hero: {
     badge: string;
     titleLead: string;
@@ -224,6 +248,27 @@ export const translations: Record<Language, Dictionary> = {
       },
       cta: "Get Funded",
       menu: "Toggle menu",
+    },
+    announcement: {
+      badge: "Limited time",
+      text: "Launch Sale — 35% off all programs + new Instant Funding launch",
+      cta: "Start now",
+      dismiss: "Dismiss announcement",
+    },
+    promo: {
+      badge: "Limited time",
+      headline: "35% off all challenges",
+      codeLabel: "Code",
+      code: "LAUNCH35",
+      copy: "Copy code",
+      copied: "Copied!",
+    },
+    trustpilot: {
+      rated: "Excellent",
+      score: "4.8",
+      outOf: "out of 5",
+      brand: "Trustpilot",
+      count: "127 traders",
     },
     hero: {
       badge: "Instant Funded Accounts — now available",
@@ -493,6 +538,27 @@ export const translations: Record<Language, Dictionary> = {
       },
       cta: "Konto erhalten",
       menu: "Menü umschalten",
+    },
+    announcement: {
+      badge: "Zeitlich begrenzt",
+      text: "Launch Sale — 35 % Rabatt auf alle Programme + neuer Instant-Funding-Launch",
+      cta: "Jetzt starten",
+      dismiss: "Hinweis schließen",
+    },
+    promo: {
+      badge: "Zeitlich begrenzt",
+      headline: "35 % Rabatt auf alle Challenges",
+      codeLabel: "Code",
+      code: "LAUNCH35",
+      copy: "Code kopieren",
+      copied: "Kopiert!",
+    },
+    trustpilot: {
+      rated: "Hervorragend",
+      score: "4,8",
+      outOf: "von 5",
+      brand: "Trustpilot",
+      count: "127 Trader",
     },
     hero: {
       badge: "Instant-Funded-Konten — jetzt verfügbar",

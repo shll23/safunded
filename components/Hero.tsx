@@ -1,6 +1,7 @@
 "use client";
 
 import CheckoutButton from "./CheckoutButton";
+import TrustpilotBadge from "./TrustpilotBadge";
 import { useT } from "@/lib/i18n";
 
 export default function Hero() {
@@ -54,6 +55,8 @@ export default function Hero() {
               </li>
             ))}
           </ul>
+
+          <TrustpilotBadge className="mt-8" />
         </div>
 
         {/* Hero mockup */}
