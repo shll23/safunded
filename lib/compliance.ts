@@ -32,6 +32,12 @@ export interface AccountState {
   accountId?: string;
   /** ISO 8601 timestamp of when the account was activated. */
   activatedAt?: string;
+  /**
+   * Formatted amount the customer actually paid, e.g. "299,00 €". This is the
+   * session's `amount_total` (after any promotion/discount code), not the list
+   * price, so a discounted purchase is represented correctly.
+   */
+  amountPaid?: string;
 }
 
 /** Reads the active-account state from a Supabase user's metadata. */
@@ -47,6 +53,7 @@ export function readAccountState(
     accountSize: str(m.account_size),
     accountId: str(m.account_id),
     activatedAt: str(m.account_activated_at),
+    amountPaid: str(m.account_amount_paid),
   };
 }
 
@@ -132,6 +139,8 @@ export async function markAccountActive(
     accountSize?: string;
     accountId: string;
     activatedAt: string;
+    /** Formatted amount actually paid (session `amount_total`), if known. */
+    amountPaid?: string;
   }
 ): Promise<void> {
   const { error } = await admin.auth.admin.updateUserById(userId, {
@@ -142,6 +151,7 @@ export async function markAccountActive(
       account_size: opts.accountSize,
       account_id: opts.accountId,
       account_activated_at: opts.activatedAt,
+      account_amount_paid: opts.amountPaid,
     },
   });
 

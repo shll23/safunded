@@ -109,6 +109,11 @@ export async function POST(req: Request) {
       customer_email: user.email ?? undefined,
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan.id}`,
       cancel_url: `${appUrl}/cancel?plan=${plan.id}`,
+      // Let customers redeem a discount/promotion code on the Stripe-hosted
+      // checkout page. The session's `amount_total` then reflects the actually
+      // paid (discounted) amount, which is what the confirmation e-mail and the
+      // dashboard surface. Works identically in test and live mode.
+      allow_promotion_codes: true,
       metadata: {
         planId: plan.id,
         planName: plan.name,

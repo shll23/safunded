@@ -119,6 +119,9 @@ export async function POST(req: Request) {
         accountSize: metadata.simulatedCapital ?? plan?.simulatedCapital,
         accountId: userId,
         activatedAt: new Date().toISOString(),
+        // Persist the actually paid amount (amount_total, after any promotion
+        // code) so the dashboard mirrors the e-mail rather than the list price.
+        amountPaid: price,
       });
     }
 
