@@ -4,6 +4,7 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
+import { useLanguage } from "@/lib/i18n";
 import { getPlan } from "@/lib/plans";
 
 const checkboxClass =
@@ -12,6 +13,11 @@ const checkboxClass =
 const legalLinkClass = "text-accent underline-offset-2 hover:underline";
 
 function CheckoutInner() {
+  const { t, lang } = useLanguage();
+  const c = t.checkout;
+  // Legal links follow the active language (German "/<slug>", English "/en/<slug>").
+  const legalHref = (slug: string) => (lang === "en" ? `/en/${slug}` : `/${slug}`);
+
   const searchParams = useSearchParams();
   const planId = searchParams.get("plan");
   const plan = planId ? getPlan(planId) : undefined;
@@ -27,17 +33,14 @@ function CheckoutInner() {
     return (
       <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 text-center sm:p-10">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
-          Kein Konto ausgewählt
+          {c.noPlan.title}
         </h1>
-        <p className="mt-3 text-sm text-muted">
-          Bitte wähle zuerst eine Kontogröße aus, um mit dem Checkout
-          fortzufahren.
-        </p>
+        <p className="mt-3 text-sm text-muted">{c.noPlan.desc}</p>
         <Link
           href="/#accounts"
           className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
         >
-          Konten ansehen
+          {c.noPlan.cta}
         </Link>
       </div>
     );
@@ -70,14 +73,14 @@ function CheckoutInner() {
 
       const data = await res.json();
       if (!res.ok || !data.url) {
-        setError(data.error ?? "Checkout konnte nicht gestartet werden.");
+        setError(data.error ?? c.couldNotStart);
         setLoading(null);
         return;
       }
 
       window.location.href = data.url as string;
     } catch {
-      setError("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
+      setError(c.genericError);
       setLoading(null);
     }
   }
@@ -85,12 +88,9 @@ function CheckoutInner() {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 sm:p-10">
       <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
-        Checkout
+        {c.title}
       </h1>
-      <p className="mt-2 text-sm text-muted">
-        Schließe deinen Kauf ab. Es handelt sich um eine digitale Dienstleistung
-        mit simuliertem Trading.
-      </p>
+      <p className="mt-2 text-sm text-muted">{c.subtitle}</p>
 
       {/* Konto-Zusammenfassung */}
       <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/[0.06] p-5">
@@ -102,7 +102,7 @@ function CheckoutInner() {
         </div>
         <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
           <span className="text-xs uppercase tracking-wide text-faint">
-            Einmalige Gebühr
+            {c.oneTimeFee}
           </span>
           <span className="font-display text-xl font-semibold text-white">
             {plan.price}
@@ -110,7 +110,7 @@ function CheckoutInner() {
         </div>
       </div>
 
-      {/* Pflicht-Zustimmungen */}
+      {/* Pflicht-Zustimmungen / mandatory consents */}
       <div className="mt-7 space-y-4">
         <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <input
@@ -120,27 +120,27 @@ function CheckoutInner() {
             onChange={(e) => setAcceptedTerms(e.target.checked)}
           />
           <span className="text-sm leading-relaxed text-muted">
-            Ich habe die{" "}
-            <Link href="/agb" target="_blank" className={legalLinkClass}>
-              AGB
+            {c.consentTerms.pre}
+            <Link href={legalHref("agb")} target="_blank" className={legalLinkClass}>
+              {c.consentTerms.agb}
             </Link>
-            , die{" "}
+            {c.consentTerms.mid1}
             <Link
-              href="/risikohinweise"
+              href={legalHref("risikohinweise")}
               target="_blank"
               className={legalLinkClass}
             >
-              Risikohinweise
-            </Link>{" "}
-            und die{" "}
+              {c.consentTerms.risk}
+            </Link>
+            {c.consentTerms.mid2}
             <Link
-              href="/refund-policy"
+              href={legalHref("refund-policy")}
               target="_blank"
               className={legalLinkClass}
             >
-              Refund Policy
-            </Link>{" "}
-            gelesen und akzeptiere sie.
+              {c.consentTerms.refund}
+            </Link>
+            {c.consentTerms.post}
           </span>
         </label>
 
@@ -152,12 +152,11 @@ function CheckoutInner() {
             onChange={(e) => setAcceptedImmediate(e.target.checked)}
           />
           <span className="text-sm leading-relaxed text-muted">
-            Ich verlange ausdrücklich, dass SAFunded mit der Bereitstellung der
-            digitalen Leistung sofort beginnt. Mir ist bekannt, dass mein{" "}
-            <Link href="/widerruf" target="_blank" className={legalLinkClass}>
-              Widerrufsrecht
-            </Link>{" "}
-            mit vollständiger Vertragserfüllung erlischt.
+            {c.consentImmediate.pre}
+            <Link href={legalHref("widerruf")} target="_blank" className={legalLinkClass}>
+              {c.consentImmediate.withdrawal}
+            </Link>
+            {c.consentImmediate.post}
           </span>
         </label>
       </div>
@@ -177,9 +176,7 @@ function CheckoutInner() {
           aria-busy={loading === "stripe"}
           className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
         >
-          {loading === "stripe"
-            ? "Weiterleitung zu Stripe …"
-            : "Mit Karte bezahlen (Stripe)"}
+          {loading === "stripe" ? c.payStripeLoading : c.payStripe}
         </button>
         <button
           type="button"
@@ -188,18 +185,21 @@ function CheckoutInner() {
           aria-busy={loading === "confirmo"}
           className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading === "confirmo"
-            ? "Weiterleitung zu Confirmo …"
-            : "Mit Krypto bezahlen (Confirmo)"}
+          {loading === "confirmo" ? c.payConfirmoLoading : c.payConfirmo}
         </button>
       </div>
 
       {!bothAccepted && (
-        <p className="mt-3 text-center text-xs text-faint">
-          Bitte bestätige beide Punkte, um die Zahlung freizuschalten.
-        </p>
+        <p className="mt-3 text-center text-xs text-faint">{c.acceptHint}</p>
       )}
     </div>
+  );
+}
+
+function CheckoutFootnote() {
+  const { t } = useLanguage();
+  return (
+    <p className="mt-6 text-center text-xs text-faint">{t.checkout.footnote}</p>
   );
 }
 
@@ -214,10 +214,7 @@ export default function CheckoutPage() {
         <Suspense fallback={null}>
           <CheckoutInner />
         </Suspense>
-        <p className="mt-6 text-center text-xs text-faint">
-          Zahlungen werden über Stripe (Karte) und Confirmo (Krypto)
-          abgewickelt. Trading ist mit Risiken verbunden.
-        </p>
+        <CheckoutFootnote />
       </div>
     </main>
   );

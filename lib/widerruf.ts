@@ -161,6 +161,146 @@ export const WIDERRUF_BLOCKS: WiderrufBlock[] = [
   },
 ];
 
+/**
+ * ----------------------------------------------------------------------------
+ *  ENGLISH COURTESY TRANSLATION (for the /en/widerruf page only)
+ * ----------------------------------------------------------------------------
+ *  The German Widerrufsbelehrung above is the legally binding version. The
+ *  data below is a 1:1 courtesy translation used solely for display on the
+ *  English legal page. The order-confirmation e-mail keeps using the German
+ *  binding text (widerrufPlainText / widerrufHtml).
+ */
+
+export const WIDERRUF_TITLE_EN = "Right of Withdrawal";
+
+/** English operator / imprint key–value lines. */
+export const WIDERRUF_META_EN: { label: string; value: string }[] = [
+  {
+    label: "Operator",
+    value: "AB Digital Management, represented by Alex Taino Blass",
+  },
+  { label: "Brand / Platform", value: "SAFunded" },
+  { label: "Address", value: "Hauptstraße 6, 72622 Nürtingen, Germany" },
+  { label: "Email", value: "info@safunded.com" },
+  { label: "As of", value: "June 2026" },
+];
+
+const CONTACT_LINES_EN = [
+  "AB Digital Management",
+  "Alex Taino Blass",
+  "Hauptstraße 6",
+  "72622 Nürtingen",
+  "Germany",
+  "Email: info@safunded.com",
+];
+
+/** The complete Right of Withdrawal as ordered content blocks (English). */
+export const WIDERRUF_BLOCKS_EN: WiderrufBlock[] = [
+  {
+    t: "note",
+    text:
+      "Note: This text is a professional preliminary draft based on the statutory model and does not constitute legal advice. It should be reviewed by a person authorised to provide legal advice before use and — depending on whether the service is classified as “digital content” or a “digital service” — adapted accordingly.",
+  },
+  { t: "hr" },
+
+  { t: "h2", text: "Right of Withdrawal" },
+  {
+    t: "p",
+    text:
+      "You have the right to withdraw from this contract within fourteen days without giving any reason.",
+  },
+  {
+    t: "p",
+    text:
+      "The withdrawal period is fourteen days from the day of conclusion of the contract.",
+  },
+  { t: "p", text: "To exercise your right of withdrawal, you must inform us" },
+  { t: "lines", lines: CONTACT_LINES_EN },
+  {
+    t: "p",
+    text:
+      "by means of a clear declaration (e.g. a letter sent by post or an email) of your decision to withdraw from this contract. You may use the model withdrawal form below for this purpose, but it is not mandatory.",
+  },
+  {
+    t: "p",
+    text:
+      "To meet the withdrawal deadline, it is sufficient for you to send your notification concerning the exercise of the right of withdrawal before the withdrawal period has expired.",
+  },
+  { t: "hr" },
+
+  { t: "h2", text: "Consequences of Withdrawal" },
+  {
+    t: "p",
+    text:
+      "If you withdraw from this contract, we shall reimburse to you all payments received from you without undue delay and no later than fourteen days from the day on which we receive notification of your withdrawal from this contract. For this reimbursement, we will use the same means of payment that you used for the original transaction, unless expressly agreed otherwise with you; in no case will you be charged any fees because of this reimbursement.",
+  },
+  {
+    t: "p",
+    text:
+      "If you have requested that the service should begin during the withdrawal period, you shall pay us a reasonable amount corresponding to the proportion of the services already provided up to the point in time at which you notify us of the exercise of the right of withdrawal with regard to this contract compared with the total scope of the services provided for in the contract.",
+  },
+  { t: "hr" },
+
+  { t: "h2", text: "Early Expiry of the Right of Withdrawal" },
+  {
+    t: "p",
+    text:
+      "In the case of a contract for the provision of services, the right of withdrawal expires early if we have provided the service in full and only began performing the service after you gave your express consent and at the same time confirmed your knowledge that you lose your right of withdrawal upon complete performance of the contract by us.",
+  },
+  {
+    t: "p",
+    text:
+      "In the case of the supply of digital content not on a tangible medium, your right of withdrawal also expires if we have begun performing the contract after you have",
+  },
+  {
+    t: "ol",
+    items: [
+      "expressly consented to us beginning the performance of the contract before the expiry of the withdrawal period, and",
+      "confirmed your knowledge that by giving your consent you lose your right of withdrawal upon commencement of the performance of the contract, and",
+      "we have provided you with a confirmation in accordance with § 312f BGB (German Civil Code).",
+    ],
+  },
+  {
+    t: "p",
+    text:
+      "You give this consent and confirmation actively during the order process before completing the purchase.",
+  },
+  { t: "hr" },
+
+  { t: "h2", text: "Model Withdrawal Form" },
+  {
+    t: "p",
+    text:
+      "(If you want to withdraw from the contract, please complete this form and return it.)",
+  },
+  { t: "p", text: "To:" },
+  { t: "lines", lines: CONTACT_LINES_EN },
+  {
+    t: "p",
+    text:
+      "I/we (*) hereby withdraw from the contract concluded by me/us (*) for the provision of the following service:",
+  },
+  { t: "blank" },
+  {
+    t: "fields",
+    items: [
+      "Ordered on (*) / received on (*): ____________________",
+      "Name of consumer(s): ____________________",
+      "Address of consumer(s): ____________________",
+      "Date: ____________________",
+      "Signature of consumer(s) (only for notification on paper): ____________________",
+    ],
+  },
+  { t: "p", text: "(*) Delete as appropriate." },
+  { t: "hr" },
+
+  {
+    t: "footer",
+    text:
+      "End of the withdrawal instructions. Have them reviewed by a lawyer before productive use.",
+  },
+];
+
 /** Escape a string for safe inclusion in HTML. */
 function escapeHtml(s: string): string {
   return s
