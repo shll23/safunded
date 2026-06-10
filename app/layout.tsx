@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
+    <html lang="de" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
       <body className="bg-base font-body text-white antialiased">
         <LanguageProvider>{children}</LanguageProvider>
       </body>

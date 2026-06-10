@@ -40,22 +40,17 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Start from the server-rendered default ("en") to avoid hydration
-  // mismatches, then adopt any stored / browser preference after mount.
-  const [lang, setLangState] = useState<Language>("en");
+  // SAFunded is a German-first product (the whole signed-in area is German),
+  // so German is the default language. We start from the server-rendered
+  // default ("de") to avoid hydration mismatches, then adopt the visitor's
+  // explicitly stored preference (if any) after mount. English is always
+  // reachable via the toggle and is remembered once chosen.
+  const [lang, setLangState] = useState<Language>("de");
 
   useEffect(() => {
-    let initial: Language | null = null;
-
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "en" || stored === "de") {
-      initial = stored;
-    } else if (navigator.language?.toLowerCase().startsWith("de")) {
-      initial = "de";
-    }
-
-    if (initial && initial !== "en") {
-      setLangState(initial);
+      setLangState(stored);
     }
   }, []);
 

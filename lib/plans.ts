@@ -18,11 +18,6 @@ export interface Plan {
   simulatedCapital: string;
   capitalValue: number;
   accountType: string;
-  profitSplit: string;
-  maxDailyLoss: string;
-  maxOverallLoss: string;
-  minTradingDays: string;
-  payoutCycle: string;
   price: string;
   priceValue: number; // used for display only; real charge comes from Stripe Price ID
   priceEnvKey: string; // name of the env var holding the Stripe Price ID
@@ -44,11 +39,6 @@ export const plans: Plan[] = [
     simulatedCapital: "$25,000",
     capitalValue: 25000,
     accountType: "Instant Funded",
-    profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "5%",
-    maxOverallLoss: "10%",
-    minTradingDays: "3 days",
-    payoutCycle: "2 weeks",
     price: "$249", // EDIT-ME display price
     priceValue: 249,
     priceEnvKey: "STRIPE_25K_PRICE_ID",
@@ -65,11 +55,6 @@ export const plans: Plan[] = [
     simulatedCapital: "$50,000",
     capitalValue: 50000,
     accountType: "Instant Funded",
-    profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "5%",
-    maxOverallLoss: "10%",
-    minTradingDays: "3 days",
-    payoutCycle: "2 weeks",
     price: "$399", // EDIT-ME
     priceValue: 399,
     priceEnvKey: "STRIPE_50K_PRICE_ID",
@@ -87,11 +72,6 @@ export const plans: Plan[] = [
     simulatedCapital: "$100,000",
     capitalValue: 100000,
     accountType: "Instant Funded",
-    profitSplit: "up to 80%", // EDIT-ME / LEGAL
-    maxDailyLoss: "5%",
-    maxOverallLoss: "10%",
-    minTradingDays: "3 days",
-    payoutCycle: "2 weeks",
     price: "$699", // EDIT-ME
     priceValue: 699,
     priceEnvKey: "STRIPE_100K_PRICE_ID",
@@ -167,16 +147,6 @@ export const rules: RuleItem[] = [
       "SAFunded applies no consistency rule. Your performance is not capped by single-day or single-trade limits.",
   },
 ];
-
-/**
- * EDIT-ME / LEGAL: Payout / rewards copy.
- */
-export const payoutInfo = {
-  profitSplit: "up to 80%", // EDIT-ME / LEGAL
-  payoutCycle: "2 weeks",
-  reviewProcess: "24h",
-  firstPayoutWindow: "14 days after first trade",
-};
 
 export const faqs: { q: string; a: string }[] = [
   {
