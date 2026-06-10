@@ -1,21 +1,35 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { getPlan } from "@/lib/plans";
+import { createClient } from "@/lib/supabase/server";
+import { isConsentComplete, recordPurchaseConsent } from "@/lib/consent";
 
 /**
  * POST /api/create-checkout-session
- * Body: { planId: "25k" | "50k" | "100k" }
+ * Body: { planId: "25k" | "50k" | "100k", consent: { acceptedTerms, acceptedImmediateProvision } }
  *
  * Flow:
- *  1. Validate planId.
- *  2. Resolve the matching Stripe Price ID from environment variables.
- *  3. Create a Stripe Checkout Session.
- *  4. Return { url } for the client to redirect to.
+ *  1. Require an authenticated customer.
+ *  2. Validate planId.
+ *  3. Require both mandatory consents (AGB/Risk/Refund + immediate provision).
+ *  4. Record the consent (timestamp + terms version) on the Supabase account.
+ *  5. Resolve the matching Stripe Price ID from environment variables.
+ *  6. Create a Stripe Checkout Session, attaching the consent proof to the order.
+ *  7. Return { url } for the client to redirect to.
  */
 export async function POST(req: Request) {
   try {
+    // --- Require authentication --------------------------------------------
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
+    }
+
     // --- Parse body ---------------------------------------------------------
-    let body: { planId?: string };
+    let body: { planId?: string; consent?: unknown };
     try {
       body = await req.json();
     } catch {
@@ -39,6 +53,26 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // --- Require both mandatory consents ------------------------------------
+    const consent = body.consent as
+      | { acceptedTerms?: boolean; acceptedImmediateProvision?: boolean }
+      | undefined;
+    if (!isConsentComplete(consent)) {
+      return NextResponse.json(
+        {
+          error:
+            "Bitte bestätige die AGB/Risikohinweise/Refund Policy sowie die sofortige Bereitstellung, bevor du fortfährst.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // --- Record consent as a compliance proof (account + order) -------------
+    const { consentAcceptedAt, termsVersion } = await recordPurchaseConsent(
+      supabase,
+      consent!
+    );
 
     // --- Resolve Stripe Price ID --------------------------------------------
     // priceEnvKey maps to one of STRIPE_25K_PRICE_ID / STRIPE_50K_PRICE_ID / STRIPE_100K_PRICE_ID
@@ -70,12 +104,21 @@ export async function POST(req: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
+      // Link the order back to the customer for compliance / fulfilment.
+      client_reference_id: user.id,
+      customer_email: user.email ?? undefined,
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan.id}`,
       cancel_url: `${appUrl}/cancel?plan=${plan.id}`,
       metadata: {
         planId: plan.id,
         planName: plan.name,
         simulatedCapital: plan.simulatedCapital,
+        userId: user.id,
+        // Consent compliance proof stored on the order.
+        consent_accepted_at: consentAcceptedAt,
+        terms_version: termsVersion,
+        consent_accepted_terms: "true",
+        consent_accepted_immediate_provision: "true",
       },
       // EDIT-ME: enable if you want to collect billing address / tax, etc.
       // billing_address_collection: "required",
