@@ -124,8 +124,6 @@ export interface Dictionary {
   reviews: {
     eyebrow: string;
     title: string;
-    sub: string;
-    sampleDisclaimer: string;
     riskNote: string;
   };
   faq: {
@@ -325,9 +323,6 @@ export const translations: Record<Language, Dictionary> = {
     reviews: {
       eyebrow: "What traders say",
       title: "Feedback from the SAFunded community",
-      sub: "Real, consented trader feedback will appear here at launch.",
-      sampleDisclaimer:
-        "Sample layout only — the reviews below are illustrative placeholders, not verified trader feedback. They must be replaced with real, consented reviews before launch. No fabricated reviews will be published.",
       riskNote:
         "Trading involves risk. Individual results are not typical and are not a promise of future performance. Payouts are not guaranteed.",
     },
@@ -552,9 +547,6 @@ export const translations: Record<Language, Dictionary> = {
     reviews: {
       eyebrow: "Was Trader sagen",
       title: "Feedback aus der SAFunded-Community",
-      sub: "Echtes, ausdrücklich freigegebenes Trader-Feedback erscheint hier zum Start.",
-      sampleDisclaimer:
-        "Nur Beispiel-Layout — die untenstehenden Bewertungen sind illustrative Platzhalter, kein verifiziertes Trader-Feedback. Sie müssen vor dem Start durch echte, freigegebene Bewertungen ersetzt werden. Es werden keine erfundenen Bewertungen veröffentlicht.",
       riskNote:
         "Trading ist mit Risiken verbunden. Individuelle Ergebnisse sind nicht typisch und kein Versprechen für zukünftige Leistungen. Auszahlungen sind nicht garantiert.",
     },
