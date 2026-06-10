@@ -50,13 +50,13 @@ export default function SuccessPage() {
             >
               {t.success.backHome}
             </Link>
-            {/* EDIT-ME: point to your real dashboard URL */}
-            <a
-              href="#"
+            {/* Navigates the buyer to their dashboard, where the now-active account is shown. */}
+            <Link
+              href="/dashboard"
               className="inline-flex flex-1 items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
             >
               {t.success.goDashboard}
-            </a>
+            </Link>
           </div>
         </div>
 
