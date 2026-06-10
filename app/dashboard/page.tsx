@@ -102,6 +102,16 @@ export default async function DashboardPage() {
                   </dd>
                 </div>
               ) : null}
+              {account.amountPaid && account.amountPaid !== "—" ? (
+                <div className="bg-ink/40 p-5">
+                  <dt className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
+                    Gezahlter Betrag
+                  </dt>
+                  <dd className="mt-1.5 font-display text-lg font-semibold text-white">
+                    {account.amountPaid}
+                  </dd>
+                </div>
+              ) : null}
               <div className="bg-ink/40 p-5">
                 <dt className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
                   Status

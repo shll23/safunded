@@ -127,6 +127,7 @@ export async function POST(req: Request) {
       accountSize: plan?.simulatedCapital,
       accountId: userId,
       activatedAt: new Date().toISOString(),
+      amountPaid: plan?.price,
     });
 
     const sent = await sendOrderConfirmationEmail({
