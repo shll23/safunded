@@ -12,12 +12,14 @@
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.1",
     "next": "^16.2.7",
+    "nodemailer": "^6.9.14",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "stripe": "16.2.0"
   },
   "devDependencies": {
     "@types/node": "20.14.10",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "10.4.19",
