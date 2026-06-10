@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLanguage, useT } from "@/lib/i18n";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { persistLang, useLanguage, useT } from "@/lib/i18n";
+import { legalLocaleFromPath } from "@/lib/legal";
+import type { Language } from "@/lib/translations";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -98,32 +102,76 @@ export default function Header() {
 }
 
 /**
- * Compact English / German switcher. Shows the language you can switch TO,
- * so the active language stays implicit in the rest of the UI. The choice is
- * persisted and applied instantly via the language context.
+ * Clearly visible "DE | EN" language switcher used in the header, footer,
+ * checkout and on every legal page. German is the default language.
+ *
+ * It is route-aware: on a legal page (German "/<slug>" or English "/en/<slug>")
+ * each segment links to that page's counterpart URL, so every English page has
+ * its own, linkable address and the choice survives via the URL. Everywhere
+ * else (homepage, checkout, …) the segments flip the in-page language instantly
+ * via the language context. Both paths persist the preference (cookie +
+ * localStorage) so it is remembered across pages.
  */
-export function LanguageToggle() {
-  const { lang, toggle, t } = useLanguage();
+export function LanguageToggle({ className = "" }: { className?: string }) {
+  const pathname = usePathname();
+  const { lang: ctxLang, setLang } = useLanguage();
+  const legal = legalLocaleFromPath(pathname);
+
+  // On a legal page the active language is dictated by the route; otherwise by
+  // the language context.
+  const active: Language = legal ? legal.lang : ctxLang;
+
+  const base =
+    "inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.03] p-0.5 text-xs font-semibold";
+  const seg = "rounded-md px-2.5 py-1.5 font-mono tracking-wide transition-all";
+  const on = "bg-accent text-ink";
+  const off = "text-muted hover:text-white";
+
+  function Segment({ code, label }: { code: Language; label: string }) {
+    const isActive = active === code;
+    const cls = `${seg} ${isActive ? on : off}`;
+
+    // Legal pages: link to the counterpart locale route.
+    if (legal) {
+      const href = code === "de" ? `/${legal.slug}` : `/en/${legal.slug}`;
+      return (
+        <Link
+          href={href}
+          aria-current={isActive ? "true" : undefined}
+          onClick={() => persistLang(code)}
+          className={cls}
+        >
+          {label}
+        </Link>
+      );
+    }
+
+    // Everywhere else: flip the in-page language.
+    return (
+      <button
+        type="button"
+        aria-pressed={isActive}
+        onClick={() => setLang(code)}
+        className={cls}
+      >
+        {label}
+      </button>
+    );
+  }
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={t.langToggle.ariaLabel}
-      title={t.langToggle.ariaLabel}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-semibold text-muted transition-all hover:border-white/20 hover:text-white"
+    <div
+      role="group"
+      aria-label="Sprache / Language"
+      className={`${base} ${className}`}
     >
       <GlobeIcon />
-      <span className="font-mono tracking-wide">
-        {lang === "en" ? "EN" : "DE"}
-      </span>
+      <Segment code="de" label="DE" />
       <span className="text-faint" aria-hidden="true">
-        /
+        |
       </span>
-      <span className="font-mono tracking-wide text-accent">
-        {t.langToggle.label}
-      </span>
-    </button>
+      <Segment code="en" label="EN" />
+    </div>
   );
 }
 

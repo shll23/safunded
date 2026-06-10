@@ -1,26 +1,42 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { LEGAL_AS_OF } from "@/lib/legal";
+import { LanguageToggle } from "@/components/Header";
+import { LEGAL_AS_OF, LEGAL_AS_OF_EN, COURTESY_NOTICE_EN } from "@/lib/legal";
+import type { Language } from "@/lib/translations";
 
 /**
  * Shared layout for every legal page. Provides the SAFunded dark theme, a
- * comfortable reading width (~720px), a compact top bar that links back to the
- * homepage, and the global footer (with the full legal navigation).
+ * comfortable reading width (~720px), a compact top bar (with the DE | EN
+ * switcher and a link back to the homepage) and the global footer.
+ *
+ * Pages set `lang` so German originals ("/<slug>") and their English courtesy
+ * translations ("/en/<slug>") render the correct labels. English pages also
+ * show the courtesy-translation notice — the German texts remain the legally
+ * binding versions.
  */
 export function LegalShell({
   title,
   intro,
   showAsOf = true,
+  lang = "de",
   children,
 }: {
   title: string;
   /** Optional short lead paragraph shown under the heading. */
   intro?: string;
-  /** Whether to show the "Stand: <month>" note (hidden e.g. on placeholders). */
+  /** Whether to show the "Stand / As of <month>" note (hidden e.g. on placeholders). */
   showAsOf?: boolean;
+  /** Document language. Defaults to German (the binding original). */
+  lang?: Language;
   children: ReactNode;
 }) {
+  const isEn = lang === "en";
+  const asOf = isEn
+    ? `As of: ${LEGAL_AS_OF_EN}`
+    : `Stand: ${LEGAL_AS_OF}`;
+  const backHome = isEn ? "← Back to home" : "← Zur Startseite";
+
   return (
     <div className="flex min-h-screen flex-col bg-base">
       <header className="border-b border-white/[0.08]">
@@ -33,12 +49,15 @@ export function LegalShell({
               SA<span className="text-accent">Funded</span>
             </span>
           </Link>
-          <Link
-            href="/"
-            className="text-sm text-muted transition-colors hover:text-white"
-          >
-            ← Zur Startseite
-          </Link>
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <Link
+              href="/"
+              className="hidden text-sm text-muted transition-colors hover:text-white sm:inline"
+            >
+              {backHome}
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -46,8 +65,11 @@ export function LegalShell({
         <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
           {title}
         </h1>
-        {showAsOf && (
-          <p className="mt-3 text-sm text-faint">Stand: {LEGAL_AS_OF}</p>
+        {showAsOf && <p className="mt-3 text-sm text-faint">{asOf}</p>}
+        {isEn && (
+          <p className="mt-6 rounded-xl border border-accent/20 bg-accent/[0.06] px-4 py-3 text-sm leading-7 text-muted">
+            {COURTESY_NOTICE_EN}
+          </p>
         )}
         {intro && (
           <p className="mt-6 text-[15px] leading-7 text-muted">{intro}</p>
@@ -55,7 +77,7 @@ export function LegalShell({
         <div className="mt-6">{children}</div>
       </main>
 
-      <Footer />
+      <Footer lang={lang} />
     </div>
   );
 }

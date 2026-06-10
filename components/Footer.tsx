@@ -1,12 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "./Header";
-import { useT } from "@/lib/i18n";
-import { legalLinks, footerDisclaimer } from "@/lib/legal";
+import { Logo, LanguageToggle } from "./Header";
+import { useLanguage } from "@/lib/i18n";
+import { translations, type Language } from "@/lib/translations";
+import { legalLinks, footerDisclaimer, footerDisclaimerEn } from "@/lib/legal";
 
-export default function Footer() {
-  const t = useT();
+/**
+ * Global footer. By default it follows the language context (used on the
+ * marketing homepage and checkout, where language is toggled in-page). On the
+ * locale-routed legal pages, `LegalShell` passes an explicit `lang` so the
+ * footer copy, the legal-link labels and the link targets (German "/<slug>" vs.
+ * English "/en/<slug>") always match the page the visitor is on.
+ */
+export default function Footer({ lang }: { lang?: Language } = {}) {
+  const { lang: ctxLang } = useLanguage();
+  const effective: Language = lang ?? ctxLang;
+  const t = translations[effective];
+  const isEn = effective === "en";
 
   return (
     <footer className="border-t border-white/[0.08] bg-white/[0.01]">
@@ -23,21 +34,24 @@ export default function Footer() {
             >
               info@safunded.com
             </a>
+            <div className="mt-6">
+              <LanguageToggle />
+            </div>
           </div>
 
-          {/* Rechtliches — links to all legal pages */}
+          {/* Rechtliches / Legal — links to all legal pages */}
           <nav aria-label={t.footer.legalHeading} className="lg:max-w-md">
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-faint">
               {t.footer.legalHeading}
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-2">
               {legalLinks.map((l) => (
-                <li key={l.href}>
+                <li key={l.slug}>
                   <Link
-                    href={l.href}
+                    href={isEn ? `/en/${l.slug}` : l.href}
                     className="text-sm text-muted transition-colors hover:text-white"
                   >
-                    {l.label}
+                    {isEn ? l.labelEn : l.label}
                   </Link>
                 </li>
               ))}
@@ -55,7 +69,7 @@ export default function Footer() {
 
         {/* Short legal disclaimer — verbatim website-footer version */}
         <p className="mt-10 border-t border-white/[0.07] pt-6 text-xs leading-relaxed text-faint">
-          {footerDisclaimer}
+          {isEn ? footerDisclaimerEn : footerDisclaimer}
         </p>
 
         <div className="mt-6 flex flex-col gap-3 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">

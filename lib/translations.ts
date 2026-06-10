@@ -170,6 +170,28 @@ export interface Dictionary {
     starting: string;
     genericError: string;
     couldNotStart: string;
+    title: string;
+    subtitle: string;
+    noPlan: { title: string; desc: string; cta: string };
+    oneTimeFee: string;
+    payStripe: string;
+    payStripeLoading: string;
+    payConfirmo: string;
+    payConfirmoLoading: string;
+    acceptHint: string;
+    footnote: string;
+    /** Mandatory consent #1 — AGB / Risk Disclosure / Refund Policy. */
+    consentTerms: {
+      pre: string;
+      agb: string;
+      mid1: string;
+      risk: string;
+      mid2: string;
+      refund: string;
+      post: string;
+    };
+    /** Mandatory consent #2 — immediate provision / loss of withdrawal right. */
+    consentImmediate: { pre: string; withdrawal: string; post: string };
   };
   success: {
     title: string;
@@ -406,6 +428,36 @@ export const translations: Record<Language, Dictionary> = {
       starting: "Starting checkout…",
       genericError: "Something went wrong.",
       couldNotStart: "Could not start checkout.",
+      title: "Checkout",
+      subtitle:
+        "Complete your purchase. This is a digital service involving simulated trading.",
+      noPlan: {
+        title: "No account selected",
+        desc: "Please select an account size first to continue with the checkout.",
+        cta: "View accounts",
+      },
+      oneTimeFee: "One-time fee",
+      payStripe: "Pay by card (Stripe)",
+      payStripeLoading: "Redirecting to Stripe …",
+      payConfirmo: "Pay with crypto (Confirmo)",
+      payConfirmoLoading: "Redirecting to Confirmo …",
+      acceptHint: "Please confirm both items to unlock payment.",
+      footnote:
+        "Payments are processed via Stripe (card) and Confirmo (crypto). Trading involves risk.",
+      consentTerms: {
+        pre: "I have read and accept the ",
+        agb: "Terms & Conditions (AGB)",
+        mid1: ", the ",
+        risk: "Risk Disclosure",
+        mid2: " and the ",
+        refund: "Refund Policy",
+        post: ".",
+      },
+      consentImmediate: {
+        pre: "I expressly request that SAFunded begins providing the digital service immediately. I am aware that my ",
+        withdrawal: "right of withdrawal",
+        post: " expires upon complete performance of the contract.",
+      },
     },
     success: {
       title: "Payment successful",
@@ -645,6 +697,36 @@ export const translations: Record<Language, Dictionary> = {
       starting: "Checkout wird gestartet …",
       genericError: "Etwas ist schiefgelaufen.",
       couldNotStart: "Checkout konnte nicht gestartet werden.",
+      title: "Checkout",
+      subtitle:
+        "Schließe deinen Kauf ab. Es handelt sich um eine digitale Dienstleistung mit simuliertem Trading.",
+      noPlan: {
+        title: "Kein Konto ausgewählt",
+        desc: "Bitte wähle zuerst eine Kontogröße aus, um mit dem Checkout fortzufahren.",
+        cta: "Konten ansehen",
+      },
+      oneTimeFee: "Einmalige Gebühr",
+      payStripe: "Mit Karte bezahlen (Stripe)",
+      payStripeLoading: "Weiterleitung zu Stripe …",
+      payConfirmo: "Mit Krypto bezahlen (Confirmo)",
+      payConfirmoLoading: "Weiterleitung zu Confirmo …",
+      acceptHint: "Bitte bestätige beide Punkte, um die Zahlung freizuschalten.",
+      footnote:
+        "Zahlungen werden über Stripe (Karte) und Confirmo (Krypto) abgewickelt. Trading ist mit Risiken verbunden.",
+      consentTerms: {
+        pre: "Ich habe die ",
+        agb: "AGB",
+        mid1: ", die ",
+        risk: "Risikohinweise",
+        mid2: " und die ",
+        refund: "Refund Policy",
+        post: " gelesen und akzeptiere sie.",
+      },
+      consentImmediate: {
+        pre: "Ich verlange ausdrücklich, dass SAFunded mit der Bereitstellung der digitalen Leistung sofort beginnt. Mir ist bekannt, dass mein ",
+        withdrawal: "Widerrufsrecht",
+        post: " mit vollständiger Vertragserfüllung erlischt.",
+      },
     },
     success: {
       title: "Zahlung erfolgreich",
