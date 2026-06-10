@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { getPlan } from "@/lib/plans";
 import { createAdmin } from "@/lib/supabase/admin";
 import { sendOrderConfirmationEmail } from "@/lib/email";
-import { getAccountCompliance, recordConfirmationSent } from "@/lib/compliance";
+import { getAccountCompliance, recordConfirmationSent, markAccountActive } from "@/lib/compliance";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -118,6 +118,16 @@ export async function POST(req: Request) {
     }
 
     const plan = getPlan(planId);
+
+    // Activate the account for the buyer so the dashboard reflects it. Keyed by
+    // the buyer's Supabase Auth user id (= the id the dashboard queries).
+    await markAccountActive(admin, userId, {
+      planId: plan?.id ?? planId,
+      planName: plan?.name ?? "SAFunded Account",
+      accountSize: plan?.simulatedCapital,
+      accountId: userId,
+      activatedAt: new Date().toISOString(),
+    });
 
     const sent = await sendOrderConfirmationEmail({
       to: account.email,
