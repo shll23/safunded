@@ -257,7 +257,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     promo: {
       badge: "Limited time",
-      headline: "35% off all challenges",
+      headline: "35% off all accounts",
       codeLabel: "Code",
       code: "LAUNCH35",
       copy: "Copy code",
@@ -343,8 +343,8 @@ export const translations: Record<Language, Dictionary> = {
         payoutCycle: "2 weeks",
       },
       oneTimeFee: "One-time fee",
-      exclTaxes: "excl. taxes",
-      note: "All accounts operate in a simulated trading environment unless explicitly stated otherwise. Prices, splits and risk limits shown are placeholders — confirm final values before launch. Payouts are not guaranteed and are subject to the Terms & Conditions.",
+      exclTaxes: "incl. taxes",
+      note: "All accounts operate in a simulated trading environment unless explicitly stated otherwise. Payouts are not guaranteed and are subject to the Terms & Conditions.",
       plans: {
         "25k": { name: "Instant Funded 25K", cta: "Start 25K Account" },
         "50k": { name: "Instant Funded 50K", cta: "Start 50K Account" },
@@ -550,7 +550,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     promo: {
       badge: "Zeitlich begrenzt",
-      headline: "35 % Rabatt auf alle Challenges",
+      headline: "35 % Rabatt auf alle Accounts",
       codeLabel: "Code",
       code: "LAUNCH35",
       copy: "Code kopieren",
@@ -636,8 +636,8 @@ export const translations: Record<Language, Dictionary> = {
         payoutCycle: "2 Wochen",
       },
       oneTimeFee: "Einmalige Gebühr",
-      exclTaxes: "zzgl. Steuern",
-      note: "Alle Konten arbeiten in einer simulierten Trading-Umgebung, sofern nicht ausdrücklich anders angegeben. Angezeigte Preise, Beteiligungen und Risikolimits sind Platzhalter — endgültige Werte vor dem Launch bestätigen. Auszahlungen sind nicht garantiert und unterliegen den AGB.",
+      exclTaxes: "inkl. Steuern",
+      note: "Alle Konten arbeiten in einer simulierten Trading-Umgebung, sofern nicht ausdrücklich anders angegeben. Auszahlungen sind nicht garantiert und unterliegen den AGB.",
       plans: {
         "25k": { name: "Instant Funded 25K", cta: "25K-Konto starten" },
         "50k": { name: "Instant Funded 50K", cta: "50K-Konto starten" },

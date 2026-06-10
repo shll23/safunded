@@ -56,13 +56,6 @@ export type WiderrufBlock =
  * Widerrufsrechts" and the "Muster-Widerrufsformular").
  */
 export const WIDERRUF_BLOCKS: WiderrufBlock[] = [
-  {
-    t: "note",
-    text:
-      "Hinweis: Dieser Text ist eine professionelle Vorarbeit auf Basis des gesetzlichen Musters und stellt keine Rechtsberatung dar. Er sollte vor dem Einsatz von einer zur Rechtsberatung befugten Person geprüft und – je nach Einordnung der Leistung als „digitaler Inhalt” oder „digitale Dienstleistung” – final angepasst werden.",
-  },
-  { t: "hr" },
-
   { t: "h2", text: "Widerrufsrecht" },
   {
     t: "p",
@@ -152,13 +145,6 @@ export const WIDERRUF_BLOCKS: WiderrufBlock[] = [
     ],
   },
   { t: "p", text: "(*) Unzutreffendes streichen." },
-  { t: "hr" },
-
-  {
-    t: "footer",
-    text:
-      "Ende der Widerrufsbelehrung. Vor produktivem Einsatz anwaltlich prüfen lassen.",
-  },
 ];
 
 /**
@@ -196,13 +182,6 @@ const CONTACT_LINES_EN = [
 
 /** The complete Right of Withdrawal as ordered content blocks (English). */
 export const WIDERRUF_BLOCKS_EN: WiderrufBlock[] = [
-  {
-    t: "note",
-    text:
-      "Note: This text is a professional preliminary draft based on the statutory model and does not constitute legal advice. It should be reviewed by a person authorised to provide legal advice before use and — depending on whether the service is classified as “digital content” or a “digital service” — adapted accordingly.",
-  },
-  { t: "hr" },
-
   { t: "h2", text: "Right of Withdrawal" },
   {
     t: "p",
@@ -292,13 +271,6 @@ export const WIDERRUF_BLOCKS_EN: WiderrufBlock[] = [
     ],
   },
   { t: "p", text: "(*) Delete as appropriate." },
-  { t: "hr" },
-
-  {
-    t: "footer",
-    text:
-      "End of the withdrawal instructions. Have them reviewed by a lawyer before productive use.",
-  },
 ];
 
 /** Escape a string for safe inclusion in HTML. */
