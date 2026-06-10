@@ -1,0 +1,31 @@
+# ============================================================================
+#  SAFunded — Netlify configuration
+# ============================================================================
+#  Build settings are auto-detected by the Netlify Next.js runtime, so no
+#  [build] block is needed here.
+
+# ----------------------------------------------------------------------------
+#  Canonical-domain redirects
+# ----------------------------------------------------------------------------
+#  Users sign up on https://safunded.com but Supabase/auth links and shared
+#  links sometimes resolved to the raw production Netlify subdomain. These
+#  permanent (301) redirects funnel the production Netlify hostnames to the
+#  custom domain.
+#
+#  Only the PRODUCTION subdomains are matched here. Because each rule pins a
+#  full scheme + host in `from`, deploy-preview hosts
+#  (deploy-preview-123--safunded.netlify.app) and branch-deploy hosts
+#  (somebranch--safunded.netlify.app) do NOT match and keep working normally.
+# ----------------------------------------------------------------------------
+
+[[redirects]]
+  from = "https://main--safunded.netlify.app/*"
+  to = "https://safunded.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://safunded.netlify.app/*"
+  to = "https://safunded.com/:splat"
+  status = 301
+  force = true
