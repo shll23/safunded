@@ -8,6 +8,33 @@
 
 html {
   scroll-behavior: smooth;
+  /* Offset in-page anchor jumps so headings land below the fixed header
+     (announcement bar + nav) instead of being hidden underneath it. */
+  scroll-padding-top: 6.5rem;
+}
+
+/* Belt-and-braces guard against horizontal overflow on any viewport.
+   `clip` (unlike `hidden`) does not create a scroll container, so it never
+   interferes with sticky/fixed positioning or anchor scrolling. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Inputs/selects/textareas use a 16px base on small screens to stop iOS
+   Safari from auto-zooming when a field gains focus. */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* Consistent, visible keyboard focus ring across interactive elements. */
+:focus-visible {
+  outline: 2px solid #2dd4a7; /* accent */
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {

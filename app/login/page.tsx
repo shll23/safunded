@@ -6,8 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
 import { createClient } from "@/lib/supabase/client";
 
+// `text-base` (16px) keeps iOS Safari from auto-zooming the page when a field
+// is focused.
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint transition-colors focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/40";
+  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-base text-white placeholder:text-faint transition-colors focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/40";
 
 function LoginForm() {
   const router = useRouter();

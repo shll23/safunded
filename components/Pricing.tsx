@@ -26,7 +26,7 @@ export default function Pricing() {
             return (
               <div
                 key={plan.id}
-                className={`relative flex flex-col rounded-2xl border p-7 transition-all ${
+                className={`relative flex h-full flex-col rounded-2xl border p-7 transition-all ${
                   plan.mostPopular
                     ? "border-accent/40 bg-gradient-to-b from-accent/[0.06] to-transparent shadow-glow"
                     : "border-white/[0.08] bg-white/[0.02] hover:border-white/20"
@@ -76,7 +76,9 @@ export default function Pricing() {
                   <p className="mt-1 text-[11px] text-faint">{t.pricing.exclTaxes}</p>
                 </div>
 
-                <div className="mt-6">
+                {/* Pinned to the card bottom so CTAs align across columns of
+                    differing content height. */}
+                <div className="mt-auto pt-6">
                   <CheckoutButton
                     planId={plan.id}
                     label={copy.cta}

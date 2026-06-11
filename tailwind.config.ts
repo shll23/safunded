@@ -17,7 +17,7 @@ const config: Config = {
         "accent-bright": "#37E6B6", // hover
         gold: "#CBA35C", // muted premium gold (secondary accents)
         muted: "#9AA3B8", // secondary text
-        faint: "#6B7488", // tertiary text / hints
+        faint: "#828CA3", // tertiary text / hints (>= 4.5:1 on base for AA)
       },
       fontFamily: {
         body: ["var(--font-body)", "system-ui", "sans-serif"],
