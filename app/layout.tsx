@@ -11,10 +11,9 @@ const display = Space_Grotesk({
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  // EDIT-ME: update title/description for SEO before launch
-  title: "SAFunded — Instant Funded Simulated Trading Accounts",
+  title: "SAFunded — Instant Funded Trading Accounts without a Challenge Phase",
   description:
-    "SAFunded offers Instant Funded simulated trading accounts (25K / 50K / 100K) with transparent rules and performance-based reward eligibility.",
+    "SAFunded offers instant funded MT5 accounts with simulated trading capital — 25K, 50K and 100K with no challenge phase, no consistency rule, an 80% profit split and payout processing within 24h after a successful review.",
 };
 
 export default function RootLayout({

@@ -33,7 +33,7 @@ export interface AccountState {
   /** ISO 8601 timestamp of when the account was activated. */
   activatedAt?: string;
   /**
-   * Formatted amount the customer actually paid, e.g. "299,00 €". This is the
+   * Formatted amount the customer actually paid, e.g. "$259.35". This is the
    * session's `amount_total` (after any promotion/discount code), not the list
    * price, so a discounted purchase is represented correctly.
    */

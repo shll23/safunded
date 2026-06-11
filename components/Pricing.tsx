@@ -62,14 +62,18 @@ export default function Pricing() {
                   <Row label={t.pricing.rows.payoutCycle} value={t.pricing.values.payoutCycle} />
                 </dl>
 
-                <div className="mt-6 flex items-end justify-between">
-                  <div>
-                    <p className="text-xs text-faint">{t.pricing.oneTimeFee}</p>
-                    <p className="font-display text-2xl font-semibold text-white">
-                      {plan.price}
+                <div className="mt-6 border-t border-white/[0.07] pt-5">
+                  <p className="text-xs text-faint">{t.pricing.launchPriceLabel}</p>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <p className="font-display text-3xl font-semibold text-white">
+                      {plan.launchPrice}
                     </p>
+                    <p className="text-sm text-faint line-through">{plan.price}</p>
                   </div>
-                  <p className="text-[11px] text-faint">{t.pricing.exclTaxes}</p>
+                  <p className="mt-1.5 text-[11px] text-accent">
+                    {t.pricing.withCode}
+                  </p>
+                  <p className="mt-1 text-[11px] text-faint">{t.pricing.exclTaxes}</p>
                 </div>
 
                 <div className="mt-6">

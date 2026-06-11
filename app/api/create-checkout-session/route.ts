@@ -54,15 +54,19 @@ export async function POST(req: Request) {
       );
     }
 
-    // --- Require both mandatory consents ------------------------------------
+    // --- Require all mandatory consents -------------------------------------
     const consent = body.consent as
-      | { acceptedTerms?: boolean; acceptedImmediateProvision?: boolean }
+      | {
+          acceptedTerms?: boolean;
+          acceptedImmediateProvision?: boolean;
+          acceptedRisk?: boolean;
+        }
       | undefined;
     if (!isConsentComplete(consent)) {
       return NextResponse.json(
         {
           error:
-            "Bitte bestätige die AGB/Risikohinweise/Refund Policy sowie die sofortige Bereitstellung, bevor du fortfährst.",
+            "Bitte bestätige die rechtlichen Dokumente, die sofortige Bereitstellung sowie die Risikohinweise, bevor du fortfährst.",
         },
         { status: 400 }
       );
@@ -124,10 +128,8 @@ export async function POST(req: Request) {
         terms_version: termsVersion,
         consent_accepted_terms: "true",
         consent_accepted_immediate_provision: "true",
+        consent_accepted_risk: "true",
       },
-      // EDIT-ME: enable if you want to collect billing address / tax, etc.
-      // billing_address_collection: "required",
-      // automatic_tax: { enabled: true },
     });
 
     if (!session.url) {

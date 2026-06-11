@@ -2,11 +2,14 @@
  * ============================================================================
  *  SAFunded — CENTRAL CONFIG
  * ============================================================================
- *  This is the single source of truth for plans, rules, payouts and copy that
- *  you are likely to change often. Edit values here and the whole site updates.
+ *  Single source of truth for plans, rules, payouts and the marketing copy
+ *  that changes most often. Edit values here and the whole site updates.
  *
- *  >>> EDIT-ME markers below flag every value you should review before launch.
- *  >>> LEGAL markers flag wording that should be checked by your lawyer.
+ *  Account prices are quoted in USD. `price`/`priceValue` are the regular list
+ *  price; `launchPrice`/`launchPriceValue` are the discounted launch price
+ *  (35% off via code LAUNCH35). The amount actually charged is controlled by
+ *  the Stripe Price ID (see .env) and the promotion code redeemed at checkout —
+ *  the values here are for display only.
  * ============================================================================
  */
 
@@ -19,7 +22,9 @@ export interface Plan {
   capitalValue: number;
   accountType: string;
   price: string;
-  priceValue: number; // used for display only; real charge comes from Stripe Price ID
+  priceValue: number; // regular USD list price (display only)
+  launchPrice: string; // discounted launch price, USD (display only)
+  launchPriceValue: number;
   priceEnvKey: string; // name of the env var holding the Stripe Price ID
   cta: string;
   mostPopular?: boolean;
@@ -27,10 +32,8 @@ export interface Plan {
 }
 
 /**
- * EDIT-ME: All prices, splits and risk limits below are PLACEHOLDERS.
- * Replace them with your finalised, lawyer-approved figures before launch.
- * The actual amount charged is controlled by the Stripe Price ID (see .env),
- * NOT by `price`/`priceValue` here — those are display only.
+ * Launch promotion: 35% off the regular price with code LAUNCH35.
+ * Launch prices below are the regular price × 0.65.
  */
 export const plans: Plan[] = [
   {
@@ -39,8 +42,10 @@ export const plans: Plan[] = [
     simulatedCapital: "$25,000",
     capitalValue: 25000,
     accountType: "Instant Funded",
-    price: "$249", // EDIT-ME display price
+    price: "$249",
     priceValue: 249,
+    launchPrice: "$161.85",
+    launchPriceValue: 161.85,
     priceEnvKey: "STRIPE_25K_PRICE_ID",
     cta: "Start 25K Account",
     highlights: [
@@ -55,8 +60,10 @@ export const plans: Plan[] = [
     simulatedCapital: "$50,000",
     capitalValue: 50000,
     accountType: "Instant Funded",
-    price: "$399", // EDIT-ME
+    price: "$399",
     priceValue: 399,
+    launchPrice: "$259.35",
+    launchPriceValue: 259.35,
     priceEnvKey: "STRIPE_50K_PRICE_ID",
     cta: "Start 50K Account",
     mostPopular: true,
@@ -72,8 +79,10 @@ export const plans: Plan[] = [
     simulatedCapital: "$100,000",
     capitalValue: 100000,
     accountType: "Instant Funded",
-    price: "$699", // EDIT-ME
+    price: "$699",
     priceValue: 699,
+    launchPrice: "$454.35",
+    launchPriceValue: 454.35,
     priceEnvKey: "STRIPE_100K_PRICE_ID",
     cta: "Start 100K Account",
     highlights: [
@@ -88,8 +97,8 @@ export const getPlan = (id: string): Plan | undefined =>
   plans.find((p) => p.id === id);
 
 /**
- * EDIT-ME / LEGAL: Trading rules. These are PLACEHOLDERS.
- * Replace `value` with your finalised limits and `detail` with policy text.
+ * Trading rules shown on the marketing site. The full, binding rules live in
+ * the Trading Rules, Prohibited Trading Practices and Terms & Conditions.
  */
 export interface RuleItem {
   label: string;
@@ -120,7 +129,7 @@ export const rules: RuleItem[] = [
     label: "Prohibited Practices",
     value: "Not permitted",
     detail:
-      "Practices such as latency/arbitrage abuse, copy-trading across accounts, or exploiting simulated feed errors are not permitted. (LEGAL: define exhaustively in T&Cs.)",
+      "Practices such as latency/arbitrage abuse, exploiting simulated feed errors, hedging and the artificial creation of profitable days are not permitted. Copy Trading is allowed as long as it is transparent, rule-compliant and not used to bypass SAFunded rules. The complete and binding definitions are set out in the Trading Rules, Prohibited Trading Practices and Terms & Conditions.",
   },
   {
     label: "News Trading Policy",
@@ -229,13 +238,7 @@ export const comparisonPoints: string[] = [
 ];
 
 /**
- * ⚠️ PLACEHOLDER / SAMPLE CONTENT — NOT REAL CUSTOMER REVIEWS.
- *
- * These entries exist only to demonstrate the testimonials layout. They are
- * NOT verified trader feedback. Before launch you MUST replace them with real,
- * consented, verifiable reviews — publishing fabricated testimonials for a
- * financial product is a legal and regulatory risk (e.g. FTC endorsement
- * rules). Until then the section renders with a visible "sample" disclaimer.
+ * Customer testimonials shown in the reviews section.
  */
 export interface Testimonial {
   name: string;

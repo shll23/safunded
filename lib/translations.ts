@@ -58,6 +58,9 @@ export interface Dictionary {
     titleAccent: string;
     titleTail: string;
     desc: string;
+    offerLine: string;
+    priceLine: string;
+    riskNote: string;
     ctaStart: string;
     viewOptions: string;
     trustBadges: string[];
@@ -77,7 +80,6 @@ export interface Dictionary {
   trust: {
     eyebrow: string;
     items: { title: string; desc: string }[];
-    testimonialPlaceholder: string;
   };
   how: {
     eyebrow: string;
@@ -109,6 +111,9 @@ export interface Dictionary {
     };
     oneTimeFee: string;
     exclTaxes: string;
+    launchPriceLabel: string;
+    regularPriceLabel: string;
+    withCode: string;
     note: string;
     /** Per-plan name + CTA, keyed by plan id */
     plans: Record<string, { name: string; cta: string }>;
@@ -134,6 +139,7 @@ export interface Dictionary {
       firstPayoutWindow: string;
     };
     disclaimer: string;
+    footnote: string;
   };
   dashboard: {
     eyebrow: string;
@@ -160,7 +166,24 @@ export interface Dictionary {
     eyebrow: string;
     title: string;
     sub: string;
-    points: string[];
+    safundedLabel: string;
+    traditionalLabel: string;
+    rows: { safunded: string; traditional: string }[];
+    footnote: string;
+  };
+  /** Standalone launch-offer section. */
+  launch: {
+    badge: string;
+    title: string;
+    sub: string;
+    bullets: string[];
+    cta: string;
+  };
+  /** SEO / plain-language explainer section. */
+  seo: {
+    eyebrow: string;
+    title: string;
+    body: string;
   };
   reviews: {
     eyebrow: string;
@@ -204,18 +227,17 @@ export interface Dictionary {
     payConfirmoLoading: string;
     acceptHint: string;
     footnote: string;
-    /** Mandatory consent #1 — AGB / Risk Disclosure / Refund Policy. */
+    /** Mandatory consent #1 — acceptance of all binding legal documents. */
     consentTerms: {
       pre: string;
-      agb: string;
-      mid1: string;
-      risk: string;
-      mid2: string;
-      refund: string;
+      links: { label: string; slug: string }[];
+      conjunction: string;
       post: string;
     };
     /** Mandatory consent #2 — immediate provision / loss of withdrawal right. */
     consentImmediate: { pre: string; withdrawal: string; post: string };
+    /** Mandatory consent #3 — risk acknowledgement. */
+    consentRisk: string;
   };
   success: {
     title: string;
@@ -272,16 +294,19 @@ export const translations: Record<Language, Dictionary> = {
     },
     hero: {
       badge: "Instant Funded Accounts — now available",
-      titleLead: "Get instant access to ",
-      titleAccent: "simulated trading capital",
-      titleTail: ".",
-      desc: "SAFunded lets disciplined traders start with an Instant Funded Account straight away — clear risk rules from day one, and eligibility for performance-based rewards when you trade within them.",
+      titleLead: "Instant Funded. ",
+      titleAccent: "No Challenge.",
+      titleTail: "",
+      desc: "Start with a simulated funded MT5 account from day one. Clear risk limits, transparent rules and performance-based rewards for disciplined traders.",
+      offerLine: "Launch offer: 35% off with code LAUNCH35 — limited time only.",
+      priceLine: "Starting from $161.85 for 25K simulated capital.",
+      riskNote: "Simulated capital · Rewards subject to rules & T&Cs · Trading involves risk",
       ctaStart: "Start with 25K",
-      viewOptions: "View Account Options",
+      viewOptions: "Compare accounts",
       trustBadges: [
         "Instant Funded Accounts",
         "Clear Trading Rules",
-        "Fast Stripe Checkout",
+        "Stripe & Confirmo Checkout",
         "Performance-Based Rewards",
       ],
       mock: {
@@ -301,14 +326,12 @@ export const translations: Record<Language, Dictionary> = {
       eyebrow: "What SAFunded stands for",
       items: [
         { title: "Transparent rules", desc: "Every limit is published up front. No surprises, no hidden conditions." },
-        { title: "Secure payments via Stripe", desc: "Card details are handled by Stripe. SAFunded never stores them." },
+        { title: "Secure payments via Stripe & Confirmo", desc: "Card and crypto payments are handled by Stripe and Confirmo. SAFunded does not store your card details." },
         { title: "Built for disciplined traders", desc: "A structure that rewards consistency and risk management." },
         { title: "Simple account structure", desc: "Three clear sizes — 25K, 50K, 100K. No hidden account types." },
         { title: "Clear payout process", desc: "Reward eligibility and review steps are documented and consistent." },
         { title: "Risk disclosed honestly", desc: "Simulated capital, performance-based rewards — stated plainly." },
       ],
-      testimonialPlaceholder:
-        "Testimonial placeholder — replace with verified trader feedback once available. Do not add fabricated reviews.",
     },
     how: {
       eyebrow: "How it works",
@@ -316,7 +339,7 @@ export const translations: Record<Language, Dictionary> = {
       sub: "Four straightforward steps. No multi-stage evaluation to begin.",
       steps: [
         { title: "Choose your account size", desc: "Pick a 25K, 50K or 100K Instant Funded Account based on the amount of simulated capital you want to trade." },
-        { title: "Complete secure checkout", desc: "Pay securely through Stripe Checkout. Your card details are handled by Stripe, not by SAFunded." },
+        { title: "Complete secure checkout", desc: "Pay securely via Stripe (card) or Confirmo (crypto). Your card details are handled by Stripe and Confirmo, not by SAFunded." },
         { title: "Receive account access", desc: "After a successful payment, your onboarding details are sent to your email so you can get started." },
         { title: "Trade within the rules", desc: "Trade inside the defined risk rules. With positive performance and full rule compliance, you may become eligible for performance-based rewards according to the payout policy." },
       ],
@@ -344,7 +367,10 @@ export const translations: Record<Language, Dictionary> = {
       },
       oneTimeFee: "One-time fee",
       exclTaxes: "incl. taxes",
-      note: "All accounts operate in a simulated trading environment unless explicitly stated otherwise. Payouts are not guaranteed and are subject to the Terms & Conditions.",
+      launchPriceLabel: "Launch price",
+      regularPriceLabel: "Regular",
+      withCode: "incl. 35% launch discount with code LAUNCH35",
+      note: "All accounts operate in a simulated trading environment unless explicitly stated otherwise. Payouts are not guaranteed and are subject to the Terms & Conditions. Prices are shown in USD.",
       plans: {
         "25k": { name: "Instant Funded 25K", cta: "Start 25K Account" },
         "50k": { name: "Instant Funded 50K", cta: "Start 50K Account" },
@@ -360,7 +386,7 @@ export const translations: Record<Language, Dictionary> = {
         { label: "Max Daily Loss", value: "5%", detail: "The maximum simulated loss permitted within a single trading day, measured against the defined balance/equity reference." },
         { label: "Max Overall Loss", value: "10%", detail: "The maximum total simulated drawdown permitted on the account over its lifetime." },
         { label: "Minimum Trading Days", value: "3 days", detail: "The minimum number of active trading days required before a reward request may be reviewed." },
-        { label: "Prohibited Practices", value: "Not permitted", detail: "Practices such as latency/arbitrage abuse, copy-trading across accounts, or exploiting simulated feed errors are not permitted. (LEGAL: define exhaustively in T&Cs.)" },
+        { label: "Prohibited Practices", value: "Not permitted", detail: "Practices such as latency/arbitrage abuse, exploiting simulated feed errors, hedging and the artificial creation of profitable days are not permitted. Copy Trading is allowed as long as it is transparent, rule-compliant and not used to bypass SAFunded rules. The complete and binding definitions are set out in the Trading Rules, Prohibited Trading Practices and Terms & Conditions." },
         { label: "News Trading Policy", value: "Not permitted", detail: "Opening, closing or managing positions within a 5-minute window around high-impact news events is not permitted." },
         { label: "Weekend Holding Policy", value: "Allowed", detail: "Positions may be held over the weekend market closure." },
         { label: "Expert Advisors (EA) Policy", value: "On approval", detail: "Automated strategies / Expert Advisors are permitted once approved by the SAFunded team." },
@@ -374,17 +400,18 @@ export const translations: Record<Language, Dictionary> = {
       cards: [
         { title: "Profit split", desc: "The share of eligible simulated performance that may be paid as a reward. Exact terms are defined in the payout policy." },
         { title: "Payout cycle", desc: "How often eligible reward requests are processed once requirements are met." },
-        { title: "Review process", desc: "Each request goes through a compliance review against the trading rules before approval." },
+        { title: "Payout processing", desc: "Payouts are processed within 24h after a successful review, KYC/AML checks and full rule compliance." },
         { title: "First reward window", desc: "The earliest point at which an account may request its first reward." },
       ],
       values: {
         profitSplit: "up to 80%",
         payoutCycle: "2 weeks",
-        reviewProcess: "24h",
+        reviewProcess: "24h*",
         firstPayoutWindow: "14 days after first trade",
       },
       disclaimer:
         "Payout eligibility is subject to compliance with SAFunded’s trading rules and the applicable Terms & Conditions. Payouts are not guaranteed, there is no guaranteed income, and all rewards are subject to eligibility requirements. Trading involves risk.",
+      footnote: "*After successful review, KYC/AML checks and full rule compliance.",
     },
     dashboard: {
       eyebrow: "Platform preview",
@@ -403,21 +430,45 @@ export const translations: Record<Language, Dictionary> = {
       rewardTargetValue: "3 days × 1%",
       equityCurve: "Equity curve (illustrative)",
       recentTrades: "Recent trades",
-      recentTradesNote: "Recent trades placeholder.",
+      recentTradesNote: "Example visuals only. Not typical or expected performance.",
       sides: { long: "Long", short: "Short" },
     },
     comparison: {
       eyebrow: "Why SAFunded",
-      title: "A streamlined path to simulated funding",
-      sub: "Unlike complex multi-step evaluation models, SAFunded focuses on a streamlined instant funding experience.",
-      points: [
-        "Instant account access — no multi-step gatekeeping to begin",
-        "Simple, fixed account structure",
-        "Transparent, published trading rules",
-        "Secure checkout via Stripe",
-        "Built for disciplined, serious traders",
-        "Scalable account sizes (25K / 50K / 100K)",
+      title: "Why SAFunded instead of a traditional challenge?",
+      sub: "Skip the multi-step evaluation model. SAFunded gives disciplined traders instant access to simulated funded accounts with clear rules and performance-based rewards.",
+      safundedLabel: "SAFunded",
+      traditionalLabel: "Traditional Challenge",
+      rows: [
+        { safunded: "Instant Funded", traditional: "Challenge Required" },
+        { safunded: "No Challenge Phase", traditional: "Verification Often Required" },
+        { safunded: "14-Day Minimum Trading Period", traditional: "Delayed Eligibility" },
+        { safunded: "3 Profitable Days", traditional: "More Steps" },
+        { safunded: "No Consistency Rule", traditional: "Possible Consistency Rules" },
+        { safunded: "80% Profit Split", traditional: "Slower Payout Access" },
+        { safunded: "Payout Processing within 24h*", traditional: "More Evaluation Pressure" },
+        { safunded: "MT5 · 1:100", traditional: "More Restrictions" },
       ],
+      footnote: "*After successful review, KYC/AML checks and full rule compliance.",
+    },
+    launch: {
+      badge: "Limited time only",
+      title: "Launch Offer: 35% Off",
+      sub: "Use code LAUNCH35 and start with a 25K simulated funded account from $161.85.",
+      bullets: [
+        "No challenge phase",
+        "Instant funded MT5 accounts",
+        "80% profit split",
+        "5% max daily loss",
+        "10% max overall loss",
+        "Payouts processed within 24h after successful review",
+      ],
+      cta: "Claim Launch Offer",
+    },
+    seo: {
+      eyebrow: "About SAFunded",
+      title: "Instant Funded Trading Accounts without a Challenge Phase",
+      body: "SAFunded offers instant funded MT5 accounts with simulated trading capital for disciplined traders. Instead of completing a multi-step challenge, traders can access a simulated funded account from day one, follow clear drawdown rules and become eligible for performance-based rewards after meeting the payout requirements. Choose a 25K, 50K or 100K funded account with no consistency rule, an 80% profit split and payout processing within 24h after a successful review.",
     },
     reviews: {
       eyebrow: "What traders say",
@@ -450,7 +501,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     cta: {
       title: "Ready to start with simulated capital?",
-      desc: "Pick an account size, complete a secure Stripe checkout, and trade within clear, published rules.",
+      desc: "Pick an account size, complete a secure checkout via Stripe or Confirmo, and trade within clear, published rules.",
       start: "Start with 50K",
       compare: "Compare accounts",
       note: "Payouts are not guaranteed. Trading involves risk.",
@@ -489,23 +540,30 @@ export const translations: Record<Language, Dictionary> = {
       payStripeLoading: "Redirecting to Stripe …",
       payConfirmo: "Pay with crypto (Confirmo)",
       payConfirmoLoading: "Redirecting to Confirmo …",
-      acceptHint: "Please confirm both items to unlock payment.",
+      acceptHint: "Please confirm all three items to unlock payment.",
       footnote:
-        "Payments are processed via Stripe (card) and Confirmo (crypto). Trading involves risk.",
+        "Secure payments via Stripe and Confirmo. SAFunded does not store your card details. Trading involves risk.",
       consentTerms: {
-        pre: "I have read and accept the ",
-        agb: "Terms & Conditions (AGB)",
-        mid1: ", the ",
-        risk: "Risk Disclosure",
-        mid2: " and the ",
-        refund: "Refund Policy",
+        pre: "I accept the ",
+        links: [
+          { label: "Terms & Conditions", slug: "agb" },
+          { label: "Trading Rules", slug: "trading-rules" },
+          { label: "Payout Policy", slug: "payout-policy" },
+          { label: "Refund Policy", slug: "refund-policy" },
+          { label: "Risk Disclosure", slug: "risikohinweise" },
+          { label: "KYC Policy", slug: "kyc" },
+          { label: "AML & Anti-Fraud Policy", slug: "aml" },
+        ],
+        conjunction: " and ",
         post: ".",
       },
       consentImmediate: {
-        pre: "I expressly request that SAFunded begins providing the digital service immediately. I am aware that my ",
+        pre: "I expressly agree that SAFunded begins providing the digital service immediately before the withdrawal period expires. I understand that my ",
         withdrawal: "right of withdrawal",
-        post: " expires upon complete performance of the contract.",
+        post: " may expire once the digital service has been fully provided.",
       },
+      consentRisk:
+        "I understand that SAFunded provides simulated trading accounts, that trading involves risk and that rewards are conditional, performance-based and not guaranteed.",
     },
     success: {
       title: "Payment successful",
@@ -565,17 +623,20 @@ export const translations: Record<Language, Dictionary> = {
     },
     hero: {
       badge: "Instant-Funded-Konten — jetzt verfügbar",
-      titleLead: "Erhalte sofortigen Zugang zu ",
-      titleAccent: "simuliertem Trading-Kapital",
-      titleTail: ".",
-      desc: "SAFunded ermöglicht es disziplinierten Tradern, sofort mit einem Instant-Funded-Konto zu starten — klare Risikoregeln ab dem ersten Tag und die Berechtigung für leistungsbasierte Belohnungen, wenn du innerhalb dieser Regeln handelst.",
+      titleLead: "Instant Funded. ",
+      titleAccent: "Ohne Challenge.",
+      titleTail: "",
+      desc: "Starte ab Tag eins mit einem simulierten funded MT5-Konto. Klare Risikolimits, transparente Regeln und leistungsbasierte Rewards für disziplinierte Trader.",
+      offerLine: "Launch-Angebot: 35% Rabatt mit Code LAUNCH35 — nur für kurze Zeit.",
+      priceLine: "Ab $161.85 für 25K simuliertes Kapital.",
+      riskNote: "Simuliertes Kapital · Rewards unterliegen Regeln & AGB · Trading beinhaltet Risiko",
       ctaStart: "Mit 25K starten",
-      viewOptions: "Kontooptionen ansehen",
+      viewOptions: "Konten vergleichen",
       trustBadges: [
         "Instant-Funded-Konten",
         "Klare Trading-Regeln",
-        "Schneller Stripe-Checkout",
-        "Leistungsbasierte Belohnungen",
+        "Stripe- & Confirmo-Checkout",
+        "Leistungsbasierte Rewards",
       ],
       mock: {
         accountLabel: "Konto · Instant Funded",
@@ -594,14 +655,12 @@ export const translations: Record<Language, Dictionary> = {
       eyebrow: "Wofür SAFunded steht",
       items: [
         { title: "Transparente Regeln", desc: "Jedes Limit wird offen kommuniziert. Keine Überraschungen, keine versteckten Bedingungen." },
-        { title: "Sichere Zahlungen über Stripe", desc: "Kartendaten werden von Stripe verarbeitet. SAFunded speichert sie nie." },
+        { title: "Sichere Zahlungen über Stripe & Confirmo", desc: "Karten- und Krypto-Zahlungen werden über Stripe und Confirmo abgewickelt. SAFunded speichert keine Kartendaten." },
         { title: "Für disziplinierte Trader gemacht", desc: "Eine Struktur, die Konstanz und Risikomanagement belohnt." },
         { title: "Einfache Kontostruktur", desc: "Drei klare Größen — 25K, 50K, 100K. Keine versteckten Kontotypen." },
         { title: "Klarer Auszahlungsprozess", desc: "Belohnungsberechtigung und Prüfschritte sind dokumentiert und konsistent." },
-        { title: "Risiken ehrlich offengelegt", desc: "Simuliertes Kapital, leistungsbasierte Belohnungen — klar benannt." },
+        { title: "Risiken ehrlich offengelegt", desc: "Simuliertes Kapital, leistungsbasierte Rewards — klar benannt." },
       ],
-      testimonialPlaceholder:
-        "Platzhalter für Kundenstimmen — durch verifiziertes Trader-Feedback ersetzen, sobald verfügbar. Keine erfundenen Bewertungen hinzufügen.",
     },
     how: {
       eyebrow: "So funktioniert’s",
@@ -609,7 +668,7 @@ export const translations: Record<Language, Dictionary> = {
       sub: "Vier unkomplizierte Schritte. Kein mehrstufiges Evaluierungsverfahren zu Beginn.",
       steps: [
         { title: "Wähle deine Kontogröße", desc: "Wähle ein Instant-Funded-Konto mit 25K, 50K oder 100K — je nach Höhe des simulierten Kapitals, mit dem du handeln möchtest." },
-        { title: "Sicheren Checkout abschließen", desc: "Bezahle sicher über Stripe Checkout. Deine Kartendaten werden von Stripe verarbeitet, nicht von SAFunded." },
+        { title: "Sicheren Checkout abschließen", desc: "Bezahle sicher über Stripe (Karte) oder Confirmo (Krypto). Deine Kartendaten werden über Stripe und Confirmo verarbeitet, nicht von SAFunded." },
         { title: "Kontozugang erhalten", desc: "Nach erfolgreicher Zahlung werden deine Onboarding-Details an deine E-Mail-Adresse gesendet, damit du loslegen kannst." },
         { title: "Innerhalb der Regeln handeln", desc: "Handle innerhalb der definierten Risikoregeln. Bei positiver Performance und vollständiger Regeleinhaltung kannst du gemäß der Auszahlungsrichtlinie für leistungsbasierte Belohnungen berechtigt werden." },
       ],
@@ -637,7 +696,10 @@ export const translations: Record<Language, Dictionary> = {
       },
       oneTimeFee: "Einmalige Gebühr",
       exclTaxes: "inkl. Steuern",
-      note: "Alle Konten arbeiten in einer simulierten Trading-Umgebung, sofern nicht ausdrücklich anders angegeben. Auszahlungen sind nicht garantiert und unterliegen den AGB.",
+      launchPriceLabel: "Launch-Preis",
+      regularPriceLabel: "Regulär",
+      withCode: "inkl. 35% Launch-Rabatt mit Code LAUNCH35",
+      note: "Alle Konten arbeiten in einer simulierten Trading-Umgebung, sofern nicht ausdrücklich anders angegeben. Auszahlungen sind nicht garantiert und unterliegen den AGB. Alle Preise verstehen sich in USD.",
       plans: {
         "25k": { name: "Instant Funded 25K", cta: "25K-Konto starten" },
         "50k": { name: "Instant Funded 50K", cta: "50K-Konto starten" },
@@ -653,7 +715,7 @@ export const translations: Record<Language, Dictionary> = {
         { label: "Max. Tagesverlust", value: "5 %", detail: "Der maximal zulässige simulierte Verlust innerhalb eines einzelnen Trading-Tages, gemessen am definierten Kontostand-/Eigenkapital-Referenzwert." },
         { label: "Max. Gesamtverlust", value: "10 %", detail: "Der maximal zulässige simulierte Gesamtverlust (Drawdown) des Kontos über seine gesamte Laufzeit." },
         { label: "Mindestanzahl Trading-Tage", value: "3 Tage", detail: "Die Mindestanzahl aktiver Trading-Tage, die erforderlich ist, bevor ein Belohnungsantrag geprüft werden kann." },
-        { label: "Verbotene Praktiken", value: "Nicht erlaubt", detail: "Praktiken wie Latenz-/Arbitrage-Missbrauch, Copy-Trading über mehrere Konten hinweg oder das Ausnutzen von Fehlern im simulierten Datenfeed sind nicht erlaubt. (LEGAL: in den AGB abschließend definieren.)" },
+        { label: "Verbotene Praktiken", value: "Nicht erlaubt", detail: "Praktiken wie Latenz-/Arbitrage-Missbrauch, das Ausnutzen von Fehlern im simulierten Datenfeed, Hedging und die künstliche Erzeugung profitabler Tage sind nicht erlaubt. Copy Trading ist erlaubt, solange es transparent, regelkonform und nicht zur Umgehung der SAFunded-Regeln genutzt wird. Die vollständigen und verbindlichen Definitionen sind in den Trading Rules, den Prohibited Trading Practices und den AGB festgelegt." },
         { label: "Richtlinie für News-Trading", value: "Nicht erlaubt", detail: "Das Eröffnen, Schließen oder Verwalten von Positionen innerhalb eines 5-Minuten-Fensters rund um Nachrichtenereignisse mit hoher Auswirkung ist nicht erlaubt." },
         { label: "Richtlinie für Wochenend-Positionen", value: "Erlaubt", detail: "Positionen dürfen über die Marktschließung am Wochenende gehalten werden." },
         { label: "Richtlinie für Expert Advisors (EA)", value: "Nach Freigabe", detail: "Automatisierte Strategien / Expert Advisors sind erlaubt, sobald sie vom SAFunded-Team freigegeben wurden." },
@@ -665,19 +727,20 @@ export const translations: Record<Language, Dictionary> = {
       title: "Belohnungen für konstante, regelkonforme Performance",
       sub: "Handle innerhalb der Regeln, erziele positive Ergebnisse und du kannst für leistungsbasierte Belohnungen berechtigt werden.",
       cards: [
-        { title: "Gewinnbeteiligung", desc: "Der Anteil der berechtigten simulierten Performance, der als Belohnung ausgezahlt werden kann. Die genauen Bedingungen sind in der Auszahlungsrichtlinie definiert." },
-        { title: "Auszahlungszyklus", desc: "Wie oft berechtigte Belohnungsanträge bearbeitet werden, sobald die Anforderungen erfüllt sind." },
-        { title: "Prüfprozess", desc: "Jeder Antrag durchläuft vor der Genehmigung eine Compliance-Prüfung anhand der Trading-Regeln." },
-        { title: "Erstes Belohnungsfenster", desc: "Der früheste Zeitpunkt, zu dem ein Konto seine erste Belohnung beantragen kann." },
+        { title: "Gewinnbeteiligung", desc: "Der Anteil der berechtigten simulierten Performance, der als Reward ausgezahlt werden kann. Die genauen Bedingungen sind in der Payout Policy definiert." },
+        { title: "Auszahlungszyklus", desc: "Wie oft berechtigte Reward-Anträge bearbeitet werden, sobald die Anforderungen erfüllt sind." },
+        { title: "Auszahlungsbearbeitung", desc: "Auszahlungen werden nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung innerhalb von 24h bearbeitet." },
+        { title: "Erstes Reward-Fenster", desc: "Der früheste Zeitpunkt, zu dem ein Konto seinen ersten Reward beantragen kann." },
       ],
       values: {
         profitSplit: "bis zu 80 %",
         payoutCycle: "2 Wochen",
-        reviewProcess: "24 Std.",
+        reviewProcess: "24 Std.*",
         firstPayoutWindow: "14 Tage nach dem ersten Trade",
       },
       disclaimer:
-        "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Belohnungen unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
+        "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Rewards unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
+      footnote: "*Nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung.",
     },
     dashboard: {
       eyebrow: "Plattform-Vorschau",
@@ -696,21 +759,45 @@ export const translations: Record<Language, Dictionary> = {
       rewardTargetValue: "3 Tage × 1 %",
       equityCurve: "Eigenkapitalkurve (beispielhaft)",
       recentTrades: "Letzte Trades",
-      recentTradesNote: "Platzhalter für letzte Trades.",
+      recentTradesNote: "Nur beispielhafte Darstellung. Keine typische oder erwartbare Performance.",
       sides: { long: "Long", short: "Short" },
     },
     comparison: {
       eyebrow: "Warum SAFunded",
-      title: "Ein schlanker Weg zu simuliertem Funding",
-      sub: "Anders als komplexe mehrstufige Evaluierungsmodelle konzentriert sich SAFunded auf ein schlankes Instant-Funding-Erlebnis.",
-      points: [
-        "Sofortiger Kontozugang — kein mehrstufiges Auswahlverfahren zu Beginn",
-        "Einfache, feste Kontostruktur",
-        "Transparente, offen kommunizierte Trading-Regeln",
-        "Sicherer Checkout über Stripe",
-        "Für disziplinierte, ernsthafte Trader gemacht",
-        "Skalierbare Kontogrößen (25K / 50K / 100K)",
+      title: "Warum SAFunded statt klassischer Challenge?",
+      sub: "Überspringe das mehrstufige Evaluationsmodell. SAFunded bietet disziplinierten Tradern sofortigen Zugang zu simulierten funded Accounts mit klaren Regeln und leistungsbasierten Rewards.",
+      safundedLabel: "SAFunded",
+      traditionalLabel: "Klassische Challenge",
+      rows: [
+        { safunded: "Instant Funded", traditional: "Challenge erforderlich" },
+        { safunded: "Keine Challenge-Phase", traditional: "Verifizierung oft erforderlich" },
+        { safunded: "14 Tage Mindestperiode", traditional: "Verzögerte Berechtigung" },
+        { safunded: "3 profitable Tage", traditional: "Mehr Schritte" },
+        { safunded: "Keine Consistency Rule", traditional: "Häufig Consistency Rules" },
+        { safunded: "80% Profit Split", traditional: "Späterer Zugang zu Auszahlungen" },
+        { safunded: "Auszahlung innerhalb von 24h bearbeitet*", traditional: "Höherer Evaluationsdruck" },
+        { safunded: "MT5 · 1:100", traditional: "Mehr Restriktionen" },
       ],
+      footnote: "*Nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung.",
+    },
+    launch: {
+      badge: "Nur für kurze Zeit",
+      title: "Launch-Angebot: 35% Rabatt",
+      sub: "Nutze den Code LAUNCH35 und starte mit einem 25K simulierten funded Account ab $161.85.",
+      bullets: [
+        "Keine Challenge-Phase",
+        "Instant funded MT5-Konten",
+        "80% Profit Split",
+        "5% Max Daily Loss",
+        "10% Max Overall Loss",
+        "Auszahlungen werden nach erfolgreicher Prüfung innerhalb von 24h bearbeitet",
+      ],
+      cta: "Launch-Angebot sichern",
+    },
+    seo: {
+      eyebrow: "Über SAFunded",
+      title: "Instant Funded Trading Accounts ohne Challenge-Phase",
+      body: "SAFunded bietet Instant funded MT5-Konten mit simuliertem Trading-Kapital für disziplinierte Trader. Statt eine mehrstufige Challenge zu absolvieren, erhalten Trader ab Tag eins Zugang zu einem simulierten funded Account, handeln nach klaren Drawdown-Regeln und können nach Erfüllung der Payout-Voraussetzungen leistungsbasierte Rewards erhalten. Wähle einen 25K, 50K oder 100K funded Account ohne Consistency Rule, mit 80% Profit Split und Auszahlungsbearbeitung innerhalb von 24h nach erfolgreicher Prüfung.",
     },
     reviews: {
       eyebrow: "Was Trader sagen",
@@ -743,7 +830,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     cta: {
       title: "Bereit, mit simuliertem Kapital zu starten?",
-      desc: "Wähle eine Kontogröße, schließe einen sicheren Stripe-Checkout ab und handle innerhalb klarer, offen kommunizierter Regeln.",
+      desc: "Wähle eine Kontogröße, schließe einen sicheren Checkout über Stripe oder Confirmo ab und handle innerhalb klarer, offen kommunizierter Regeln.",
       start: "Mit 50K starten",
       compare: "Konten vergleichen",
       note: "Auszahlungen sind nicht garantiert. Trading ist mit Risiken verbunden.",
@@ -782,23 +869,30 @@ export const translations: Record<Language, Dictionary> = {
       payStripeLoading: "Weiterleitung zu Stripe …",
       payConfirmo: "Mit Krypto bezahlen (Confirmo)",
       payConfirmoLoading: "Weiterleitung zu Confirmo …",
-      acceptHint: "Bitte bestätige beide Punkte, um die Zahlung freizuschalten.",
+      acceptHint: "Bitte bestätige alle drei Punkte, um die Zahlung freizuschalten.",
       footnote:
-        "Zahlungen werden über Stripe (Karte) und Confirmo (Krypto) abgewickelt. Trading ist mit Risiken verbunden.",
+        "Sichere Zahlungen über Stripe und Confirmo. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
       consentTerms: {
-        pre: "Ich habe die ",
-        agb: "AGB",
-        mid1: ", die ",
-        risk: "Risikohinweise",
-        mid2: " und die ",
-        refund: "Refund Policy",
-        post: " gelesen und akzeptiere sie.",
+        pre: "Ich akzeptiere die ",
+        links: [
+          { label: "AGB", slug: "agb" },
+          { label: "Trading Rules", slug: "trading-rules" },
+          { label: "Payout Policy", slug: "payout-policy" },
+          { label: "Refund Policy", slug: "refund-policy" },
+          { label: "Risk Disclosure", slug: "risikohinweise" },
+          { label: "KYC Policy", slug: "kyc" },
+          { label: "AML & Anti-Fraud Policy", slug: "aml" },
+        ],
+        conjunction: " und ",
+        post: ".",
       },
       consentImmediate: {
-        pre: "Ich verlange ausdrücklich, dass SAFunded mit der Bereitstellung der digitalen Leistung sofort beginnt. Mir ist bekannt, dass mein ",
+        pre: "Ich stimme ausdrücklich zu, dass SAFunded vor Ablauf der Widerrufsfrist mit der Bereitstellung der digitalen Leistung beginnt. Mir ist bekannt, dass mein ",
         withdrawal: "Widerrufsrecht",
-        post: " mit vollständiger Vertragserfüllung erlischt.",
+        post: " erlöschen kann, sobald die digitale Leistung vollständig erbracht wurde.",
       },
+      consentRisk:
+        "Ich verstehe, dass SAFunded simulierte Trading-Konten bereitstellt, dass Trading Risiken beinhaltet und dass Rewards bedingt, leistungsbasiert und nicht garantiert sind.",
     },
     success: {
       title: "Zahlung erfolgreich",

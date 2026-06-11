@@ -198,7 +198,6 @@ function GlobeIcon() {
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <a href="#top" className="flex items-center gap-2.5">
-      {/* Logo placeholder — replace with your final mark */}
       <span className="relative grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-accent to-emerald-600 shadow-glow">
         <span className="text-sm font-bold text-ink">SA</span>
       </span>
