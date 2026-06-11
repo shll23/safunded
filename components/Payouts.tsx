@@ -43,6 +43,10 @@ export default function Payouts() {
             {t.payouts.disclaimer}
           </p>
         </div>
+
+        <p className="mx-auto mt-6 max-w-3xl text-center text-xs text-faint">
+          {t.payouts.footnote}
+        </p>
       </div>
     </section>
   );

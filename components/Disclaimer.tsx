@@ -10,7 +10,6 @@ export default function Disclaimer() {
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-faint">
           {t.disclaimer.eyebrow}
         </p>
-        {/* LEGAL: Final wording should be reviewed by your lawyer. */}
         <p className="mt-3 text-xs leading-relaxed text-muted">
           {t.disclaimer.body}
         </p>

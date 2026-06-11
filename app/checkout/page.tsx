@@ -24,10 +24,11 @@ function CheckoutInner() {
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedImmediate, setAcceptedImmediate] = useState(false);
+  const [acceptedRisk, setAcceptedRisk] = useState(false);
   const [loading, setLoading] = useState<"stripe" | "confirmo" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const bothAccepted = acceptedTerms && acceptedImmediate;
+  const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk;
 
   if (!plan) {
     return (
@@ -47,7 +48,7 @@ function CheckoutInner() {
   }
 
   async function pay(provider: "stripe" | "confirmo") {
-    if (!plan || !bothAccepted) return;
+    if (!plan || !allAccepted) return;
     setLoading(provider);
     setError(null);
 
@@ -62,11 +63,12 @@ function CheckoutInner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           planId: plan.id,
-          // Beide Pflicht-Zustimmungen werden serverseitig erneut geprüft und
+          // Alle Pflicht-Zustimmungen werden serverseitig erneut geprüft und
           // mit Zeitstempel + Textversion als Compliance-Nachweis gespeichert.
           consent: {
             acceptedTerms,
             acceptedImmediateProvision: acceptedImmediate,
+            acceptedRisk,
           },
         }),
       });
@@ -104,10 +106,16 @@ function CheckoutInner() {
           <span className="text-xs uppercase tracking-wide text-faint">
             {c.oneTimeFee}
           </span>
-          <span className="font-display text-xl font-semibold text-white">
-            {plan.price}
+          <span className="flex items-baseline gap-2">
+            <span className="font-display text-xl font-semibold text-white">
+              {plan.launchPrice}
+            </span>
+            <span className="text-sm text-faint line-through">{plan.price}</span>
           </span>
         </div>
+        <p className="mt-2 text-right text-[11px] text-accent">
+          {t.pricing.withCode}
+        </p>
       </div>
 
       {/* Pflicht-Zustimmungen / mandatory consents */}
@@ -121,25 +129,22 @@ function CheckoutInner() {
           />
           <span className="text-sm leading-relaxed text-muted">
             {c.consentTerms.pre}
-            <Link href={legalHref("agb")} target="_blank" className={legalLinkClass}>
-              {c.consentTerms.agb}
-            </Link>
-            {c.consentTerms.mid1}
-            <Link
-              href={legalHref("risikohinweise")}
-              target="_blank"
-              className={legalLinkClass}
-            >
-              {c.consentTerms.risk}
-            </Link>
-            {c.consentTerms.mid2}
-            <Link
-              href={legalHref("refund-policy")}
-              target="_blank"
-              className={legalLinkClass}
-            >
-              {c.consentTerms.refund}
-            </Link>
+            {c.consentTerms.links.map((link, i) => {
+              const isLast = i === c.consentTerms.links.length - 1;
+              const isSecondLast = i === c.consentTerms.links.length - 2;
+              return (
+                <span key={link.slug}>
+                  <Link
+                    href={legalHref(link.slug)}
+                    target="_blank"
+                    className={legalLinkClass}
+                  >
+                    {link.label}
+                  </Link>
+                  {isLast ? null : isSecondLast ? c.consentTerms.conjunction : ", "}
+                </span>
+              );
+            })}
             {c.consentTerms.post}
           </span>
         </label>
@@ -159,6 +164,18 @@ function CheckoutInner() {
             {c.consentImmediate.post}
           </span>
         </label>
+
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+          <input
+            type="checkbox"
+            className={checkboxClass}
+            checked={acceptedRisk}
+            onChange={(e) => setAcceptedRisk(e.target.checked)}
+          />
+          <span className="text-sm leading-relaxed text-muted">
+            {c.consentRisk}
+          </span>
+        </label>
       </div>
 
       {error && (
@@ -167,12 +184,12 @@ function CheckoutInner() {
         </p>
       )}
 
-      {/* Bezahl-Buttons — deaktiviert, bis beide Checkboxen aktiv sind */}
+      {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind */}
       <div className="mt-6 space-y-3">
         <button
           type="button"
           onClick={() => pay("stripe")}
-          disabled={!bothAccepted || loading !== null}
+          disabled={!allAccepted || loading !== null}
           aria-busy={loading === "stripe"}
           className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
         >
@@ -181,7 +198,7 @@ function CheckoutInner() {
         <button
           type="button"
           onClick={() => pay("confirmo")}
-          disabled={!bothAccepted || loading !== null}
+          disabled={!allAccepted || loading !== null}
           aria-busy={loading === "confirmo"}
           className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -189,7 +206,7 @@ function CheckoutInner() {
         </button>
       </div>
 
-      {!bothAccepted && (
+      {!allAccepted && (
         <p className="mt-3 text-center text-xs text-faint">{c.acceptHint}</p>
       )}
     </div>

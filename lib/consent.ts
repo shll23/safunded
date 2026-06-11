@@ -2,15 +2,19 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { TERMS_VERSION } from "@/lib/legal";
 
 /**
- * Shape of the consent flags the checkout client submits. Both must be `true`
- * before a purchase may proceed — they map to the two mandatory checkboxes:
- *  - acceptedTerms: AGB + Risikohinweise + Refund Policy gelesen und akzeptiert
- *  - acceptedImmediateProvision: ausdrückliches Verlangen der sofortigen
+ * Shape of the consent flags the checkout client submits. All must be `true`
+ * before a purchase may proceed — they map to the three mandatory checkboxes:
+ *  - acceptedTerms: AGB + Trading Rules + Payout/Refund Policy + Risk
+ *    Disclosure + KYC + AML & Anti-Fraud Policy gelesen und akzeptiert
+ *  - acceptedImmediateProvision: ausdrückliche Zustimmung zur sofortigen
  *    Bereitstellung + Kenntnis des Erlöschens des Widerrufsrechts
+ *  - acceptedRisk: Kenntnisnahme, dass es sich um simulierte Konten handelt,
+ *    Trading mit Risiken verbunden ist und Rewards nicht garantiert sind
  */
 export interface ConsentInput {
   acceptedTerms?: boolean;
   acceptedImmediateProvision?: boolean;
+  acceptedRisk?: boolean;
 }
 
 export interface RecordedConsent {
@@ -20,9 +24,13 @@ export interface RecordedConsent {
   termsVersion: string;
 }
 
-/** Returns true only if both mandatory consents were given. */
+/** Returns true only if all mandatory consents were given. */
 export function isConsentComplete(consent: ConsentInput | undefined): boolean {
-  return Boolean(consent?.acceptedTerms && consent?.acceptedImmediateProvision);
+  return Boolean(
+    consent?.acceptedTerms &&
+      consent?.acceptedImmediateProvision &&
+      consent?.acceptedRisk
+  );
 }
 
 /**
@@ -45,6 +53,7 @@ export async function recordPurchaseConsent(
       consent_accepted_terms: consent.acceptedTerms === true,
       consent_accepted_immediate_provision:
         consent.acceptedImmediateProvision === true,
+      consent_accepted_risk: consent.acceptedRisk === true,
     },
   });
 

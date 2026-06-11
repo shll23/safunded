@@ -7,9 +7,11 @@ import Rules from "@/components/Rules";
 import Payouts from "@/components/Payouts";
 import DashboardPreview from "@/components/DashboardPreview";
 import Comparison from "@/components/Comparison";
+import LaunchOffer from "@/components/LaunchOffer";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
+import SeoSection from "@/components/SeoSection";
 import Disclaimer from "@/components/Disclaimer";
 import Footer from "@/components/Footer";
 
@@ -26,9 +28,11 @@ export default function Page() {
         <Payouts />
         <DashboardPreview />
         <Comparison />
+        <LaunchOffer />
         <Testimonials />
         <FAQ />
         <CTA />
+        <SeoSection />
         <Disclaimer />
       </main>
       <Footer />
