@@ -26,6 +26,7 @@ export interface Dictionary {
   header: {
     nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string };
     cta: string;
+    login: string;
     menu: string;
   };
   /** Slim launch-sale strip pinned above the header. */
@@ -269,6 +270,7 @@ export const translations: Record<Language, Dictionary> = {
         faq: "FAQ",
       },
       cta: "Get Funded",
+      login: "Login",
       menu: "Toggle menu",
     },
     announcement: {
@@ -598,6 +600,7 @@ export const translations: Record<Language, Dictionary> = {
         faq: "FAQ",
       },
       cta: "Konto erhalten",
+      login: "Anmelden",
       menu: "Menü umschalten",
     },
     announcement: {

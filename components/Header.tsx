@@ -56,6 +56,12 @@ export default function Header() {
 
           <div className="hidden items-center gap-3 md:flex">
             <LanguageToggle />
+            <Link
+              href="/login"
+              className="inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-white"
+            >
+              {t.header.login}
+            </Link>
             <a
               href="#accounts"
               className="inline-flex items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
@@ -91,10 +97,17 @@ export default function Header() {
                 {l.label}
               </a>
             ))}
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex items-center justify-center rounded-xl border border-white/15 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5"
+            >
+              {t.header.login}
+            </Link>
             <a
               href="#accounts"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-ink"
+              className="mt-1 inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-ink"
             >
               {t.header.cta}
             </a>
