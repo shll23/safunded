@@ -1,14 +1,15 @@
 "use client";
 /**
- * SAFunded — Kunden-Live-Tracking-Widget v2
+ * SAFunded — Kunden-Live-Tracking-Widget v3
  * ==========================================
- * Neu in v2: Equity-Kurve (14 Tage), Handelsstatistik (Winrate, Profit
- * Factor, ...), Tagesübersicht und Handelshistorie — Daten via
- * /api/tracking/<token>/stats (einmal pro Minute).
- * Live-Teil (Equity, Puffer, Status) aktualisiert weiterhin jede Sekunde.
+ * Neu in v3:
+ *  - Volle Breite + responsives Layout (Mobil & Desktop)
+ *  - Trading-Journal: Monatskalender mit Tages-PnL und Trade-Anzahl
+ *  - Handelshistorie mit "Mehr anzeigen" (alle Trades abrufbar)
+ * Live-Daten weiterhin jede Sekunde, Statistik minütlich.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const C = {
   navyDeep: "#070B16",
@@ -27,6 +28,8 @@ const fmt = (n) =>
   n == null
     ? "–"
     : Number(n).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt0 = (n) =>
+  n == null ? "–" : Number(n).toLocaleString("de-DE", { maximumFractionDigits: 0 });
 
 const STATUS_LABEL = {
   ACTIVE: { txt: "Aktiv", col: C.emerald },
@@ -45,6 +48,12 @@ const EVENT_LABEL = {
   PROFIT_TARGET: "Profit-Ziel erreicht",
 };
 
+const MONTHS = [
+  "Januar", "Februar", "März", "April", "Mai", "Juni",
+  "Juli", "August", "September", "Oktober", "November", "Dezember",
+];
+const WEEKDAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
 const SectionTitle = ({ children }) => (
   <div
     style={{
@@ -53,7 +62,7 @@ const SectionTitle = ({ children }) => (
       fontWeight: 600,
       letterSpacing: ".1em",
       textTransform: "uppercase",
-      margin: "18px 0 10px",
+      margin: "20px 0 10px",
     }}
   >
     {children}
@@ -70,6 +79,8 @@ function Bar({ label, buffer, maxBuffer, limit }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 4,
           fontSize: 12,
           color: C.muted,
           marginBottom: 4,
@@ -99,16 +110,14 @@ function Pill({ value, label }) {
   return (
     <div
       style={{
-        flex: 1,
-        minWidth: 96,
         background: C.surface,
         border: `1px solid ${C.line}`,
         borderRadius: 10,
-        padding: "10px 8px",
+        padding: "12px 8px",
         textAlign: "center",
       }}
     >
-      <b style={{ fontFamily: mono, fontSize: 16, display: "block", color: C.ink }}>{value}</b>
+      <b style={{ fontFamily: mono, fontSize: 17, display: "block", color: C.ink }}>{value}</b>
       <span
         style={{
           fontSize: 10,
@@ -123,11 +132,18 @@ function Pill({ value, label }) {
   );
 }
 
-/** Equity-Kurve als pures SVG (keine Chart-Library noetig). */
+/** Grid, das sich automatisch an die Breite anpasst (Desktop mehrspaltig, mobil 2 Spalten). */
+const autoGrid = (min) => ({
+  display: "grid",
+  gridTemplateColumns: `repeat(auto-fit, minmax(${min}px, 1fr))`,
+  gap: 10,
+});
+
+/** Equity-Kurve als pures SVG. */
 function EquityChart({ curve, accountSize }) {
   if (!curve || curve.length < 2) return null;
-  const W = 600;
-  const H = 150;
+  const W = 1000;
+  const H = 180;
   const PAD = 6;
   const xs = curve.map((p) => p[0]);
   const ys = curve.map((p) => p[1]);
@@ -139,10 +155,11 @@ function EquityChart({ curve, accountSize }) {
   const X = (t) => PAD + ((t - minX) / (maxX - minX || 1)) * (W - 2 * PAD);
   const Y = (v) => H - PAD - ((v - minY) / spanY) * (H - 2 * PAD);
 
-  const line = curve.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
+  const line = curve
+    .map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`)
+    .join("");
   const area = `${line}L${X(maxX).toFixed(1)},${H - PAD}L${X(minX).toFixed(1)},${H - PAD}Z`;
-  const last = ys[ys.length - 1];
-  const up = last >= ys[0];
+  const up = ys[ys.length - 1] >= ys[0];
   const col = up ? C.emerald : C.red;
   const baseY = Y(accountSize);
 
@@ -164,7 +181,7 @@ function EquityChart({ curve, accountSize }) {
       <svg
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="none"
-        style={{ width: "100%", height: 150, display: "block" }}
+        style={{ width: "100%", height: 180, display: "block" }}
       >
         <path d={area} fill={col} opacity="0.12" />
         {baseY > PAD && baseY < H - PAD && (
@@ -188,10 +205,170 @@ function EquityChart({ curve, accountSize }) {
   );
 }
 
+/** Trading-Journal: Monatskalender mit Tages-PnL (Stil FTMO Daily PnL). */
+function JournalCalendar({ daily }) {
+  const byDay = useMemo(() => {
+    const m = {};
+    (daily || []).forEach((d) => {
+      m[d.day] = d;
+    });
+    return m;
+  }, [daily]);
+
+  const now = new Date();
+  const [view, setView] = useState({ y: now.getFullYear(), m: now.getMonth() });
+
+  const first = new Date(view.y, view.m, 1);
+  const startOffset = (first.getDay() + 6) % 7; // Montag = 0
+  const daysInMonth = new Date(view.y, view.m + 1, 0).getDate();
+
+  const cells = [];
+  for (let i = 0; i < startOffset; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const monthSum = Object.values(byDay)
+    .filter((d) => {
+      const dt = new Date(d.day);
+      return dt.getFullYear() === view.y && dt.getMonth() === view.m;
+    })
+    .reduce(
+      (acc, d) => ({ result: acc.result + d.result, trades: acc.trades + d.trades }),
+      { result: 0, trades: 0 }
+    );
+
+  const nav = (dir) =>
+    setView(({ y, m }) => {
+      const d = new Date(y, m + dir, 1);
+      return { y: d.getFullYear(), m: d.getMonth() };
+    });
+
+  const navBtn = {
+    background: C.surface,
+    border: `1px solid ${C.line}`,
+    color: C.ink,
+    borderRadius: 8,
+    width: 30,
+    height: 30,
+    cursor: "pointer",
+    fontSize: 14,
+    lineHeight: "26px",
+  };
+
+  return (
+    <div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <button style={navBtn} onClick={() => nav(-1)} aria-label="Vorheriger Monat">
+          ‹
+        </button>
+        <b style={{ fontSize: 14, minWidth: 130 }}>
+          {MONTHS[view.m]} {view.y}
+        </b>
+        <button style={navBtn} onClick={() => nav(1)} aria-label="Nächster Monat">
+          ›
+        </button>
+        <span style={{ marginLeft: "auto", fontSize: 12, color: C.muted }}>
+          Monat:{" "}
+          <b
+            style={{
+              fontFamily: mono,
+              color: monthSum.result >= 0 ? C.emerald : C.red,
+            }}
+          >
+            {monthSum.result >= 0 ? "+" : ""}
+            {fmt(monthSum.result)} €
+          </b>{" "}
+          · {monthSum.trades} Trades
+        </span>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 4,
+        }}
+      >
+        {WEEKDAYS.map((w) => (
+          <div
+            key={w}
+            style={{
+              textAlign: "center",
+              fontSize: 10,
+              color: C.muted,
+              textTransform: "uppercase",
+              letterSpacing: ".05em",
+              padding: "2px 0",
+            }}
+          >
+            {w}
+          </div>
+        ))}
+        {cells.map((d, i) => {
+          if (d == null)
+            return <div key={i} style={{ minHeight: 52 }} />;
+          const key = `${view.y}-${String(view.m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+          const e = byDay[key];
+          const bg = e
+            ? e.result >= 0
+              ? "rgba(45,212,167,.13)"
+              : "rgba(226,85,106,.13)"
+            : C.surface;
+          const bd = e ? (e.result >= 0 ? C.emerald : C.red) : C.line;
+          return (
+            <div
+              key={i}
+              style={{
+                minHeight: 52,
+                background: bg,
+                border: `1px solid ${bd}`,
+                borderRadius: 8,
+                padding: "4px 5px",
+                overflow: "hidden",
+              }}
+            >
+              <div style={{ fontSize: 10, color: C.muted }}>{d}</div>
+              {e && (
+                <>
+                  <div
+                    style={{
+                      fontFamily: mono,
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      color: e.result >= 0 ? C.emerald : C.red,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {e.result >= 0 ? "+" : ""}
+                    {fmt0(e.result)} €
+                  </div>
+                  <div style={{ fontSize: 9.5, color: C.muted }}>{e.trades} Tr.</div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ fontSize: 10.5, color: C.muted, marginTop: 4 }}>
+        Trading-Journal · realisiertes Tagesergebnis (Zeitzone Europe/Berlin)
+      </div>
+    </div>
+  );
+}
+
 export default function TrackingWidget({ token }) {
   const [data, setData] = useState(null);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState(false);
+  const [shownTrades, setShownTrades] = useState(10);
 
   // Live-Daten: jede Sekunde
   useEffect(() => {
@@ -229,7 +406,7 @@ export default function TrackingWidget({ token }) {
         const json = await r.json();
         if (alive) setStats(json);
       } catch {
-        /* Statistik ist optional - Live-Teil laeuft weiter */
+        /* Statistik ist optional */
       }
     };
     load();
@@ -246,10 +423,11 @@ export default function TrackingWidget({ token }) {
     background: C.navy,
     border: `1px solid ${C.line}`,
     borderRadius: 16,
-    padding: 22,
+    padding: "clamp(14px, 3vw, 26px)",
     color: C.ink,
     fontFamily: "'Poppins',sans-serif",
-    maxWidth: 720,
+    width: "100%",
+    boxSizing: "border-box",
   };
 
   if (error && !data)
@@ -271,6 +449,7 @@ export default function TrackingWidget({ token }) {
   const r = data.rules || {};
   const p = data.progress || {};
   const s = stats?.stats;
+  const allTrades = stats?.trades || [];
   const maxDaily = r.day_start_equity != null ? r.day_start_equity - r.daily_loss_limit : 1;
   const maxOverall = data.account_size * 0.1;
   const sizeLabel =
@@ -281,7 +460,15 @@ export default function TrackingWidget({ token }) {
   return (
     <div style={box}>
       {/* Kopf */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 18 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 14,
+          marginBottom: 18,
+          flexWrap: "wrap",
+        }}
+      >
         <div>
           <div style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.05 }}>{sizeLabel}</div>
           <div
@@ -297,7 +484,13 @@ export default function TrackingWidget({ token }) {
           </div>
         </div>
         <div style={{ marginLeft: "auto", textAlign: "right" }}>
-          <div style={{ fontFamily: mono, fontSize: 26, fontWeight: 600 }}>
+          <div
+            style={{
+              fontFamily: mono,
+              fontSize: "clamp(20px, 4vw, 28px)",
+              fontWeight: 600,
+            }}
+          >
             {fmt(data.equity)} €
           </div>
           <div
@@ -315,7 +508,15 @@ export default function TrackingWidget({ token }) {
       </div>
 
       {/* Status */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 18,
+          flexWrap: "wrap",
+        }}
+      >
         <span
           style={{
             fontSize: 11.5,
@@ -366,7 +567,7 @@ export default function TrackingWidget({ token }) {
       {s && s.trades > 0 && (
         <>
           <SectionTitle>Statistik</SectionTitle>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div style={autoGrid(150)}>
             <Pill value={s.win_rate != null ? fmt(s.win_rate) + " %" : "–"} label="Winrate" />
             <Pill value={s.trades} label="Trades" />
             <Pill value={fmt(s.total_lots)} label="Lots" />
@@ -374,8 +575,6 @@ export default function TrackingWidget({ token }) {
               value={s.profit_factor != null ? fmt(s.profit_factor) : "–"}
               label="Profit Factor"
             />
-          </div>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 }}>
             <Pill value={s.avg_win != null ? fmt(s.avg_win) + " €" : "–"} label="Ø Gewinn" />
             <Pill value={s.avg_loss != null ? fmt(s.avg_loss) + " €" : "–"} label="Ø Verlust" />
             <Pill
@@ -390,64 +589,20 @@ export default function TrackingWidget({ token }) {
         </>
       )}
 
-      {/* Tagesuebersicht */}
+      {/* Trading-Journal (Kalender) */}
       {stats?.daily?.length > 0 && (
         <>
-          <SectionTitle>Tagesübersicht</SectionTitle>
-          <div style={{ fontSize: 12.5 }}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1.2fr .7fr .7fr 1fr",
-                gap: 6,
-                color: C.muted,
-                fontSize: 10.5,
-                textTransform: "uppercase",
-                letterSpacing: ".05em",
-                padding: "0 10px 6px",
-              }}
-            >
-              <span>Datum</span>
-              <span style={{ textAlign: "right" }}>Trades</span>
-              <span style={{ textAlign: "right" }}>Lots</span>
-              <span style={{ textAlign: "right" }}>Ergebnis</span>
-            </div>
-            {stats.daily.slice(0, 10).map((d) => (
-              <div
-                key={d.day}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1.2fr .7fr .7fr 1fr",
-                  gap: 6,
-                  background: C.surface,
-                  border: `1px solid ${C.line}`,
-                  borderRadius: 8,
-                  padding: "7px 10px",
-                  marginBottom: 6,
-                  fontFamily: mono,
-                }}
-              >
-                <span>{new Date(d.day).toLocaleDateString("de-DE")}</span>
-                <span style={{ textAlign: "right" }}>{d.trades}</span>
-                <span style={{ textAlign: "right" }}>{fmt(d.lots)}</span>
-                <span
-                  style={{ textAlign: "right", color: d.result >= 0 ? C.emerald : C.red }}
-                >
-                  {d.result >= 0 ? "+" : ""}
-                  {fmt(d.result)} €
-                </span>
-              </div>
-            ))}
-          </div>
+          <SectionTitle>Trading-Journal</SectionTitle>
+          <JournalCalendar daily={stats.daily} />
         </>
       )}
 
       {/* Handelshistorie */}
-      {stats?.trades?.length > 0 && (
+      {allTrades.length > 0 && (
         <>
           <SectionTitle>Handelshistorie</SectionTitle>
           <div style={{ fontSize: 12.5 }}>
-            {stats.trades.slice(0, 15).map((t, i) => (
+            {allTrades.slice(0, shownTrades).map((t, i) => (
               <div
                 key={i}
                 style={{
@@ -459,9 +614,10 @@ export default function TrackingWidget({ token }) {
                   borderRadius: 8,
                   padding: "7px 10px",
                   marginBottom: 6,
+                  flexWrap: "wrap",
                 }}
               >
-                <b style={{ fontFamily: mono, minWidth: 76 }}>{t.symbol || "—"}</b>
+                <b style={{ fontFamily: mono, minWidth: 70 }}>{t.symbol || "—"}</b>
                 <span
                   style={{
                     fontSize: 10,
@@ -479,7 +635,12 @@ export default function TrackingWidget({ token }) {
                   {fmt(t.volume)} Lot
                 </span>
                 <span
-                  style={{ marginLeft: "auto", fontFamily: mono, color: C.muted, fontSize: 11 }}
+                  style={{
+                    marginLeft: "auto",
+                    fontFamily: mono,
+                    color: C.muted,
+                    fontSize: 11,
+                  }}
                 >
                   {new Date(t.closed_at).toLocaleString("de-DE", {
                     day: "2-digit",
@@ -502,12 +663,49 @@ export default function TrackingWidget({ token }) {
               </div>
             ))}
           </div>
+          {allTrades.length > shownTrades && (
+            <button
+              onClick={() => setShownTrades((n) => n + 25)}
+              style={{
+                width: "100%",
+                background: C.surface,
+                border: `1px solid ${C.line}`,
+                color: C.ink,
+                borderRadius: 10,
+                padding: "10px 0",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                fontFamily: "'Poppins',sans-serif",
+              }}
+            >
+              Mehr anzeigen ({allTrades.length - shownTrades} weitere)
+            </button>
+          )}
+          {shownTrades > 10 && allTrades.length <= shownTrades && (
+            <button
+              onClick={() => setShownTrades(10)}
+              style={{
+                width: "100%",
+                background: "transparent",
+                border: `1px solid ${C.line}`,
+                color: C.muted,
+                borderRadius: 10,
+                padding: "8px 0",
+                fontSize: 12,
+                cursor: "pointer",
+                fontFamily: "'Poppins',sans-serif",
+              }}
+            >
+              Weniger anzeigen
+            </button>
+          )}
         </>
       )}
 
       {/* Auszahlungs-Fortschritt */}
       <SectionTitle>Auszahlungs-Fortschritt</SectionTitle>
-      <div style={{ display: "flex", gap: 10 }}>
+      <div style={autoGrid(150)}>
         <Pill value={`${p.age_days ?? 0} / ${p.min_days_required ?? 14}`} label="Tage aktiv" />
         <Pill
           value={`${p.profitable_days ?? 0} / ${p.profitable_days_required ?? 3}`}
