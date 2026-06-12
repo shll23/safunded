@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { Logo } from "@/components/Header";
+import TrackingWidget from "@/components/TrackingWidget";
 import { createClient } from "@/lib/supabase/server";
 import { readAccountState } from "@/lib/compliance";
 
@@ -70,7 +71,8 @@ export default async function DashboardPage() {
           „Noch kein aktiver Account". Keine erfundenen Trading-Zahlen.
         */}
         {accountActive ? (
-          <section className="mt-10 rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.06] to-transparent p-8 shadow-glow sm:p-10">
+          <>
+            <section className="mt-10 rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.06] to-transparent p-8 shadow-glow sm:p-10">
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-accent/15">
                 <svg className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -140,6 +142,17 @@ export default async function DashboardPage() {
               ) : null}
             </dl>
           </section>
+
+          {/*
+            Live-Tracking-Widget — nur wenn der Admin einen tracking_token
+            hinterlegt hat. Ohne Token ändert sich nichts an der Anzeige.
+          */}
+          {account.trackingToken ? (
+            <div className="mt-6">
+              <TrackingWidget token={account.trackingToken} />
+            </div>
+          ) : null}
+          </>
         ) : (
           /* Ehrlicher Zustand: aktuell ist noch kein aktives Konto verknüpft. */
           <section className="mt-10 rounded-3xl border border-white/10 bg-white/[0.02] p-8 sm:p-10">

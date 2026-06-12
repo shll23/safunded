@@ -38,6 +38,12 @@ export interface AccountState {
    * price, so a discounted purchase is represented correctly.
    */
   amountPaid?: string;
+  /**
+   * Optional opaque token used by the live-tracking widget. Maintained by an
+   * admin; when present the dashboard renders the live-tracking widget. Absent
+   * for accounts that have not been linked to a tracking source.
+   */
+  trackingToken?: string;
 }
 
 /** Reads the active-account state from a Supabase user's metadata. */
@@ -54,6 +60,7 @@ export function readAccountState(
     accountId: str(m.account_id),
     activatedAt: str(m.account_activated_at),
     amountPaid: str(m.account_amount_paid),
+    trackingToken: str(m.tracking_token),
   };
 }
 
