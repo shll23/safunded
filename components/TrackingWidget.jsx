@@ -132,7 +132,7 @@ export default function TrackingWidget({ token }) {
       }
     };
     load();
-    const t = setInterval(load, 5000);
+    const t = setInterval(load, 1000);
     return () => {
       alive = false;
       clearInterval(t);
@@ -330,8 +330,8 @@ export default function TrackingWidget({ token }) {
       )}
 
       <div style={{ marginTop: 14, fontSize: 10.5, color: C.muted }}>
-        Simuliertes Handelskonto. Alle Angaben ohne Gewähr · Aktualisierung automatisch alle 5
-        Sekunden.
+        Simuliertes Handelskonto. Alle Angaben ohne Gewähr · Aktualisierung automatisch jede
+        Sekunde.
       </div>
     </div>
   );
