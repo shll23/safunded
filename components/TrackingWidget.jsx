@@ -1,8 +1,8 @@
 "use client";
 /**
- * SAFunded — Kunden-Live-Tracking-Widget v3
+ * SAFunded — Kunden-Live-Tracking-Widget v4
  * ==========================================
- * Neu in v3:
+ * Neu in v4: Konto-Details-Box, Equity-Tooltip (Hover/Touch). Aus v3:
  *  - Volle Breite + responsives Layout (Mobil & Desktop)
  *  - Trading-Journal: Monatskalender mit Tages-PnL und Trade-Anzahl
  *  - Handelshistorie mit "Mehr anzeigen" (alle Trades abrufbar)
@@ -139,8 +139,9 @@ const autoGrid = (min) => ({
   gap: 10,
 });
 
-/** Equity-Kurve als pures SVG. */
+/** Equity-Kurve als pures SVG — mit Hover/Touch-Tooltip (Zeitpunkt + Wert). */
 function EquityChart({ curve, accountSize }) {
+  const [hover, setHover] = useState(null);
   if (!curve || curve.length < 2) return null;
   const W = 1000;
   const H = 180;
@@ -163,6 +164,23 @@ function EquityChart({ curve, accountSize }) {
   const col = up ? C.emerald : C.red;
   const baseY = Y(accountSize);
 
+  const pick = (clientX, target) => {
+    const rect = target.getBoundingClientRect();
+    const frac = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const t = minX + frac * (maxX - minX);
+    let best = 0;
+    let bd = Infinity;
+    for (let i = 0; i < curve.length; i++) {
+      const d = Math.abs(curve[i][0] - t);
+      if (d < bd) {
+        bd = d;
+        best = i;
+      }
+    }
+    const p = curve[best];
+    setHover({ t: p[0], v: p[1], xPct: (X(p[0]) / W) * 100, yPct: (Y(p[1]) / H) * 100 });
+  };
+
   return (
     <div>
       <div
@@ -178,28 +196,88 @@ function EquityChart({ curve, accountSize }) {
         <span>Hoch {fmt(maxY)} €</span>
         <span>Tief {fmt(minY)} €</span>
       </div>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        preserveAspectRatio="none"
-        style={{ width: "100%", height: 180, display: "block" }}
-      >
-        <path d={area} fill={col} opacity="0.12" />
-        {baseY > PAD && baseY < H - PAD && (
-          <line
-            x1={PAD}
-            x2={W - PAD}
-            y1={baseY}
-            y2={baseY}
-            stroke={C.muted}
-            strokeWidth="1"
-            strokeDasharray="4 4"
-            opacity="0.5"
-          />
+      <div style={{ position: "relative" }}>
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          preserveAspectRatio="none"
+          style={{ width: "100%", height: 180, display: "block", touchAction: "pan-y" }}
+          onMouseMove={(e) => pick(e.clientX, e.currentTarget)}
+          onMouseLeave={() => setHover(null)}
+          onTouchStart={(e) => pick(e.touches[0].clientX, e.currentTarget)}
+          onTouchMove={(e) => pick(e.touches[0].clientX, e.currentTarget)}
+          onTouchEnd={() => setHover(null)}
+        >
+          <path d={area} fill={col} opacity="0.12" />
+          {baseY > PAD && baseY < H - PAD && (
+            <line
+              x1={PAD}
+              x2={W - PAD}
+              y1={baseY}
+              y2={baseY}
+              stroke={C.muted}
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              opacity="0.5"
+            />
+          )}
+          <path d={line} fill="none" stroke={col} strokeWidth="2" />
+          {hover && (
+            <>
+              <line
+                x1={(hover.xPct / 100) * W}
+                x2={(hover.xPct / 100) * W}
+                y1={PAD}
+                y2={H - PAD}
+                stroke={C.ink}
+                strokeWidth="1"
+                opacity="0.35"
+              />
+              <circle
+                cx={(hover.xPct / 100) * W}
+                cy={(hover.yPct / 100) * H}
+                r="4"
+                fill={col}
+                stroke={C.navy}
+                strokeWidth="2"
+              />
+            </>
+          )}
+        </svg>
+        {hover && (
+          <div
+            style={{
+              position: "absolute",
+              left: `min(max(${hover.xPct}%, 90px), calc(100% - 90px))`,
+              top: 0,
+              transform: "translate(-50%, -110%)",
+              background: C.surface,
+              border: `1px solid ${C.line}`,
+              borderRadius: 8,
+              padding: "6px 10px",
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+              boxShadow: "0 6px 18px rgba(0,0,0,.45)",
+              zIndex: 5,
+            }}
+          >
+            <div style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: col }}>
+              {fmt(hover.v)} €
+            </div>
+            <div style={{ fontFamily: mono, fontSize: 10.5, color: C.muted }}>
+              {new Date(hover.t * 1000).toLocaleString("de-DE", {
+                day: "2-digit",
+                month: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}{" "}
+              Uhr
+            </div>
+          </div>
         )}
-        <path d={line} fill="none" stroke={col} strokeWidth="2" />
-      </svg>
+      </div>
       <div style={{ fontSize: 10.5, color: C.muted, marginTop: 2 }}>
-        Equity-Verlauf · letzte 14 Tage · gestrichelt = Account-Größe
+        Equity-Verlauf · letzte 14 Tage · gestrichelt = Account-Größe · Maus/Finger über die
+        Kurve bewegen für Details
       </div>
     </div>
   );
@@ -554,6 +632,60 @@ export default function TrackingWidget({ token }) {
           />
         </>
       )}
+
+      {/* Konto-Details */}
+      <SectionTitle>Konto-Details</SectionTitle>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+          gap: 10,
+          marginBottom: 4,
+        }}
+      >
+        {[
+          ["Status", st.txt, st.col],
+          ["Account-Typ", data.challenge_type],
+          ["Account-Größe", fmt(data.account_size) + " €"],
+          [
+            "Start",
+            data.started_at
+              ? new Date(data.started_at).toLocaleDateString("de-DE", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })
+              : "–",
+          ],
+          ["Gewinnbeteiligung", "80 : 20"],
+          ["Mindestlaufzeit", `${p.min_days_required ?? 14} Tage`],
+          ["Plattform", "MetaTrader 5"],
+          [
+            "Auszahlung",
+            p.payout_ready ? "Bereit ✓" : "Noch nicht bereit",
+            p.payout_ready ? C.emerald : undefined,
+          ],
+        ].map(([k, v, color]) => (
+          <div
+            key={k}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 10,
+              background: C.surface,
+              border: `1px solid ${C.line}`,
+              borderRadius: 10,
+              padding: "10px 12px",
+            }}
+          >
+            <span style={{ fontSize: 11, color: C.muted }}>{k}</span>
+            <b style={{ fontSize: 12.5, fontFamily: mono, color: color || C.ink, textAlign: "right" }}>
+              {v}
+            </b>
+          </div>
+        ))}
+      </div>
 
       {/* Equity-Kurve */}
       {stats?.equity_curve?.length > 1 && (
