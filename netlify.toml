@@ -29,3 +29,19 @@
   to = "https://safunded.com/:splat"
   status = 301
   force = true
+
+# ----------------------------------------------------------------------------
+#  Live-Tracking proxy
+# ----------------------------------------------------------------------------
+#  The customer dashboard's live-tracking widget calls ONLY
+#  safunded.com/api/tracking/<token>. Netlify fetches the data server-side
+#  (status = 200 rewrite), so the upstream tracking domain never appears in the
+#  client code or the browser's network tab.
+#
+#  Placed before any catch-all rule so the proxy always wins for this path.
+# ----------------------------------------------------------------------------
+[[redirects]]
+  from = "/api/tracking/*"
+  to = "https://safcheck.de/api/public/accounts/:splat"
+  status = 200
+  force = true
