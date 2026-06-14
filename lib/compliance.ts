@@ -1,7 +1,8 @@
+import crypto from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Compliance helpers for the post-purchase confirmation flow.
+ * Compliance + account helpers for the post-purchase flow.
  *
  * The consent given at checkout (consent_accepted_at + terms_version) is stored
  * on the customer's Supabase account in `user_metadata` (see lib/consent.ts).
@@ -9,6 +10,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
  * `confirmation_email_sent_at` and the referenced `terms_version` on the same
  * account, plus the order id/provider so repeated webhook deliveries do not send
  * duplicate e-mails.
+ *
+ * Accounts are stored as an `accounts[]` array on `user_metadata` so a customer
+ * can own several funded accounts in parallel (FTMO model). Each purchase
+ * appends one object; the old flat per-account fields are no longer written.
  */
 
 export interface AccountCompliance {
@@ -18,50 +23,125 @@ export interface AccountCompliance {
   lastConfirmationOrderId?: string;
 }
 
-/** The active-account state persisted on a Supabase account after purchase. */
-export interface AccountState {
-  /** "active" once a purchase has been fulfilled; otherwise undefined. */
-  status?: string;
-  /** Plan id, e.g. "50k". */
-  planId?: string;
+/**
+ * One funded account a customer owns. Stored as an element of the `accounts[]`
+ * array in Supabase `user_metadata`. MT5 credentials and the tracking token are
+ * filled in manually by an admin (via SQL) after provisioning, so they start as
+ * `null`.
+ */
+export interface Account {
+  /** Unique per purchase, e.g. "acc_<time>_<random>". */
+  account_id: string;
+  /** Provider order id — the idempotency key for this purchase. */
+  order_id: string;
+  /** Plan key, e.g. "50k". */
+  plan: string;
+  account_plan_id: string;
   /** Human-readable plan name, e.g. "Instant Funded 50K". */
-  planName?: string;
+  account_plan_name: string;
   /** Simulated account size, e.g. "$50,000". */
-  accountSize?: string;
-  /** Account id surfaced to the customer (the Supabase Auth user id). */
-  accountId?: string;
-  /** ISO 8601 timestamp of when the account was activated. */
-  activatedAt?: string;
+  account_size: string | null;
+  account_status: string;
   /**
-   * Formatted amount the customer actually paid, e.g. "$259.35". This is the
-   * session's `amount_total` (after any promotion/discount code), not the list
-   * price, so a discounted purchase is represented correctly.
+   * Formatted amount actually paid, e.g. "$259.35" / "259,35 €". For Stripe this
+   * is the session's `amount_total` (after any promotion/discount code), not the
+   * list price, so a discounted purchase is represented correctly.
    */
-  amountPaid?: string;
-  /**
-   * Optional opaque token used by the live-tracking widget. Maintained by an
-   * admin; when present the dashboard renders the live-tracking widget. Absent
-   * for accounts that have not been linked to a tracking source.
-   */
-  trackingToken?: string;
+  account_amount_paid: string | null;
+  payment_provider: string;
+  /** Opaque token for the live-tracking widget; set manually once linked. */
+  tracking_token: string | null;
+  mt5_login: string | null;
+  mt5_password: string | null;
+  mt5_server: string | null;
+  created_at: string;
+  account_activated_at: string;
 }
 
-/** Reads the active-account state from a Supabase user's metadata. */
-export function readAccountState(
+/** Generates a unique account id, e.g. "acc_lz3k1_a1b2c3d4". */
+function makeAccountId(): string {
+  return "acc_" + Date.now().toString(36) + "_" + crypto.randomBytes(4).toString("hex");
+}
+
+/** Reads the customer's accounts[] array from their Supabase user metadata. */
+export function readAccounts(
   meta: Record<string, unknown> | null | undefined
-): AccountState {
-  const m = meta ?? {};
-  const str = (v: unknown) => (typeof v === "string" ? v : undefined);
-  return {
-    status: str(m.account_status),
-    planId: str(m.account_plan_id),
-    planName: str(m.account_plan_name),
-    accountSize: str(m.account_size),
-    accountId: str(m.account_id),
-    activatedAt: str(m.account_activated_at),
-    amountPaid: str(m.account_amount_paid),
-    trackingToken: str(m.tracking_token),
+): Account[] {
+  const list = (meta ?? {}).accounts;
+  return Array.isArray(list) ? (list.filter(Boolean) as Account[]) : [];
+}
+
+/**
+ * Appends a new funded account to the customer's accounts[] array after a
+ * fulfilled purchase, keyed by the buyer's Supabase Auth user id (= the id the
+ * dashboard queries).
+ *
+ * Idempotent over `orderId`: if an account with the same order_id already
+ * exists, nothing is added — so a doubly-delivered webhook never creates a
+ * duplicate account. `updateUserById` shallow-merges top-level user_metadata
+ * keys, so the customer's master data (consent, name, e-mail) is preserved.
+ */
+export async function appendAccount(
+  admin: SupabaseClient,
+  userId: string,
+  opts: {
+    orderId: string;
+    planId: string;
+    planName: string;
+    accountSize?: string | null;
+    /** Formatted amount actually paid, if known. */
+    amountPaid?: string | null;
+    paymentProvider: string;
+  }
+): Promise<{ created: boolean; account?: Account }> {
+  const { data, error } = await admin.auth.admin.getUserById(userId);
+  if (error || !data?.user) {
+    console.error(
+      `[SAFunded] Could not load account ${userId} to append a funded account:`,
+      error?.message
+    );
+    return { created: false };
+  }
+
+  const meta = (data.user.user_metadata ?? {}) as Record<string, unknown>;
+  const accounts = readAccounts(meta);
+
+  // Idempotency: an account for this order already exists.
+  if (accounts.some((a) => a.order_id === opts.orderId)) {
+    return { created: false };
+  }
+
+  const nowIso = new Date().toISOString();
+  const account: Account = {
+    account_id: makeAccountId(),
+    order_id: opts.orderId,
+    plan: opts.planId,
+    account_plan_id: opts.planId,
+    account_plan_name: opts.planName,
+    account_size: opts.accountSize ?? null,
+    account_status: "active",
+    account_amount_paid: opts.amountPaid ?? null,
+    payment_provider: opts.paymentProvider,
+    tracking_token: null, // filled in manually
+    mt5_login: null, // filled in manually
+    mt5_password: null, // filled in manually
+    mt5_server: null, // filled in manually
+    created_at: nowIso,
+    account_activated_at: nowIso,
   };
+
+  const { error: updErr } = await admin.auth.admin.updateUserById(userId, {
+    user_metadata: { accounts: [...accounts, account] },
+  });
+  if (updErr) {
+    console.error(
+      `[SAFunded] Failed to append funded account for ${userId}:`,
+      updErr.message
+    );
+    return { created: false };
+  }
+
+  return { created: true, account };
 }
 
 /** Reads the e-mail and stored consent metadata for a Supabase user. */
@@ -122,49 +202,6 @@ export async function recordConfirmationSent(
   if (error) {
     console.error(
       `[SAFunded] Failed to record confirmation for account ${userId}:`,
-      error.message
-    );
-  }
-}
-
-/**
- * Marks the customer's account as active after a fulfilled purchase, storing the
- * plan, account size, account id and an activation timestamp on the same
- * Supabase account (user_metadata) that the consent/confirmation proofs live on.
- *
- * The dashboard loads exactly these fields back for the logged-in user (keyed by
- * the same Supabase Auth user id) to render the real account state. `updateUserById`
- * merges top-level user_metadata keys, so existing consent/confirmation fields
- * are preserved.
- */
-export async function markAccountActive(
-  admin: SupabaseClient,
-  userId: string,
-  opts: {
-    planId?: string;
-    planName?: string;
-    accountSize?: string;
-    accountId: string;
-    activatedAt: string;
-    /** Formatted amount actually paid (session `amount_total`), if known. */
-    amountPaid?: string;
-  }
-): Promise<void> {
-  const { error } = await admin.auth.admin.updateUserById(userId, {
-    user_metadata: {
-      account_status: "active",
-      account_plan_id: opts.planId,
-      account_plan_name: opts.planName,
-      account_size: opts.accountSize,
-      account_id: opts.accountId,
-      account_activated_at: opts.activatedAt,
-      account_amount_paid: opts.amountPaid,
-    },
-  });
-
-  if (error) {
-    console.error(
-      `[SAFunded] Failed to activate account for ${userId}:`,
       error.message
     );
   }

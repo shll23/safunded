@@ -4,7 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { getPlan } from "@/lib/plans";
 import { createAdmin } from "@/lib/supabase/admin";
 import { sendOrderConfirmationEmail } from "@/lib/email";
-import { getAccountCompliance, recordConfirmationSent, markAccountActive } from "@/lib/compliance";
+import { getAccountCompliance, recordConfirmationSent, appendAccount } from "@/lib/compliance";
 
 // nodemailer + raw-body signature verification require the Node.js runtime.
 export const runtime = "nodejs";
@@ -111,17 +111,20 @@ export async function POST(req: Request) {
       consentAcceptedAt = consentAcceptedAt ?? account?.consentAcceptedAt;
       termsVersion = termsVersion ?? account?.termsVersion;
 
-      // Activate the account for the buyer so the dashboard reflects it. Keyed
-      // by the buyer's Supabase Auth user id (= the id the dashboard queries).
-      await markAccountActive(admin, userId, {
-        planId: metadata.planId ?? plan?.id,
+      // Append a NEW funded account to the buyer's accounts[] array (FTMO
+      // model — a customer can own several accounts in parallel). Keyed by the
+      // buyer's Supabase Auth user id (= the id the dashboard queries) and
+      // idempotent over the Stripe session id, so a doubly-delivered webhook
+      // never creates a duplicate account.
+      await appendAccount(admin, userId, {
+        orderId: session.id,
+        planId: metadata.planId ?? plan?.id ?? "",
         planName: productName,
         accountSize: metadata.simulatedCapital ?? plan?.simulatedCapital,
-        accountId: userId,
-        activatedAt: new Date().toISOString(),
         // Persist the actually paid amount (amount_total, after any promotion
         // code) so the dashboard mirrors the e-mail rather than the list price.
         amountPaid: price,
+        paymentProvider: "stripe",
       });
     }
 
