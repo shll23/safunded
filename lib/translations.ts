@@ -226,6 +226,8 @@ export interface Dictionary {
     payStripeLoading: string;
     payConfirmo: string;
     payConfirmoLoading: string;
+    payValidopay: string;
+    payValidopayLoading: string;
     acceptHint: string;
     footnote: string;
     /** Mandatory consent #1 — acceptance of all binding legal documents. */
@@ -542,6 +544,8 @@ export const translations: Record<Language, Dictionary> = {
       payStripeLoading: "Redirecting to Stripe …",
       payConfirmo: "Pay with crypto (Confirmo)",
       payConfirmoLoading: "Redirecting to Confirmo …",
+      payValidopay: "Pay with crypto (BTC)",
+      payValidopayLoading: "Redirecting to Validopay …",
       acceptHint: "Please confirm all three items to unlock payment.",
       footnote:
         "Secure payments via Stripe and Confirmo. SAFunded does not store your card details. Trading involves risk.",
@@ -872,6 +876,8 @@ export const translations: Record<Language, Dictionary> = {
       payStripeLoading: "Weiterleitung zu Stripe …",
       payConfirmo: "Mit Krypto bezahlen (Confirmo)",
       payConfirmoLoading: "Weiterleitung zu Confirmo …",
+      payValidopay: "Mit Krypto bezahlen (BTC)",
+      payValidopayLoading: "Weiterleitung zu Validopay …",
       acceptHint: "Bitte bestätige alle drei Punkte, um die Zahlung freizuschalten.",
       footnote:
         "Sichere Zahlungen über Stripe und Confirmo. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
