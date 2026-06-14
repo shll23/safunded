@@ -33,8 +33,8 @@ export interface PlanTile {
 type Quote = {
   listPrice: number;
   finalPrice: number;
-  discount: number;
-  coupon: unknown;
+  discount: number; // discount amount in USD
+  coupon: { value?: number } | null; // coupon.value is the percent off
 };
 
 type QuoteStatus = "idle" | "checking" | "valid" | "invalid" | "error";
@@ -42,6 +42,29 @@ type QuoteStatus = "idle" | "checking" | "valid" | "invalid" | "error";
 // USD display helper: whole prices stay clean ("$399"), cents shown when present.
 const fmtUsd = (n: number) =>
   `$${Number.isInteger(n) ? String(n) : Number(n).toFixed(2)}`;
+
+// Percentage saved, preferring the coupon's own `value`; falls back to deriving
+// it from the discount amount vs. the list price. Returns null when no reliable
+// percent is available.
+const couponPercent = (q: Quote) => {
+  const value = q.coupon?.value;
+  if (typeof value === "number" && value > 0) return Math.round(value);
+  if (q.listPrice > 0 && q.discount > 0) {
+    return Math.round((q.discount / q.listPrice) * 100);
+  }
+  return null;
+};
+
+// "Discount applied" line for the dashboard buy-another-account box. Always
+// shows the saved USD amount and, when known, the percent — the amount is
+// never rendered as a percent (e.g. "Rabatt: –35% (–$87.15)").
+const discountLabel = (q: Quote) => {
+  const amt = fmtUsd(q.discount);
+  const pct = couponPercent(q);
+  return pct != null
+    ? `Rabatt: –${pct}% (–${amt})`
+    : `Rabatt angewendet: –${amt}`;
+};
 
 const SUPPORT_MAILTO = "mailto:support@safunded.com";
 
@@ -102,11 +125,15 @@ export default function DashboardClient({
   }, [couponCode, selectedPlan]);
 
   // "Mit Karte zahlen" — reuse the existing Stripe checkout flow, which captures
-  // the mandatory consents and starts the Stripe-hosted session (where a
-  // promotion code can be redeemed).
+  // the mandatory consents and starts the Stripe-hosted session. The entered
+  // discount code is forwarded via the query string so it does not have to be
+  // typed again on the checkout page or on Stripe.
   function payWithCard() {
     if (!selectedPlan) return;
-    window.location.href = `/checkout?plan=${encodeURIComponent(selectedPlan)}`;
+    const code = couponCode.trim();
+    const query = new URLSearchParams({ plan: selectedPlan });
+    if (code) query.set("coupon", code);
+    window.location.href = `/checkout?${query.toString()}`;
   }
 
   // "Mit Krypto zahlen" — create a Validopay order inline and redirect to the
@@ -384,7 +411,7 @@ export default function DashboardClient({
                 {fmtUsd(quote.listPrice)}
               </span>
               <span className="text-xs text-accent">
-                Rabatt angewendet: –{quote.discount}%
+                {discountLabel(quote)}
               </span>
             </div>
           )}

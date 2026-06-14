@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     }
 
     // --- Parse body ---------------------------------------------------------
-    let body: { planId?: string; consent?: unknown };
+    let body: { planId?: string; consent?: unknown; couponCode?: string };
     try {
       body = await req.json();
     } catch {
@@ -40,6 +40,8 @@ export async function POST(req: Request) {
     }
 
     const { planId } = body;
+    const couponCode =
+      typeof body.couponCode === "string" ? body.couponCode.trim() : "";
 
     // --- Validate plan ------------------------------------------------------
     if (!planId) {
@@ -104,6 +106,35 @@ export async function POST(req: Request) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
+    // --- Resolve the discount server-side -----------------------------------
+    // The customer enters the discount code exactly once (dashboard or checkout
+    // page) and it is forwarded here. We look the code up in Stripe and attach
+    // the matching promotion code to the session, so the reduced price is
+    // already applied when the customer lands on Stripe — no re-entry needed.
+    // If the code can't be resolved (typo, crypto-only code, expired) we fall
+    // back to letting the customer enter one on Stripe instead of failing.
+    const discounts: { promotion_code: string }[] = [];
+    if (couponCode) {
+      try {
+        const promo = await stripe.promotionCodes.list({
+          code: couponCode,
+          active: true,
+          limit: 1,
+        });
+        const match = promo.data[0];
+        if (match) {
+          discounts.push({ promotion_code: match.id });
+        } else {
+          console.warn(
+            `[SAFunded] No active Stripe promotion code matched the entered code.`
+          );
+        }
+      } catch (err) {
+        console.error("[SAFunded] Failed to resolve promotion code:", err);
+      }
+    }
+    const discountApplied = discounts.length > 0;
+
     // --- Create Checkout Session -------------------------------------------
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -113,16 +144,21 @@ export async function POST(req: Request) {
       customer_email: user.email ?? undefined,
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan.id}`,
       cancel_url: `${appUrl}/cancel?plan=${plan.id}`,
-      // Let customers redeem a discount/promotion code on the Stripe-hosted
-      // checkout page. The session's `amount_total` then reflects the actually
-      // paid (discounted) amount, which is what the confirmation e-mail and the
-      // dashboard surface. Works identically in test and live mode.
-      allow_promotion_codes: true,
+      // When a valid code was forwarded, the discount is already attached so the
+      // customer sees the reduced price immediately and cannot (and need not)
+      // enter a code again. Stripe rejects `discounts` together with
+      // `allow_promotion_codes`, so the manual promo field is only offered when
+      // no discount could be pre-applied.
+      ...(discountApplied
+        ? { discounts }
+        : { allow_promotion_codes: true }),
       metadata: {
         planId: plan.id,
         planName: plan.name,
         simulatedCapital: plan.simulatedCapital,
         userId: user.id,
+        // The code as entered, for traceability on the order.
+        couponCode: couponCode || "",
         // Consent compliance proof stored on the order.
         consent_accepted_at: consentAcceptedAt,
         terms_version: termsVersion,
