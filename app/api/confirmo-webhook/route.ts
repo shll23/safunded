@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { getPlan } from "@/lib/plans";
 import { createAdmin } from "@/lib/supabase/admin";
 import { sendOrderConfirmationEmail } from "@/lib/email";
-import { getAccountCompliance, recordConfirmationSent, markAccountActive } from "@/lib/compliance";
+import { getAccountCompliance, recordConfirmationSent, appendAccount } from "@/lib/compliance";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -119,15 +119,16 @@ export async function POST(req: Request) {
 
     const plan = getPlan(planId);
 
-    // Activate the account for the buyer so the dashboard reflects it. Keyed by
-    // the buyer's Supabase Auth user id (= the id the dashboard queries).
-    await markAccountActive(admin, userId, {
+    // Append a NEW funded account to the buyer's accounts[] array (FTMO model).
+    // Keyed by the buyer's Supabase Auth user id and idempotent over the
+    // Confirmo order id, so a repeated callback never creates a duplicate.
+    await appendAccount(admin, userId, {
+      orderId,
       planId: plan?.id ?? planId,
       planName: plan?.name ?? "SAFunded Account",
       accountSize: plan?.simulatedCapital,
-      accountId: userId,
-      activatedAt: new Date().toISOString(),
       amountPaid: plan?.price,
+      paymentProvider: "confirmo",
     });
 
     const sent = await sendOrderConfirmationEmail({
