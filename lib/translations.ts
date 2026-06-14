@@ -224,8 +224,6 @@ export interface Dictionary {
     oneTimeFee: string;
     payStripe: string;
     payStripeLoading: string;
-    payConfirmo: string;
-    payConfirmoLoading: string;
     payValidopay: string;
     payValidopayLoading: string;
     /** Discount code field — only applies to the crypto (Validopay) path. */
@@ -552,21 +550,19 @@ export const translations: Record<Language, Dictionary> = {
       oneTimeFee: "One-time fee",
       payStripe: "Pay by card (Stripe)",
       payStripeLoading: "Redirecting to Stripe …",
-      payConfirmo: "Pay with crypto (Confirmo)",
-      payConfirmoLoading: "Redirecting to Confirmo …",
-      payValidopay: "Pay with crypto (BTC)",
+      payValidopay: "Pay with crypto (Validopay)",
       payValidopayLoading: "Redirecting to Validopay …",
       coupon: {
         label: "Discount code (crypto payment)",
-        placeholder: "e.g. LAUNCH35",
+        placeholder: "Discount code",
         checking: "Checking code …",
-        applied: "incl. {pct}% discount",
+        applied: "Discount applied: –{pct}%",
         invalid: "Code invalid",
         error: "Could not check the code. Please try again.",
       },
       acceptHint: "Please confirm all three items to unlock payment.",
       footnote:
-        "Secure payments via Stripe and Confirmo. SAFunded does not store your card details. Trading involves risk.",
+        "Secure payments via Stripe and Validopay. SAFunded does not store your card details. Trading involves risk.",
       consentTerms: {
         pre: "I accept the ",
         links: [
@@ -892,21 +888,19 @@ export const translations: Record<Language, Dictionary> = {
       oneTimeFee: "Einmalige Gebühr",
       payStripe: "Mit Karte bezahlen (Stripe)",
       payStripeLoading: "Weiterleitung zu Stripe …",
-      payConfirmo: "Mit Krypto bezahlen (Confirmo)",
-      payConfirmoLoading: "Weiterleitung zu Confirmo …",
-      payValidopay: "Mit Krypto bezahlen (BTC)",
+      payValidopay: "Mit Krypto bezahlen (Validopay)",
       payValidopayLoading: "Weiterleitung zu Validopay …",
       coupon: {
         label: "Rabattcode (Krypto-Zahlung)",
-        placeholder: "z. B. LAUNCH35",
+        placeholder: "Rabattcode",
         checking: "Code wird geprüft …",
-        applied: "inkl. {pct}% Rabatt",
+        applied: "Rabatt angewendet: –{pct}%",
         invalid: "Code ungültig",
         error: "Code konnte nicht geprüft werden. Bitte erneut versuchen.",
       },
       acceptHint: "Bitte bestätige alle drei Punkte, um die Zahlung freizuschalten.",
       footnote:
-        "Sichere Zahlungen über Stripe und Confirmo. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
+        "Sichere Zahlungen über Stripe und Validopay. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
       consentTerms: {
         pre: "Ich akzeptiere die ",
         links: [

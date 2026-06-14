@@ -41,9 +41,7 @@ function CheckoutInner() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedImmediate, setAcceptedImmediate] = useState(false);
   const [acceptedRisk, setAcceptedRisk] = useState(false);
-  const [loading, setLoading] = useState<
-    "stripe" | "confirmo" | "validopay" | null
-  >(null);
+  const [loading, setLoading] = useState<"stripe" | "validopay" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Crypto-only discount code. The price is computed server-side by Validopay
@@ -89,7 +87,7 @@ function CheckoutInner() {
 
   if (!plan) {
     return (
-      <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 text-center sm:p-10">
+      <div className="mx-auto max-w-md rounded-3xl border border-white/10 bg-white/[0.02] p-8 text-center sm:p-10">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
           {c.noPlan.title}
         </h1>
@@ -104,15 +102,12 @@ function CheckoutInner() {
     );
   }
 
-  async function pay(provider: "stripe" | "confirmo") {
+  async function pay(provider: "stripe") {
     if (!plan || !allAccepted) return;
     setLoading(provider);
     setError(null);
 
-    const endpoint =
-      provider === "stripe"
-        ? "/api/create-checkout-session"
-        : "/api/create-confirmo-invoice";
+    const endpoint = "/api/create-checkout-session";
 
     try {
       const res = await fetch(endpoint, {
@@ -182,178 +177,183 @@ function CheckoutInner() {
 
   return (
     <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 sm:p-10">
-      <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
-        {c.title}
-      </h1>
-      <p className="mt-2 text-sm text-muted">{c.subtitle}</p>
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        {/* ─── Linke Spalte (Desktop): Titel + Bestellübersicht ─── */}
+        <div>
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-white">
+            {c.title}
+          </h1>
+          <p className="mt-2 text-sm text-muted">{c.subtitle}</p>
 
-      {/* Konto-Zusammenfassung */}
-      <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/[0.06] p-5">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-muted">{plan.name}</span>
-          <span className="font-mono text-sm font-semibold text-accent">
-            {plan.simulatedCapital}
-          </span>
-        </div>
-        <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
-          <span className="text-xs uppercase tracking-wide text-faint">
-            {c.oneTimeFee}
-          </span>
-          <span className="flex items-baseline gap-2">
-            <span className="font-display text-xl font-semibold text-white">
-              {plan.launchPrice}
-            </span>
-            <span className="text-sm text-faint line-through">{plan.price}</span>
-          </span>
-        </div>
-        <p className="mt-2 text-right text-[11px] text-accent">
-          {t.pricing.withCode}
-        </p>
-      </div>
-
-      {/* Pflicht-Zustimmungen / mandatory consents */}
-      <div className="mt-7 space-y-4">
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-          <input
-            type="checkbox"
-            className={checkboxClass}
-            checked={acceptedTerms}
-            onChange={(e) => setAcceptedTerms(e.target.checked)}
-          />
-          <span className="text-sm leading-relaxed text-muted">
-            {c.consentTerms.pre}
-            {c.consentTerms.links.map((link, i) => {
-              const isLast = i === c.consentTerms.links.length - 1;
-              const isSecondLast = i === c.consentTerms.links.length - 2;
-              return (
-                <span key={link.slug}>
-                  <Link
-                    href={legalHref(link.slug)}
-                    target="_blank"
-                    className={legalLinkClass}
-                  >
-                    {link.label}
-                  </Link>
-                  {isLast ? null : isSecondLast ? c.consentTerms.conjunction : ", "}
+          {/* Konto-Zusammenfassung. Standardmäßig wird der Listenpreis gezeigt;
+              ein Rabatt erscheint erst, wenn ein gültiger Code per getQuote
+              bestätigt wurde. */}
+          <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/[0.06] p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted">{plan.name}</span>
+              <span className="font-mono text-sm font-semibold text-accent">
+                {plan.simulatedCapital}
+              </span>
+            </div>
+            <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+              <span className="text-xs uppercase tracking-wide text-faint">
+                {c.oneTimeFee}
+              </span>
+              {quoteStatus === "valid" && quote ? (
+                <span className="flex items-baseline gap-2">
+                  <span className="font-display text-xl font-semibold text-white">
+                    {fmtUsd(quote.finalPrice)}
+                  </span>
+                  <span className="text-sm text-faint line-through">
+                    {fmtUsd(quote.listPrice)}
+                  </span>
                 </span>
-              );
-            })}
-            {c.consentTerms.post}
-          </span>
-        </label>
-
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-          <input
-            type="checkbox"
-            className={checkboxClass}
-            checked={acceptedImmediate}
-            onChange={(e) => setAcceptedImmediate(e.target.checked)}
-          />
-          <span className="text-sm leading-relaxed text-muted">
-            {c.consentImmediate.pre}
-            <Link href={legalHref("widerruf")} target="_blank" className={legalLinkClass}>
-              {c.consentImmediate.withdrawal}
-            </Link>
-            {c.consentImmediate.post}
-          </span>
-        </label>
-
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-          <input
-            type="checkbox"
-            className={checkboxClass}
-            checked={acceptedRisk}
-            onChange={(e) => setAcceptedRisk(e.target.checked)}
-          />
-          <span className="text-sm leading-relaxed text-muted">
-            {c.consentRisk}
-          </span>
-        </label>
-      </div>
-
-      {error && (
-        <p role="alert" className="mt-5 text-xs text-rose-400">
-          {error}
-        </p>
-      )}
-
-      {/* Rabattcode — gilt nur für den Krypto-Zweig (Validopay). Der Preis wird
-          live serverseitig berechnet; im Frontend wird nichts hartkodiert. */}
-      <div className="mt-6">
-        <label
-          htmlFor="couponCode"
-          className="block text-xs uppercase tracking-wide text-faint"
-        >
-          {c.coupon.label}
-        </label>
-        <input
-          id="couponCode"
-          type="text"
-          value={couponCode}
-          onChange={(e) => setCouponCode(e.target.value)}
-          placeholder={c.coupon.placeholder}
-          autoComplete="off"
-          className="mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/30"
-        />
-
-        {quoteStatus === "checking" && (
-          <p className="mt-2 text-xs text-faint">{c.coupon.checking}</p>
-        )}
-        {quoteStatus === "error" && (
-          <p className="mt-2 text-xs text-rose-400">{c.coupon.error}</p>
-        )}
-        {quoteStatus === "invalid" && (
-          <p className="mt-2 text-xs text-rose-400">{c.coupon.invalid}</p>
-        )}
-        {quoteStatus === "valid" && quote && (
-          <div className="mt-3 flex flex-wrap items-baseline gap-2">
-            <span className="font-display text-2xl font-semibold text-white">
-              {fmtUsd(quote.finalPrice)}
-            </span>
-            <span className="text-sm text-faint line-through">
-              {fmtUsd(quote.listPrice)}
-            </span>
-            <span className="text-xs text-accent">
-              {c.coupon.applied.replace("{pct}", String(quote.discount))}
-            </span>
+              ) : (
+                <span className="font-display text-xl font-semibold text-white">
+                  {plan.price}
+                </span>
+              )}
+            </div>
+            {quoteStatus === "valid" && quote && (
+              <p className="mt-2 text-right text-[11px] text-accent">
+                {c.coupon.applied.replace("{pct}", String(quote.discount))}
+              </p>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind */}
-      <div className="mt-6 space-y-3">
-        <button
-          type="button"
-          onClick={() => pay("stripe")}
-          disabled={!allAccepted || loading !== null}
-          aria-busy={loading === "stripe"}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
-        >
-          {loading === "stripe" ? c.payStripeLoading : c.payStripe}
-        </button>
-        <button
-          type="button"
-          onClick={() => pay("confirmo")}
-          disabled={!allAccepted || loading !== null}
-          aria-busy={loading === "confirmo"}
-          className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {loading === "confirmo" ? c.payConfirmoLoading : c.payConfirmo}
-        </button>
-        <button
-          type="button"
-          onClick={() => payValidopay()}
-          disabled={!allAccepted || loading !== null}
-          aria-busy={loading === "validopay"}
-          className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {loading === "validopay" ? c.payValidopayLoading : c.payValidopay}
-        </button>
-      </div>
+        {/* ─── Rechte Spalte (Desktop): Zustimmungen + Code + Zahlbuttons ─── */}
+        <div>
+          {/* Pflicht-Zustimmungen / mandatory consents */}
+          <div className="space-y-4">
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <input
+                type="checkbox"
+                className={checkboxClass}
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+              />
+              <span className="text-sm leading-relaxed text-muted">
+                {c.consentTerms.pre}
+                {c.consentTerms.links.map((link, i) => {
+                  const isLast = i === c.consentTerms.links.length - 1;
+                  const isSecondLast = i === c.consentTerms.links.length - 2;
+                  return (
+                    <span key={link.slug}>
+                      <Link
+                        href={legalHref(link.slug)}
+                        target="_blank"
+                        className={legalLinkClass}
+                      >
+                        {link.label}
+                      </Link>
+                      {isLast ? null : isSecondLast ? c.consentTerms.conjunction : ", "}
+                    </span>
+                  );
+                })}
+                {c.consentTerms.post}
+              </span>
+            </label>
 
-      {!allAccepted && (
-        <p className="mt-3 text-center text-xs text-faint">{c.acceptHint}</p>
-      )}
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <input
+                type="checkbox"
+                className={checkboxClass}
+                checked={acceptedImmediate}
+                onChange={(e) => setAcceptedImmediate(e.target.checked)}
+              />
+              <span className="text-sm leading-relaxed text-muted">
+                {c.consentImmediate.pre}
+                <Link href={legalHref("widerruf")} target="_blank" className={legalLinkClass}>
+                  {c.consentImmediate.withdrawal}
+                </Link>
+                {c.consentImmediate.post}
+              </span>
+            </label>
+
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <input
+                type="checkbox"
+                className={checkboxClass}
+                checked={acceptedRisk}
+                onChange={(e) => setAcceptedRisk(e.target.checked)}
+              />
+              <span className="text-sm leading-relaxed text-muted">
+                {c.consentRisk}
+              </span>
+            </label>
+          </div>
+
+          {error && (
+            <p role="alert" className="mt-5 text-xs text-rose-400">
+              {error}
+            </p>
+          )}
+
+          {/* Rabattcode — gilt nur für den Krypto-Zweig (Validopay). Der Preis wird
+              live serverseitig berechnet; im Frontend wird nichts hartkodiert.
+              Ohne gültigen Code bleibt der Listenpreis stehen. */}
+          <div className="mt-6">
+            <label
+              htmlFor="couponCode"
+              className="block text-xs uppercase tracking-wide text-faint"
+            >
+              {c.coupon.label}
+            </label>
+            <input
+              id="couponCode"
+              type="text"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
+              placeholder={c.coupon.placeholder}
+              autoComplete="off"
+              className="mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/30"
+            />
+
+            {quoteStatus === "checking" && (
+              <p className="mt-2 text-xs text-faint">{c.coupon.checking}</p>
+            )}
+            {quoteStatus === "error" && (
+              <p className="mt-2 text-xs text-rose-400">{c.coupon.error}</p>
+            )}
+            {quoteStatus === "invalid" && (
+              <p className="mt-2 text-xs text-rose-400">{c.coupon.invalid}</p>
+            )}
+            {quoteStatus === "valid" && quote && (
+              <p className="mt-2 text-xs text-accent">
+                {c.coupon.applied.replace("{pct}", String(quote.discount))}
+              </p>
+            )}
+          </div>
+
+          {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind.
+              Genau zwei Zahlwege: Stripe (Karte) und Validopay (Krypto). */}
+          <div className="mt-6 space-y-3">
+            <button
+              type="button"
+              onClick={() => pay("stripe")}
+              disabled={!allAccepted || loading !== null}
+              aria-busy={loading === "stripe"}
+              className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+            >
+              {loading === "stripe" ? c.payStripeLoading : c.payStripe}
+            </button>
+            <button
+              type="button"
+              onClick={() => payValidopay()}
+              disabled={!allAccepted || loading !== null}
+              aria-busy={loading === "validopay"}
+              className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {loading === "validopay" ? c.payValidopayLoading : c.payValidopay}
+            </button>
+          </div>
+
+          {!allAccepted && (
+            <p className="mt-3 text-center text-xs text-faint">{c.acceptHint}</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -368,7 +368,7 @@ function CheckoutFootnote() {
 export default function CheckoutPage() {
   return (
     <main className="grid min-h-screen place-items-center px-5 py-16">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md lg:max-w-4xl">
         <div className="mb-8 flex items-center justify-between">
           <Logo />
           <LanguageToggle />
