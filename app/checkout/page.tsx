@@ -1,13 +1,27 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
 import { useLanguage } from "@/lib/i18n";
 import { getPlan } from "@/lib/plans";
 import { createClient } from "@/lib/supabase/client";
-import { payWithCrypto } from "@/lib/validopay-checkout";
+import { getQuote, payWithCrypto } from "@/lib/validopay-checkout";
+
+// USD display helper: keep whole prices clean ("$399") and show cents when
+// present ("$259.35"). Used for the live coupon quote.
+const fmtUsd = (n: number) =>
+  `$${Number.isInteger(n) ? String(n) : Number(n).toFixed(2)}`;
+
+type Quote = {
+  listPrice: number;
+  finalPrice: number;
+  discount: number;
+  coupon: unknown;
+};
+
+type QuoteStatus = "idle" | "checking" | "valid" | "invalid" | "error";
 
 const checkboxClass =
   "mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-white/20 bg-white/[0.03] text-accent accent-accent focus:ring-2 focus:ring-accent/40";
@@ -31,6 +45,45 @@ function CheckoutInner() {
     "stripe" | "confirmo" | "validopay" | null
   >(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Crypto-only discount code. The price is computed server-side by Validopay
+  // (getQuote) — never derived or hardcoded in the frontend.
+  const [couponCode, setCouponCode] = useState("");
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [quoteStatus, setQuoteStatus] = useState<QuoteStatus>("idle");
+
+  // Live price preview: whenever the entered code changes, ask Validopay for a
+  // fresh quote (debounced). A coupon counts as valid when it actually lowers
+  // the price; otherwise the entered code is reported as invalid.
+  useEffect(() => {
+    const code = couponCode.trim();
+    if (!plan || !code) {
+      setQuote(null);
+      setQuoteStatus("idle");
+      return;
+    }
+
+    let cancelled = false;
+    setQuoteStatus("checking");
+    const handle = setTimeout(async () => {
+      try {
+        const q = (await getQuote(plan.id, code)) as Quote;
+        if (cancelled) return;
+        const valid = Number(q?.discount) > 0 || Boolean(q?.coupon);
+        setQuote(q);
+        setQuoteStatus(valid ? "valid" : "invalid");
+      } catch {
+        if (cancelled) return;
+        setQuote(null);
+        setQuoteStatus("error");
+      }
+    }, 400);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+  }, [couponCode, plan]);
 
   const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk;
 
@@ -94,8 +147,8 @@ function CheckoutInner() {
   // Krypto-Zahlung über Validopay. Anders als Stripe/Confirmo wird hier kein
   // eigener API-Endpoint angesprochen: der Helfer legt die Bestellung direkt
   // bei Validopay an und leitet auf die Bezahlseite (QR + Adresse) weiter.
-  // Der zu zahlende Betrag ist exakt der rabattierte Launch-Preis (LAUNCH35),
-  // identisch zur Anzeige im Checkout.
+  // Der zu zahlende Betrag wird serverseitig aus Plan + Rabattcode berechnet —
+  // das Frontend übergibt nur den eingegebenen Code, keinen Betrag.
   async function payValidopay() {
     if (!plan || !allAccepted) return;
     setLoading("validopay");
@@ -118,8 +171,7 @@ function CheckoutInner() {
       await payWithCrypto({
         supabaseUserId: user.id,
         plan: plan.id,
-        planName: plan.name,
-        usdAmount: plan.launchPriceValue,
+        couponCode: couponCode.trim() || undefined,
       });
       // Bei Erfolg leitet payWithCrypto selbst per window.location weiter.
     } catch (err) {
@@ -224,6 +276,49 @@ function CheckoutInner() {
           {error}
         </p>
       )}
+
+      {/* Rabattcode — gilt nur für den Krypto-Zweig (Validopay). Der Preis wird
+          live serverseitig berechnet; im Frontend wird nichts hartkodiert. */}
+      <div className="mt-6">
+        <label
+          htmlFor="couponCode"
+          className="block text-xs uppercase tracking-wide text-faint"
+        >
+          {c.coupon.label}
+        </label>
+        <input
+          id="couponCode"
+          type="text"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+          placeholder={c.coupon.placeholder}
+          autoComplete="off"
+          className="mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/30"
+        />
+
+        {quoteStatus === "checking" && (
+          <p className="mt-2 text-xs text-faint">{c.coupon.checking}</p>
+        )}
+        {quoteStatus === "error" && (
+          <p className="mt-2 text-xs text-rose-400">{c.coupon.error}</p>
+        )}
+        {quoteStatus === "invalid" && (
+          <p className="mt-2 text-xs text-rose-400">{c.coupon.invalid}</p>
+        )}
+        {quoteStatus === "valid" && quote && (
+          <div className="mt-3 flex flex-wrap items-baseline gap-2">
+            <span className="font-display text-2xl font-semibold text-white">
+              {fmtUsd(quote.finalPrice)}
+            </span>
+            <span className="text-sm text-faint line-through">
+              {fmtUsd(quote.listPrice)}
+            </span>
+            <span className="text-xs text-accent">
+              {c.coupon.applied.replace("{pct}", String(quote.discount))}
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind */}
       <div className="mt-6 space-y-3">

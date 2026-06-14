@@ -228,6 +228,16 @@ export interface Dictionary {
     payConfirmoLoading: string;
     payValidopay: string;
     payValidopayLoading: string;
+    /** Discount code field — only applies to the crypto (Validopay) path. */
+    coupon: {
+      label: string;
+      placeholder: string;
+      checking: string;
+      /** Shown on a valid coupon; "{pct}" is replaced by the discount percent. */
+      applied: string;
+      invalid: string;
+      error: string;
+    };
     acceptHint: string;
     footnote: string;
     /** Mandatory consent #1 — acceptance of all binding legal documents. */
@@ -546,6 +556,14 @@ export const translations: Record<Language, Dictionary> = {
       payConfirmoLoading: "Redirecting to Confirmo …",
       payValidopay: "Pay with crypto (BTC)",
       payValidopayLoading: "Redirecting to Validopay …",
+      coupon: {
+        label: "Discount code (crypto payment)",
+        placeholder: "e.g. LAUNCH35",
+        checking: "Checking code …",
+        applied: "incl. {pct}% discount",
+        invalid: "Code invalid",
+        error: "Could not check the code. Please try again.",
+      },
       acceptHint: "Please confirm all three items to unlock payment.",
       footnote:
         "Secure payments via Stripe and Confirmo. SAFunded does not store your card details. Trading involves risk.",
@@ -878,6 +896,14 @@ export const translations: Record<Language, Dictionary> = {
       payConfirmoLoading: "Weiterleitung zu Confirmo …",
       payValidopay: "Mit Krypto bezahlen (BTC)",
       payValidopayLoading: "Weiterleitung zu Validopay …",
+      coupon: {
+        label: "Rabattcode (Krypto-Zahlung)",
+        placeholder: "z. B. LAUNCH35",
+        checking: "Code wird geprüft …",
+        applied: "inkl. {pct}% Rabatt",
+        invalid: "Code ungültig",
+        error: "Code konnte nicht geprüft werden. Bitte erneut versuchen.",
+      },
       acceptHint: "Bitte bestätige alle drei Punkte, um die Zahlung freizuschalten.",
       footnote:
         "Sichere Zahlungen über Stripe und Confirmo. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
