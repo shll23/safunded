@@ -45,3 +45,8 @@
   to = "https://safcheck.de/api/public/accounts/:splat"
   status = 200
   force = true
+[[redirects]]
+  from = "/api/provision"
+  to = "/.netlify/functions/provision"
+  status = 200
+  force = true
