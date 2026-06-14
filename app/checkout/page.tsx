@@ -14,11 +14,23 @@ import { getQuote, payWithCrypto } from "@/lib/validopay-checkout";
 const fmtUsd = (n: number) =>
   `$${Number.isInteger(n) ? String(n) : Number(n).toFixed(2)}`;
 
+// Percentage saved, preferring the coupon's own `value`; falls back to deriving
+// it from the discount amount vs. the list price. Returns null when no reliable
+// percent is available — the discount amount is then shown on its own.
+const couponPercent = (q: { coupon: { value?: number } | null; discount: number; listPrice: number }) => {
+  const value = q.coupon?.value;
+  if (typeof value === "number" && value > 0) return Math.round(value);
+  if (q.listPrice > 0 && q.discount > 0) {
+    return Math.round((q.discount / q.listPrice) * 100);
+  }
+  return null;
+};
+
 type Quote = {
   listPrice: number;
   finalPrice: number;
-  discount: number;
-  coupon: unknown;
+  discount: number; // discount amount in USD
+  coupon: { value?: number } | null; // coupon.value is the percent off
 };
 
 type QuoteStatus = "idle" | "checking" | "valid" | "invalid" | "error";
@@ -44,9 +56,14 @@ function CheckoutInner() {
   const [loading, setLoading] = useState<"stripe" | "validopay" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Crypto-only discount code. The price is computed server-side by Validopay
-  // (getQuote) — never derived or hardcoded in the frontend.
-  const [couponCode, setCouponCode] = useState("");
+  // Discount code. Forwarded once from the previous step (dashboard / plan
+  // selection) via the `coupon` query param, so it does not have to be typed
+  // again here. The price preview is computed server-side by Validopay
+  // (getQuote); for Stripe the same code is applied server-side when the
+  // checkout session is created.
+  const [couponCode, setCouponCode] = useState(
+    () => searchParams.get("coupon")?.trim() ?? ""
+  );
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteStatus, setQuoteStatus] = useState<QuoteStatus>("idle");
 
@@ -85,6 +102,17 @@ function CheckoutInner() {
 
   const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk;
 
+  // Builds the "discount applied" line. Always shows the saved USD amount and,
+  // when the percent is known, the percentage too — the amount is never
+  // rendered as a percent.
+  const discountLabel = (q: Quote) => {
+    const amt = fmtUsd(q.discount);
+    const pct = couponPercent(q);
+    return pct != null
+      ? c.coupon.applied.replace("{pct}", String(pct)).replace("{amt}", amt)
+      : c.coupon.appliedAmount.replace("{amt}", amt);
+  };
+
   if (!plan) {
     return (
       <div className="mx-auto max-w-md rounded-3xl border border-white/10 bg-white/[0.02] p-8 text-center sm:p-10">
@@ -115,6 +143,10 @@ function CheckoutInner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           planId: plan.id,
+          // Der eingegebene Rabattcode wird serverseitig auf die Stripe-Session
+          // angewendet, sodass der Kunde bei Stripe bereits den reduzierten
+          // Preis sieht und nichts erneut eingeben muss.
+          couponCode: couponCode.trim() || undefined,
           // Alle Pflicht-Zustimmungen werden serverseitig erneut geprüft und
           // mit Zeitstempel + Textversion als Compliance-Nachweis gespeichert.
           consent: {
@@ -216,7 +248,7 @@ function CheckoutInner() {
             </div>
             {quoteStatus === "valid" && quote && (
               <p className="mt-2 text-right text-[11px] text-accent">
-                {c.coupon.applied.replace("{pct}", String(quote.discount))}
+                {discountLabel(quote)}
               </p>
             )}
           </div>
@@ -290,9 +322,11 @@ function CheckoutInner() {
             </p>
           )}
 
-          {/* Rabattcode — gilt nur für den Krypto-Zweig (Validopay). Der Preis wird
-              live serverseitig berechnet; im Frontend wird nichts hartkodiert.
-              Ohne gültigen Code bleibt der Listenpreis stehen. */}
+          {/* Rabattcode — wird genau einmal eingegeben und für beide Zahlwege
+              verwendet: serverseitig bei Stripe angewendet und an Validopay
+              übergeben. Die Preisvorschau wird live serverseitig berechnet;
+              im Frontend wird nichts hartkodiert. Ohne gültigen Code bleibt der
+              Listenpreis stehen. */}
           <div className="mt-6">
             <label
               htmlFor="couponCode"
@@ -321,7 +355,7 @@ function CheckoutInner() {
             )}
             {quoteStatus === "valid" && quote && (
               <p className="mt-2 text-xs text-accent">
-                {c.coupon.applied.replace("{pct}", String(quote.discount))}
+                {discountLabel(quote)}
               </p>
             )}
           </div>

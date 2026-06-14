@@ -226,13 +226,21 @@ export interface Dictionary {
     payStripeLoading: string;
     payValidopay: string;
     payValidopayLoading: string;
-    /** Discount code field — only applies to the crypto (Validopay) path. */
+    /** Discount code field — applies to both the Stripe and the crypto path. */
     coupon: {
       label: string;
       placeholder: string;
       checking: string;
-      /** Shown on a valid coupon; "{pct}" is replaced by the discount percent. */
+      /**
+       * Shown on a valid coupon when the percentage is known. "{pct}" is the
+       * discount percent, "{amt}" the discount amount in USD (e.g. "$87.15").
+       */
       applied: string;
+      /**
+       * Shown on a valid coupon when only the USD amount is known. "{amt}" is
+       * the discount amount in USD. The amount is NEVER rendered as a percent.
+       */
+      appliedAmount: string;
       invalid: string;
       error: string;
     };
@@ -553,10 +561,11 @@ export const translations: Record<Language, Dictionary> = {
       payValidopay: "Pay with crypto (Validopay)",
       payValidopayLoading: "Redirecting to Validopay …",
       coupon: {
-        label: "Discount code (crypto payment)",
+        label: "Discount code",
         placeholder: "Discount code",
         checking: "Checking code …",
-        applied: "Discount applied: –{pct}%",
+        applied: "Discount: –{pct}% (–{amt})",
+        appliedAmount: "Discount applied: –{amt}",
         invalid: "Code invalid",
         error: "Could not check the code. Please try again.",
       },
@@ -891,10 +900,11 @@ export const translations: Record<Language, Dictionary> = {
       payValidopay: "Mit Krypto bezahlen (Validopay)",
       payValidopayLoading: "Weiterleitung zu Validopay …",
       coupon: {
-        label: "Rabattcode (Krypto-Zahlung)",
+        label: "Rabattcode",
         placeholder: "Rabattcode",
         checking: "Code wird geprüft …",
-        applied: "Rabatt angewendet: –{pct}%",
+        applied: "Rabatt: –{pct}% (–{amt})",
+        appliedAmount: "Rabatt angewendet: –{amt}",
         invalid: "Code ungültig",
         error: "Code konnte nicht geprüft werden. Bitte erneut versuchen.",
       },
