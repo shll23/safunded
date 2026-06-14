@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
 import { useLanguage } from "@/lib/i18n";
 import { getPlan } from "@/lib/plans";
+import { createClient } from "@/lib/supabase/client";
+import { payWithCrypto } from "@/lib/validopay-checkout";
 
 const checkboxClass =
   "mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-white/20 bg-white/[0.03] text-accent accent-accent focus:ring-2 focus:ring-accent/40";
@@ -25,7 +27,9 @@ function CheckoutInner() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedImmediate, setAcceptedImmediate] = useState(false);
   const [acceptedRisk, setAcceptedRisk] = useState(false);
-  const [loading, setLoading] = useState<"stripe" | "confirmo" | null>(null);
+  const [loading, setLoading] = useState<
+    "stripe" | "confirmo" | "validopay" | null
+  >(null);
   const [error, setError] = useState<string | null>(null);
 
   const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk;
@@ -83,6 +87,43 @@ function CheckoutInner() {
       window.location.href = data.url as string;
     } catch {
       setError(c.genericError);
+      setLoading(null);
+    }
+  }
+
+  // Krypto-Zahlung über Validopay. Anders als Stripe/Confirmo wird hier kein
+  // eigener API-Endpoint angesprochen: der Helfer legt die Bestellung direkt
+  // bei Validopay an und leitet auf die Bezahlseite (QR + Adresse) weiter.
+  // Der zu zahlende Betrag ist exakt der rabattierte Launch-Preis (LAUNCH35),
+  // identisch zur Anzeige im Checkout.
+  async function payValidopay() {
+    if (!plan || !allAccepted) return;
+    setLoading("validopay");
+    setError(null);
+
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        // payWithCrypto würde ohnehin abbrechen; hier sofort verständlich melden.
+        throw new Error(
+          lang === "en"
+            ? "Please sign in first to pay with crypto."
+            : "Bitte zuerst anmelden, um mit Krypto zu bezahlen."
+        );
+      }
+
+      await payWithCrypto({
+        supabaseUserId: user.id,
+        plan: plan.id,
+        planName: plan.name,
+        usdAmount: plan.launchPriceValue,
+      });
+      // Bei Erfolg leitet payWithCrypto selbst per window.location weiter.
+    } catch (err) {
+      setError(err instanceof Error ? err.message : c.genericError);
       setLoading(null);
     }
   }
@@ -203,6 +244,15 @@ function CheckoutInner() {
           className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading === "confirmo" ? c.payConfirmoLoading : c.payConfirmo}
+        </button>
+        <button
+          type="button"
+          onClick={() => payValidopay()}
+          disabled={!allAccepted || loading !== null}
+          aria-busy={loading === "validopay"}
+          className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loading === "validopay" ? c.payValidopayLoading : c.payValidopay}
         </button>
       </div>
 
