@@ -307,21 +307,43 @@ export default function DashboardClient({
                 <span className="block font-display text-xl font-semibold text-white">
                   {p.id.toUpperCase()}
                 </span>
-                <span className="mt-1.5 flex items-center justify-center gap-2 text-sm">
-                  <span className="text-faint line-through">{p.price}</span>
-                  <span aria-hidden="true" className="text-faint">→</span>
-                  <span className="font-semibold text-accent">{p.launchPrice}</span>
+                <span className="mt-1.5 block text-sm font-semibold text-white">
+                  {p.price}
                 </span>
               </button>
             );
           })}
         </div>
 
-        {/* Regel-Zeile */}
-        <p className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-center text-xs text-muted">
-          <span className="font-semibold text-white">Regeln:</span> 5% Tagesverlust
-          · 10% Gesamtverlust · 80% Split · min. 14 Tage · Auszahlung alle 2 Wochen
-        </p>
+        {/* Regel-Box — gilt für alle Pläne, daher eine Box unter den Kacheln.
+            Optik wie die Plan-Karten der Landingpage: Label links, Wert rechts. */}
+        <div className="mt-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
+            Konto-Regeln
+          </p>
+          <dl className="mt-4 space-y-2.5 border-t border-white/[0.07] pt-4 text-sm">
+            <div className="flex items-center justify-between">
+              <dt className="text-muted">Gewinnbeteiligung</dt>
+              <dd className="font-mono text-accent">bis zu 80%</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-muted">Max. Tagesverlust</dt>
+              <dd className="font-mono text-white">5%</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-muted">Max. Gesamtverlust</dt>
+              <dd className="font-mono text-white">10%</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-muted">Min. Trading-Tage</dt>
+              <dd className="font-mono text-white">3 Tage</dd>
+            </div>
+            <div className="flex items-center justify-between">
+              <dt className="text-muted">Auszahlungszyklus</dt>
+              <dd className="font-mono text-white">2 Wochen</dd>
+            </div>
+          </dl>
+        </div>
 
         {/* Rabattcode (gilt für den Krypto-Weg; live serverseitig berechnet) */}
         <div className="mt-4">
@@ -336,7 +358,7 @@ export default function DashboardClient({
             type="text"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value)}
-            placeholder="Rabattcode (z. B. LAUNCH35)"
+            placeholder="Rabattcode"
             autoComplete="off"
             className="mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-faint focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/30"
           />
@@ -362,7 +384,7 @@ export default function DashboardClient({
                 {fmtUsd(quote.listPrice)}
               </span>
               <span className="text-xs text-accent">
-                –{quote.discount}% mit Krypto
+                Rabatt angewendet: –{quote.discount}%
               </span>
             </div>
           )}
@@ -391,7 +413,7 @@ export default function DashboardClient({
             aria-busy={loading}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Wird vorbereitet …" : "Mit Krypto zahlen"}
+            {loading ? "Wird vorbereitet …" : "Mit Krypto zahlen (Validopay)"}
           </button>
         </div>
       </section>
