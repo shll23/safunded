@@ -53,6 +53,7 @@ function CheckoutInner() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedImmediate, setAcceptedImmediate] = useState(false);
   const [acceptedRisk, setAcceptedRisk] = useState(false);
+  const [acceptedGeo, setAcceptedGeo] = useState(false);
   const [loading, setLoading] = useState<"stripe" | "validopay" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -100,7 +101,7 @@ function CheckoutInner() {
     };
   }, [couponCode, plan]);
 
-  const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk;
+  const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk && acceptedGeo;
 
   // Builds the "discount applied" line. Always shows the saved USD amount and,
   // when the percent is known, the percentage too — the amount is never
@@ -153,6 +154,7 @@ function CheckoutInner() {
             acceptedTerms,
             acceptedImmediateProvision: acceptedImmediate,
             acceptedRisk,
+            acceptedGeo,
           },
         }),
       });
@@ -312,6 +314,30 @@ function CheckoutInner() {
               />
               <span className="text-sm leading-relaxed text-muted">
                 {c.consentRisk}
+              </span>
+            </label>
+
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <input
+                type="checkbox"
+                className={checkboxClass}
+                checked={acceptedGeo}
+                onChange={(e) => setAcceptedGeo(e.target.checked)}
+              />
+              <span className="text-sm leading-relaxed text-muted">
+                {c.consentGeo.pre}
+                <Link
+                  href={`${legalHref("agb")}#${
+                    lang === "en"
+                      ? "geographic-restrictions"
+                      : "geografische-beschraenkungen"
+                  }`}
+                  target="_blank"
+                  className={legalLinkClass}
+                >
+                  {c.consentGeo.section}
+                </Link>
+                {c.consentGeo.post}
               </span>
             </label>
           </div>

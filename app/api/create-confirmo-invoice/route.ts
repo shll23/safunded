@@ -58,6 +58,7 @@ export async function POST(req: Request) {
           acceptedTerms?: boolean;
           acceptedImmediateProvision?: boolean;
           acceptedRisk?: boolean;
+          acceptedGeo?: boolean;
         }
       | undefined;
     if (!isConsentComplete(consent)) {

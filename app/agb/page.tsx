@@ -242,6 +242,52 @@ export default function AgbPage() {
       <P>
         Mündliche Nebenabreden bestehen nicht. Änderungen bedürfen der Textform.
       </P>
+
+      <H3 id="geografische-beschraenkungen">
+        45. Geografische Beschränkungen / Ausgeschlossene Länder und Regionen
+      </H3>
+      <P>
+        45.1 Das Angebot von SAFunded richtet sich nicht an Personen, die ihren
+        Wohnsitz oder gewöhnlichen Aufenthalt in den nachstehend genannten
+        Ländern oder Regionen haben oder deren Staatsangehörige sind. Eine
+        Registrierung, ein Kauf und die Bereitstellung eines Kontos sind für
+        diese Personen ausgeschlossen.
+      </P>
+      <P>
+        45.2 Aus Gründen der Einhaltung internationaler Sanktions- und
+        Embargobestimmungen (insbesondere der Europäischen Union und der
+        Vereinten Nationen) sowie geldwäscherechtlicher Vorgaben sind
+        ausgeschlossen: Nordkorea, Iran, Syrien, Kuba, Russische Föderation,
+        Belarus, Myanmar, Sudan, Südsudan, Venezuela, Afghanistan und Irak sowie
+        die Krim, Sewastopol und die Gebiete Donezk, Cherson, Luhansk und
+        Saporischschja.
+      </P>
+      <P>
+        45.3 Aus regulatorischen Gründen sowie aufgrund einer internen Risiko-
+        und Compliance-Entscheidung des Anbieters sind darüber hinaus
+        ausgeschlossen: Vereinigte Staaten von Amerika (einschließlich ihrer
+        Territorien), Indien, Indonesien, Kasachstan, Kirgisistan, Tadschikistan,
+        Turkmenistan, Usbekistan, Bhutan, Anguilla, Antigua und Barbuda, St.
+        Kitts und Nevis, St. Lucia, St. Vincent und die Grenadinen, Cookinseln
+        sowie Vanuatu. Der Ausschluss der Vereinigten Staaten erfolgt insbesondere
+        im Hinblick auf die dortige Finanzmarktregulierung.
+      </P>
+      <P>
+        45.4 Der Nutzer sichert mit dem Kauf zu, dass er nicht unter eine der in
+        45.2 und 45.3 genannten Beschränkungen fällt und hierzu keine
+        unzutreffenden Angaben (etwa zu Wohnsitz oder Staatsangehörigkeit) macht.
+      </P>
+      <P>
+        45.5 Geht trotz dieser Beschränkungen eine Zahlung einer ausgeschlossenen
+        Person ein, wird kein Konto bereitgestellt. Der gezahlte Betrag wird in
+        diesem Fall vollständig an den Zahlenden zurückerstattet; ein darüber
+        hinausgehender Anspruch auf Leistung besteht nicht.
+      </P>
+      <P>
+        45.6 Der Anbieter ist berechtigt, die vorstehende Liste anzupassen,
+        soweit sich die zugrunde liegende Sanktions-, Rechts- oder
+        Regulierungslage ändert.
+      </P>
     </LegalShell>
   );
 }

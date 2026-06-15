@@ -235,6 +235,51 @@ export default function AgbEnPage() {
       <P>
         There are no verbal side agreements. Changes require text form.
       </P>
+
+      <H3 id="geographic-restrictions">
+        45. Geographic Restrictions / Excluded Countries and Regions
+      </H3>
+      <P>
+        45.1 SAFunded&rsquo;s offering is not directed at persons who are
+        resident or habitually resident in, or who are nationals of, the
+        countries or regions listed below. Registration, purchase, and the
+        provision of an account are excluded for such persons.
+      </P>
+      <P>
+        45.2 For reasons of compliance with international sanctions and embargo
+        provisions (in particular those of the European Union and the United
+        Nations) as well as anti-money-laundering requirements, the following are
+        excluded: North Korea, Iran, Syria, Cuba, the Russian Federation,
+        Belarus, Myanmar, Sudan, South Sudan, Venezuela, Afghanistan, and Iraq,
+        as well as Crimea, Sevastopol, and the regions of Donetsk, Kherson,
+        Luhansk, and Zaporizhzhia.
+      </P>
+      <P>
+        45.3 For regulatory reasons and on the basis of an internal risk and
+        compliance decision by the provider, the following are additionally
+        excluded: the United States of America (including its territories),
+        India, Indonesia, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan,
+        Uzbekistan, Bhutan, Anguilla, Antigua and Barbuda, Saint Kitts and Nevis,
+        Saint Lucia, Saint Vincent and the Grenadines, the Cook Islands, and
+        Vanuatu. The exclusion of the United States is made in particular with
+        regard to U.S. financial market regulation.
+      </P>
+      <P>
+        45.4 By making a purchase, the user warrants that they are not subject to
+        any of the restrictions set out in 45.2 and 45.3, and that they will not
+        provide any incorrect information (for example regarding residence or
+        nationality) in this respect.
+      </P>
+      <P>
+        45.5 If, notwithstanding these restrictions, a payment is received from
+        an excluded person, no account will be provided. In such a case, the
+        amount paid will be refunded in full to the payer; no further claim to
+        performance shall exist.
+      </P>
+      <P>
+        45.6 The provider is entitled to amend the above list insofar as the
+        underlying sanctions, legal, or regulatory situation changes.
+      </P>
     </LegalShell>
   );
 }

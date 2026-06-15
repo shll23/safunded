@@ -257,6 +257,11 @@ export interface Dictionary {
     consentImmediate: { pre: string; withdrawal: string; post: string };
     /** Mandatory consent #3 — risk acknowledgement. */
     consentRisk: string;
+    /**
+     * Mandatory consent #4 — confirmation that the buyer is not resident in or
+     * a national of an excluded country (links to AGB section 45).
+     */
+    consentGeo: { pre: string; section: string; post: string };
   };
   success: {
     title: string;
@@ -569,7 +574,7 @@ export const translations: Record<Language, Dictionary> = {
         invalid: "Code invalid",
         error: "Could not check the code. Please try again.",
       },
-      acceptHint: "Please confirm all three items to unlock payment.",
+      acceptHint: "Please confirm all four items to unlock payment.",
       footnote:
         "Secure payments via Stripe and Validopay. SAFunded does not store your card details. Trading involves risk.",
       consentTerms: {
@@ -593,6 +598,11 @@ export const translations: Record<Language, Dictionary> = {
       },
       consentRisk:
         "I understand that SAFunded provides simulated trading accounts, that trading involves risk and that rewards are conditional, performance-based and not guaranteed.",
+      consentGeo: {
+        pre: "I confirm that I am not resident in or a national of an excluded country (see ",
+        section: "Terms § 45",
+        post: ").",
+      },
     },
     success: {
       title: "Payment successful",
@@ -908,7 +918,7 @@ export const translations: Record<Language, Dictionary> = {
         invalid: "Code ungültig",
         error: "Code konnte nicht geprüft werden. Bitte erneut versuchen.",
       },
-      acceptHint: "Bitte bestätige alle drei Punkte, um die Zahlung freizuschalten.",
+      acceptHint: "Bitte bestätige alle vier Punkte, um die Zahlung freizuschalten.",
       footnote:
         "Sichere Zahlungen über Stripe und Validopay. SAFunded speichert keine Kartendaten. Trading ist mit Risiken verbunden.",
       consentTerms: {
@@ -932,6 +942,11 @@ export const translations: Record<Language, Dictionary> = {
       },
       consentRisk:
         "Ich verstehe, dass SAFunded simulierte Trading-Konten bereitstellt, dass Trading Risiken beinhaltet und dass Rewards bedingt, leistungsbasiert und nicht garantiert sind.",
+      consentGeo: {
+        pre: "Ich bestätige, dass ich nicht in einem ausgeschlossenen Land ansässig oder Staatsangehöriger eines solchen bin (siehe ",
+        section: "AGB § 45",
+        post: ").",
+      },
     },
     success: {
       title: "Zahlung erfolgreich",
