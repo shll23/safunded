@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TrackingWidget from "@/components/TrackingWidget";
-import { getQuote, payWithCrypto } from "@/lib/validopay-checkout";
+import { getQuote } from "@/lib/validopay-checkout";
 
 /**
  * One funded account as rendered on the dashboard. Mirrors the `accounts[]`
@@ -69,11 +69,9 @@ const discountLabel = (q: Quote) => {
 const SUPPORT_MAILTO = "mailto:support@safunded.com";
 
 export default function DashboardClient({
-  userId,
   accounts,
   plans,
 }: {
-  userId: string;
   accounts: DashboardAccount[];
   plans: PlanTile[];
 }) {
@@ -88,8 +86,6 @@ export default function DashboardClient({
   const [couponCode, setCouponCode] = useState("");
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteStatus, setQuoteStatus] = useState<QuoteStatus>("idle");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // Live crypto price preview: re-quote (debounced) whenever the code or the
   // selected plan changes. The final price is always computed server-side by
@@ -124,39 +120,19 @@ export default function DashboardClient({
     };
   }, [couponCode, selectedPlan]);
 
-  // "Mit Karte zahlen" — reuse the existing Stripe checkout flow, which captures
-  // the mandatory consents and starts the Stripe-hosted session. The entered
-  // discount code is forwarded via the query string so it does not have to be
-  // typed again on the checkout page or on Stripe.
-  function payWithCard() {
+  // Beide Zahlwege (Karte und Krypto) laufen über genau einen gegateten
+  // Kauf-Einstieg: die Checkout-Seite mit Clickwrap-Zustimmung (AgreementGate).
+  // Hier wird KEINE Zahlung und KEINE Validopay-Order ausgelöst — der Button
+  // leitet nur mit vorausgewähltem Plan + Coupon auf /checkout weiter. Die
+  // Stripe-Session bzw. Validopay-Order entsteht dort erst nach gespeicherter
+  // Zustimmung zur aktuellen Vertragsversion. Kritisch für Krypto, da die
+  // Zahlung unwiderruflich ist.
+  function goToCheckout() {
     if (!selectedPlan) return;
     const code = couponCode.trim();
     const query = new URLSearchParams({ plan: selectedPlan });
     if (code) query.set("coupon", code);
     window.location.href = `/checkout?${query.toString()}`;
-  }
-
-  // "Mit Krypto zahlen" — create a Validopay order inline and redirect to the
-  // pay page. The price is computed server-side from plan + code.
-  async function payWithCryptoClick() {
-    if (!selectedPlan || loading) return;
-    setLoading(true);
-    setError(null);
-    try {
-      await payWithCrypto({
-        supabaseUserId: userId,
-        plan: selectedPlan,
-        couponCode: couponCode.trim() || undefined,
-      });
-      // On success payWithCrypto redirects via window.location itself.
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-      );
-      setLoading(false);
-    }
   }
 
   return (
@@ -417,32 +393,30 @@ export default function DashboardClient({
           )}
         </div>
 
-        {error && (
-          <p role="alert" className="mt-4 text-xs text-rose-400">
-            {error}
-          </p>
-        )}
-
-        {/* Zwei Zahlbuttons */}
+        {/* Zwei Zahlbuttons — beide leiten auf den gegateten Checkout weiter.
+            Erst dort wird nach gespeicherter Vertragszustimmung die Zahlung
+            (Stripe-Session bzw. Validopay-Order) gestartet. */}
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            onClick={payWithCard}
-            disabled={loading}
+            onClick={goToCheckout}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
           >
             Mit Karte zahlen
           </button>
           <button
             type="button"
-            onClick={payWithCryptoClick}
-            disabled={loading}
-            aria-busy={loading}
+            onClick={goToCheckout}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Wird vorbereitet …" : "Mit Krypto zahlen (Validopay)"}
+            Mit Krypto zahlen (Validopay)
           </button>
         </div>
+
+        <p className="mt-3 text-xs text-faint">
+          Weiter zum Checkout — die Zahlung wird erst nach Zustimmung zum
+          Kundenvertrag gestartet.
+        </p>
       </section>
     </>
   );

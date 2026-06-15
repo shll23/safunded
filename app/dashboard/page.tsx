@@ -68,7 +68,6 @@ export default async function DashboardPage() {
         </section>
 
         <DashboardClient
-          userId={user.id}
           accounts={accounts}
           plans={planTiles}
         />
