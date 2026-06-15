@@ -10,11 +10,14 @@ import { TERMS_VERSION } from "@/lib/legal";
  *    Bereitstellung + Kenntnis des Erlöschens des Widerrufsrechts
  *  - acceptedRisk: Kenntnisnahme, dass es sich um simulierte Konten handelt,
  *    Trading mit Risiken verbunden ist und Rewards nicht garantiert sind
+ *  - acceptedGeo: Bestätigung, nicht in einem ausgeschlossenen Land ansässig
+ *    oder Staatsangehöriger eines solchen zu sein (AGB § 45)
  */
 export interface ConsentInput {
   acceptedTerms?: boolean;
   acceptedImmediateProvision?: boolean;
   acceptedRisk?: boolean;
+  acceptedGeo?: boolean;
 }
 
 export interface RecordedConsent {
@@ -29,7 +32,8 @@ export function isConsentComplete(consent: ConsentInput | undefined): boolean {
   return Boolean(
     consent?.acceptedTerms &&
       consent?.acceptedImmediateProvision &&
-      consent?.acceptedRisk
+      consent?.acceptedRisk &&
+      consent?.acceptedGeo
   );
 }
 
@@ -54,6 +58,7 @@ export async function recordPurchaseConsent(
       consent_accepted_immediate_provision:
         consent.acceptedImmediateProvision === true,
       consent_accepted_risk: consent.acceptedRisk === true,
+      consent_accepted_geo: consent.acceptedGeo === true,
     },
   });
 

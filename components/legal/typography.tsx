@@ -14,9 +14,11 @@ export function H2({ children }: { children: ReactNode }) {
   );
 }
 
-export function H3({ children }: { children: ReactNode }) {
+export function H3({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <h3 className="mt-8 text-base font-semibold text-white">{children}</h3>
+    <h3 id={id} className="mt-8 scroll-mt-24 text-base font-semibold text-white">
+      {children}
+    </h3>
   );
 }
 

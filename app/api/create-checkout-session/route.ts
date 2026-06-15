@@ -11,7 +11,7 @@ import { isConsentComplete, recordPurchaseConsent } from "@/lib/consent";
  * Flow:
  *  1. Require an authenticated customer.
  *  2. Validate planId.
- *  3. Require both mandatory consents (AGB/Risk/Refund + immediate provision).
+ *  3. Require all mandatory consents (legal docs + immediate provision + risk + geographic restrictions).
  *  4. Record the consent (timestamp + terms version) on the Supabase account.
  *  5. Resolve the matching Stripe Price ID from environment variables.
  *  6. Create a Stripe Checkout Session, attaching the consent proof to the order.
@@ -62,6 +62,7 @@ export async function POST(req: Request) {
           acceptedTerms?: boolean;
           acceptedImmediateProvision?: boolean;
           acceptedRisk?: boolean;
+          acceptedGeo?: boolean;
         }
       | undefined;
     if (!isConsentComplete(consent)) {
@@ -165,6 +166,7 @@ export async function POST(req: Request) {
         consent_accepted_terms: "true",
         consent_accepted_immediate_provision: "true",
         consent_accepted_risk: "true",
+        consent_accepted_geo: "true",
       },
     });
 
