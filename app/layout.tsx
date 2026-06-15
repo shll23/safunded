@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
+import SupportWidget from "@/components/SupportWidget";
 
 // `display: "swap"` keeps text visible while the web fonts load (no invisible
 // text / FOIT), and `preload` is limited to the body font that paints the
@@ -47,7 +48,10 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
       <body className="bg-base font-body text-white antialiased">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          {children}
+          <SupportWidget />
+        </LanguageProvider>
       </body>
     </html>
   );

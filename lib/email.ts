@@ -458,3 +458,106 @@ export async function sendAgreementCopy(
 
   return true;
 }
+
+/**
+ * Data needed to forward a support-contact request to the SAFunded team. Built
+ * by app/api/support/contact/route.ts when the bot hands a customer over to a
+ * human (or the customer clicks "send to support").
+ */
+export interface SupportContactData {
+  /** Customer e-mail address (reply-to). */
+  email: string;
+  /** The customer's free-text message / question. */
+  message: string;
+  /** The recent chat transcript as context, oldest first. */
+  transcript?: { role: "user" | "assistant"; content: string }[];
+  /** ISO timestamp the request was received. */
+  receivedAt: string;
+  /** Supabase user id, if the customer was logged in. */
+  userId?: string | null;
+  /** Account e-mail from the session, if logged in (may differ from `email`). */
+  accountEmail?: string | null;
+}
+
+/**
+ * Forwards a support-contact request to the SAFunded support inbox. Reuses the
+ * existing SMTP transport (same credentials as the order/agreement mails) — no
+ * separate mailer. The recipient defaults to support@safunded.com and can be
+ * overridden with SUPPORT_EMAIL. Sets the customer's address as Reply-To so the
+ * team can answer directly. Returns `true` if dispatched, `false` if SMTP is
+ * not configured. Throws on transport errors so the caller can decide on retry.
+ */
+export async function sendSupportContactEmail(
+  d: SupportContactData
+): Promise<boolean> {
+  const transport = createTransport();
+  if (!transport) return false;
+
+  const fromName = process.env.SMTP_FROM_NAME ?? "SAFunded";
+  const fromAddress =
+    process.env.SMTP_FROM ?? process.env.SMTP_USER ?? "info@safunded.com";
+  const to = process.env.SUPPORT_EMAIL ?? "support@safunded.com";
+
+  const receivedHuman = new Date(d.receivedAt).toLocaleString("de-DE");
+  const transcript = d.transcript ?? [];
+
+  const transcriptText = transcript.length
+    ? transcript
+        .map((m) => `${m.role === "user" ? "Kunde" : "Bot"}: ${m.content}`)
+        .join("\n")
+    : "—";
+
+  const text = [
+    "Neue Support-Anfrage über den Website-Chat.",
+    "",
+    `Kunden-E-Mail:  ${d.email}`,
+    d.userId ? `User-ID:        ${d.userId}` : "",
+    d.accountEmail ? `Account-E-Mail: ${d.accountEmail}` : "",
+    `Eingegangen:    ${receivedHuman}`,
+    "",
+    "Nachricht:",
+    d.message,
+    "",
+    "Chat-Verlauf (Kontext):",
+    "------------------------",
+    transcriptText,
+  ]
+    .filter((line) => line !== "")
+    .join("\n");
+
+  const transcriptHtml = transcript.length
+    ? transcript
+        .map(
+          (m) =>
+            `<p style="margin:0 0 8px 0;"><strong>${
+              m.role === "user" ? "Kunde" : "Bot"
+            }:</strong> ${esc(m.content)}</p>`
+        )
+        .join("")
+    : "<p style=\"margin:0;\">—</p>";
+
+  const html = `
+    <h2>Neue Support-Anfrage über den Website-Chat</h2>
+    <ul>
+      <li>Kunden-E-Mail: <a href="mailto:${esc(d.email)}">${esc(d.email)}</a></li>
+      ${d.userId ? `<li>User-ID: ${esc(d.userId)}</li>` : ""}
+      ${d.accountEmail ? `<li>Account-E-Mail: ${esc(d.accountEmail)}</li>` : ""}
+      <li>Eingegangen: ${esc(receivedHuman)}</li>
+    </ul>
+    <h3>Nachricht</h3>
+    <p style="white-space:pre-wrap;">${esc(d.message)}</p>
+    <h3>Chat-Verlauf (Kontext)</h3>
+    ${transcriptHtml}
+  `;
+
+  await transport.sendMail({
+    from: `"${fromName}" <${fromAddress}>`,
+    to,
+    replyTo: d.email,
+    subject: `Support-Anfrage von ${d.email}`,
+    text,
+    html,
+  });
+
+  return true;
+}
