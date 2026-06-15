@@ -13,6 +13,7 @@
 
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const { hasAcceptedCurrentAgreement } = require('../../lib/agreementGate');
 
 const SECRET = process.env.VALIDOPAY_WEBHOOK_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -84,6 +85,25 @@ exports.handler = async (event) => {
 
   const planKey = String(plan).toLowerCase();
   const nowIso = new Date().toISOString();
+
+  // Backstop: Konto NIE freischalten, wenn der Kunde dem aktuellen Vertrag
+  // nicht zugestimmt hat. Primaeres Gate ist der Onboarding-Schritt; dies hier
+  // sichert die Provisionierung zusaetzlich ab.
+  const accepted = await hasAcceptedCurrentAgreement(supabaseUserId);
+  if (!accepted) {
+    console.warn(`Provision gehalten: keine Vertragszustimmung fuer ${supabaseUserId}`);
+    // Order NICHT als provisioniert markieren -> Watcher versucht es spaeter
+    // erneut (sobald die Zustimmung vorliegt). Konto bleibt im Status
+    // "Wird eingerichtet" (es wird kein Konto an accounts[] angehaengt).
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        ok: true,
+        provisioned: false,
+        reason: 'agreement_not_accepted',
+      }),
+    };
+  }
 
   const newAccount = {
     account_id: makeAccountId(),
