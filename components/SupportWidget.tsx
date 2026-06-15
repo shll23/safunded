@@ -32,12 +32,13 @@ type Mode = "chat" | "contact" | "sent";
 
 const COPY = {
   de: {
-    title: "SAFunded Support",
+    title: "SAM",
+    name: "SAM",
     subtitle: "Fragen zu Regeln, Plänen & AGB",
     open: "Support-Chat öffnen",
     close: "Schließen",
     greeting:
-      "Hallo! Ich beantworte Fragen zu unseren Regeln, Plänen und Bedingungen. Bei kontobezogenen Anliegen verbinde ich dich mit unserem Team.",
+      "Hi, ich bin SAM 👋 Ich beantworte Fragen zu unseren Regeln, Plänen und Bedingungen. Bei kontobezogenen Anliegen verbinde ich dich mit unserem Team.",
     placeholder: "Deine Frage…",
     send: "Senden",
     thinking: "Einen Moment…",
@@ -57,12 +58,13 @@ const COPY = {
     errorMessage: "Bitte gib eine Nachricht ein.",
   },
   en: {
-    title: "SAFunded Support",
+    title: "SAM",
+    name: "SAM",
     subtitle: "Questions about rules, plans & terms",
     open: "Open support chat",
     close: "Close",
     greeting:
-      "Hi! I answer questions about our rules, plans and terms. For anything account-related I'll connect you with our team.",
+      "Hi, I'm SAM 👋 I answer questions about our rules, plans and terms. For anything account-related I'll connect you with our team.",
     placeholder: "Your question…",
     send: "Send",
     thinking: "One moment…",
@@ -84,6 +86,22 @@ const COPY = {
 } as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Safety net so the customer never sees raw Markdown, even if the model slips.
+ * Strips bold/italic markers (**, *, __), heading hashes and leading bullet
+ * dashes — turning a "- item" line into plain text on its own line. The
+ * conversation bubbles already render with `whitespace-pre-wrap`, so newlines
+ * are preserved as paragraphs.
+ */
+function toPlainText(text: string): string {
+  return text
+    .replace(/\*\*/g, "") // bold **
+    .replace(/__/g, "") // bold/underline __
+    .replace(/\*/g, "") // italic *
+    .replace(/^[ \t]*#{1,6}\s+/gm, "") // headings
+    .replace(/^[ \t]*[-•]\s+/gm, ""); // leading bullet markers → plain line
+}
 
 export default function SupportWidget() {
   const { lang } = useLanguage();
@@ -246,21 +264,22 @@ export default function SupportWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? c.close : c.open}
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-[60] grid h-14 w-14 place-items-center rounded-full bg-accent text-ink shadow-glow-lg transition-transform hover:bg-accent-bright hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+        className={
+          open
+            ? "fixed bottom-5 right-5 z-[60] grid h-14 w-14 place-items-center rounded-full bg-accent text-ink shadow-glow-lg transition-transform hover:bg-accent-bright hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+            : "fixed bottom-5 right-5 z-[60] grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-surface ring-1 ring-accent/40 shadow-glow-lg transition-transform hover:scale-105 hover:ring-accent/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+        }
       >
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M4 5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v9c0 .83-.67 1.5-1.5 1.5H9l-4 4v-4H5.5C4.67 16 4 15.33 4 14.5v-9Z"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <img
+            src="/sam.png"
+            alt={c.open}
+            className="h-full w-full scale-110 object-cover"
+          />
         )}
       </button>
 
@@ -273,8 +292,12 @@ export default function SupportWidget() {
         >
           {/* Header */}
           <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3">
-            <div className="grid h-9 w-9 flex-none place-items-center rounded-lg bg-accent text-sm font-bold text-ink">
-              SA
+            <div className="h-9 w-9 flex-none overflow-hidden rounded-lg bg-base ring-1 ring-accent/30">
+              <img
+                src="/sam.png"
+                alt={c.title}
+                className="h-full w-full scale-110 object-cover"
+              />
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-white">{c.title}</p>
@@ -306,29 +329,46 @@ export default function SupportWidget() {
             ) : (
               <>
                 {/* Greeting */}
-                <div className="mb-3 flex">
-                  <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white/[0.05] px-3.5 py-2.5 text-sm leading-relaxed text-muted">
-                    {c.greeting}
+                <div className="mb-3 flex items-start gap-2">
+                  <img
+                    src="/sam.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="h-7 w-7 flex-none rounded-full object-cover ring-1 ring-accent/30"
+                  />
+                  <div className="min-w-0">
+                    <p className="mb-1 text-xs font-medium text-faint">{c.name}</p>
+                    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white/[0.05] px-3.5 py-2.5 text-sm leading-relaxed text-muted">
+                      {c.greeting}
+                    </div>
                   </div>
                 </div>
 
                 {/* Conversation */}
-                {messages.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`mb-3 flex ${m.role === "user" ? "justify-end" : ""}`}
-                  >
-                    <div
-                      className={
-                        m.role === "user"
-                          ? "max-w-[85%] rounded-2xl rounded-tr-sm bg-accent px-3.5 py-2.5 text-sm leading-relaxed text-ink"
-                          : "max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-tl-sm bg-white/[0.05] px-3.5 py-2.5 text-sm leading-relaxed text-muted"
-                      }
-                    >
-                      {m.content}
+                {messages.map((m, i) =>
+                  m.role === "user" ? (
+                    <div key={i} className="mb-3 flex justify-end">
+                      <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent px-3.5 py-2.5 text-sm leading-relaxed text-ink">
+                        {m.content}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ) : (
+                    <div key={i} className="mb-3 flex items-start gap-2">
+                      <img
+                        src="/sam.png"
+                        alt=""
+                        aria-hidden="true"
+                        className="h-7 w-7 flex-none rounded-full object-cover ring-1 ring-accent/30"
+                      />
+                      <div className="min-w-0">
+                        <p className="mb-1 text-xs font-medium text-faint">{c.name}</p>
+                        <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-tl-sm bg-white/[0.05] px-3.5 py-2.5 text-sm leading-relaxed text-muted">
+                          {toPlainText(m.content)}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
 
                 {loading && (
                   <div className="mb-3 flex">

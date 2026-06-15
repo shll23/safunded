@@ -399,6 +399,201 @@ export interface AgreementCopyData {
 }
 
 /**
+ * Renders the branded HTML body for the agreement-confirmation e-mail. Mirrors
+ * the visual language of the order-confirmation mail (SAFunded navy + green,
+ * Poppins, rounded cards) but only presents the data that is already sent:
+ * agreement version, acceptance timestamp, optional IP and the PDF link. No
+ * content, attachment or link is added or removed here — this is presentation
+ * only.
+ */
+function buildAgreementCopyHtml(
+  d: AgreementCopyData,
+  acceptedAtHuman: string
+): string {
+  const name = d.name ? ` ${esc(d.name)}` : "";
+  const version = esc(d.version);
+  const pdfUrl = esc(d.pdfUrl);
+  const acceptedAt = esc(acceptedAtHuman);
+  const ip = d.ip ? esc(d.ip) : "";
+
+  return `<!DOCTYPE html>
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="dark light">
+  <meta name="supported-color-schemes" content="dark light">
+  <title>Vertrag bestätigt – SAFunded</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    body { margin:0; padding:0; width:100% !important; background:#070B16; }
+    table { border-collapse:collapse; }
+    img { border:0; line-height:100%; outline:none; text-decoration:none; }
+    a { color:#2DD4A7; }
+    .body-font { font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
+    @media only screen and (max-width:600px) {
+      .container { width:100% !important; }
+      .px { padding-left:24px !important; padding-right:24px !important; }
+    }
+  </style>
+</head>
+<body class="body-font" style="margin:0; padding:0; background:#070B16;">
+
+  <!-- Preheader (hidden) -->
+  <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:#070B16; font-size:1px; line-height:1px;">
+    Deine Zustimmung zum SAFunded-Kundenvertrag wurde gespeichert. Version, Datum und PDF-Link im Überblick.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#070B16" style="background:#070B16;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <!-- Container -->
+        <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px;">
+
+          <!-- Logo -->
+          <tr>
+            <td class="px" style="padding:8px 40px 28px 40px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding-right:14px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="44" height="44" align="center" valign="middle" bgcolor="#2DD4A7"
+                            style="width:44px; height:44px; background:#2DD4A7; border-radius:12px; color:#070B16; font-weight:800; font-size:18px; font-family:'Poppins',Arial,sans-serif;">
+                          SA
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td valign="middle" style="font-size:22px; font-weight:600; color:#EDF1F7; font-family:'Poppins',Arial,sans-serif;">
+                    SA<span style="color:#2DD4A7;">Funded</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Hero card -->
+          <tr>
+            <td class="px" style="padding:0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0F1628"
+                     style="background:#0F1628; border:1px solid #263048; border-radius:20px;">
+                <tr>
+                  <td style="padding:36px 36px 28px 36px;">
+                    <!-- check badge -->
+                    <table role="presentation" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="48" height="48" align="center" valign="middle" bgcolor="#0E2A24"
+                            style="width:48px; height:48px; background:#0E2A24; border:1px solid #2DD4A7; border-radius:50%; color:#2DD4A7; font-size:24px; font-weight:700;">
+                          &#10003;
+                        </td>
+                      </tr>
+                    </table>
+                    <h1 style="margin:20px 0 6px 0; font-size:26px; line-height:1.25; font-weight:700; color:#EDF1F7; font-family:'Poppins',Arial,sans-serif;">
+                      Dein Vertrag ist bestätigt
+                    </h1>
+                    <p style="margin:0 0 4px 0; font-size:15px; line-height:1.6; color:#8C96A8;">
+                      Hallo${name}, vielen Dank &ndash; deine Zustimmung zum SAFunded-Kundenvertrag wurde erfasst und gespeichert. Diese E-Mail dient als Beleg deiner Unterzeichnung.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- gold divider -->
+                <tr><td style="padding:0 36px;"><div style="height:2px; width:80px; background:#CBA35C; line-height:2px; font-size:0;">&nbsp;</div></td></tr>
+
+                <!-- Details -->
+                <tr>
+                  <td style="padding:24px 36px 8px 36px;">
+                    <p style="margin:0 0 16px 0; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#8C96A8;">Vertragsdetails</p>
+
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td valign="top" style="padding-bottom:18px;">
+                          <p style="margin:0 0 4px 0; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8C96A8;">Vertrag</p>
+                          <p style="margin:0; font-size:17px; font-weight:600; color:#EDF1F7;">SAFunded-Kundenvertrag</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom:18px; border-top:1px solid #263048;">
+                          <p style="margin:14px 0 4px 0; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8C96A8;">Version</p>
+                          <p style="margin:0; font-size:17px; font-weight:600; color:#2DD4A7;">v${version}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-bottom:18px; border-top:1px solid #263048;">
+                          <p style="margin:14px 0 4px 0; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8C96A8;">Zugestimmt am</p>
+                          <p style="margin:0; font-size:17px; font-weight:600; color:#EDF1F7;">${acceptedAt}</p>
+                        </td>
+                      </tr>
+                      ${
+                        ip
+                          ? `<tr>
+                        <td valign="top" style="padding-bottom:8px; border-top:1px solid #263048;">
+                          <p style="margin:14px 0 4px 0; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8C96A8;">IP-Adresse</p>
+                          <p style="margin:0; font-size:13px; font-family:'JetBrains Mono',Consolas,monospace; color:#EDF1F7;">${ip}</p>
+                        </td>
+                      </tr>`
+                          : ""
+                      }
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- CTA button -->
+                <tr>
+                  <td style="padding:24px 36px 36px 36px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="center" bgcolor="#2DD4A7" style="border-radius:999px;">
+                          <a href="${pdfUrl}" target="_blank"
+                             style="display:inline-block; padding:15px 34px; font-size:15px; font-weight:600; color:#070B16; text-decoration:none; font-family:'Poppins',Arial,sans-serif;">
+                            Vertrag als PDF öffnen
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin:14px 0 0 0; font-size:12px; line-height:1.6; color:#8C96A8;">
+                      Falls der Button nicht funktioniert, nutze diesen Link:<br>
+                      <a href="${pdfUrl}" target="_blank" style="color:#2DD4A7; word-break:break-all;">${pdfUrl}</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="px" style="padding:28px 40px 8px 40px;">
+              <div style="height:1px; background:#263048; line-height:1px; font-size:0;">&nbsp;</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="px" style="padding:16px 40px 40px 40px;">
+              <p style="margin:0 0 10px 0; font-size:12px; line-height:1.7; color:#8C96A8;">
+                <strong style="color:#A6B0C2;">AB Digital Management</strong><br>
+                Hauptstraße 6 &middot; 72622 Nürtingen &middot; Deutschland<br>
+                <a href="mailto:info@safunded.com" style="color:#2DD4A7; text-decoration:none;">info@safunded.com</a>
+              </p>
+              <p style="margin:0; font-size:11px; line-height:1.7; color:#5E6678;">
+                Diese E-Mail dient als Beleg deiner Zustimmung zum SAFunded-Kundenvertrag. Bei Fragen melde dich jederzeit unter info@safunded.com.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Container -->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+/**
  * Sends the customer a confirmation / proof copy after they accept the
  * SAFunded Customer Agreement (clickwrap). Reuses the existing SMTP onboarding
  * mailer (same transport as the order confirmation) instead of an external
@@ -417,7 +612,7 @@ export async function sendAgreementCopy(
   const fromAddress =
     process.env.SMTP_FROM ?? process.env.SMTP_USER ?? "info@safunded.com";
 
-  const subject = `Ihr SAFunded-Kundenvertrag (v${d.version})`;
+  const subject = "Dein SAFunded-Vertrag ist bestätigt";
   const acceptedAtHuman = new Date(d.acceptedAt).toLocaleString("de-DE");
 
   const text = [
@@ -435,18 +630,7 @@ export async function sendAgreementCopy(
     .filter((line) => line !== "")
     .join("\n");
 
-  const html = `
-    <p>Hallo ${esc(d.name)},</p>
-    <p>vielen Dank &ndash; Ihre Zustimmung zum SAFunded-Kundenvertrag wurde gespeichert.</p>
-    <ul>
-      <li>Vertrag: <a href="${esc(d.pdfUrl)}">SAFunded-Kundenvertrag v${esc(
-        d.version
-      )} (PDF)</a></li>
-      <li>Zugestimmt am: ${esc(acceptedAtHuman)}</li>
-      ${d.ip ? `<li>IP: ${esc(d.ip)}</li>` : ""}
-    </ul>
-    <p>Diese E-Mail dient als Beleg Ihrer Zustimmung. Bei Fragen: info@safunded.com</p>
-  `;
+  const html = buildAgreementCopyHtml(d, acceptedAtHuman);
 
   await transport.sendMail({
     from: `"${fromName}" <${fromAddress}>`,
