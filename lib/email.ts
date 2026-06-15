@@ -379,3 +379,82 @@ export async function sendOrderConfirmationEmail(
 
   return true;
 }
+
+/**
+ * Data needed to send the customer their copy / proof of the contract
+ * acceptance (clickwrap). Mirrors the payload built in
+ * app/api/agreement/accept/route.ts.
+ */
+export interface AgreementCopyData {
+  /** Customer name for the greeting, if available. */
+  name: string;
+  /** Accepted agreement version, e.g. "1.0". */
+  version: string;
+  /** Public, immutable URL of the agreement PDF. */
+  pdfUrl: string;
+  /** ISO timestamp of the acceptance. */
+  acceptedAt: string;
+  /** Client IP recorded at acceptance time, if available. */
+  ip: string | null;
+}
+
+/**
+ * Sends the customer a confirmation / proof copy after they accept the
+ * SAFunded Customer Agreement (clickwrap). Reuses the existing SMTP onboarding
+ * mailer (same transport as the order confirmation) instead of an external
+ * provider, so no additional credentials are required. Returns `true` if the
+ * message was dispatched, `false` if SMTP is not configured. Throws on
+ * transport errors so the caller can decide whether to retry.
+ */
+export async function sendAgreementCopy(
+  to: string,
+  d: AgreementCopyData
+): Promise<boolean> {
+  const transport = createTransport();
+  if (!transport) return false;
+
+  const fromName = process.env.SMTP_FROM_NAME ?? "SAFunded";
+  const fromAddress =
+    process.env.SMTP_FROM ?? process.env.SMTP_USER ?? "info@safunded.com";
+
+  const subject = `Ihr SAFunded-Kundenvertrag (v${d.version})`;
+  const acceptedAtHuman = new Date(d.acceptedAt).toLocaleString("de-DE");
+
+  const text = [
+    `Hallo ${d.name},`,
+    "",
+    "vielen Dank – Ihre Zustimmung zum SAFunded-Kundenvertrag wurde gespeichert.",
+    "",
+    `Vertrag:        SAFunded-Kundenvertrag v${d.version} (PDF)`,
+    `PDF:            ${d.pdfUrl}`,
+    `Zugestimmt am:  ${acceptedAtHuman}`,
+    d.ip ? `IP:             ${d.ip}` : "",
+    "",
+    "Diese E-Mail dient als Beleg Ihrer Zustimmung. Bei Fragen: info@safunded.com",
+  ]
+    .filter((line) => line !== "")
+    .join("\n");
+
+  const html = `
+    <p>Hallo ${esc(d.name)},</p>
+    <p>vielen Dank &ndash; Ihre Zustimmung zum SAFunded-Kundenvertrag wurde gespeichert.</p>
+    <ul>
+      <li>Vertrag: <a href="${esc(d.pdfUrl)}">SAFunded-Kundenvertrag v${esc(
+        d.version
+      )} (PDF)</a></li>
+      <li>Zugestimmt am: ${esc(acceptedAtHuman)}</li>
+      ${d.ip ? `<li>IP: ${esc(d.ip)}</li>` : ""}
+    </ul>
+    <p>Diese E-Mail dient als Beleg Ihrer Zustimmung. Bei Fragen: info@safunded.com</p>
+  `;
+
+  await transport.sendMail({
+    from: `"${fromName}" <${fromAddress}>`,
+    to,
+    subject,
+    text,
+    html,
+  });
+
+  return true;
+}

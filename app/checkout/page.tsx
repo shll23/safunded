@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Logo, LanguageToggle } from "@/components/Header";
+import AgreementGate from "@/components/AgreementGate";
 import { useLanguage } from "@/lib/i18n";
 import { getPlan } from "@/lib/plans";
 import { createClient } from "@/lib/supabase/client";
@@ -54,6 +55,10 @@ function CheckoutInner() {
   const [acceptedImmediate, setAcceptedImmediate] = useState(false);
   const [acceptedRisk, setAcceptedRisk] = useState(false);
   const [acceptedGeo, setAcceptedGeo] = useState(false);
+  // Clickwrap-Zustimmung zum Kundenvertrag (separates Audit-Log, NICHT in
+  // user_metadata). Wird erst nach erfolgreichem onAccepted() der AgreementGate
+  // true und ist Pflicht, bevor ein Kauf ausgeloest werden darf.
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [loading, setLoading] = useState<"stripe" | "validopay" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,6 +107,10 @@ function CheckoutInner() {
   }, [couponCode, plan]);
 
   const allAccepted = acceptedTerms && acceptedImmediate && acceptedRisk && acceptedGeo;
+  // Kauf erst moeglich, wenn zusaetzlich der Kundenvertrag per Clickwrap
+  // zugestimmt wurde (onAccepted der AgreementGate gefeuert). Ohne Zustimmung
+  // kein Kauf.
+  const canPay = allAccepted && agreementAccepted;
 
   // Builds the "discount applied" line. Always shows the saved USD amount and,
   // when the percent is known, the percentage too — the amount is never
@@ -132,7 +141,7 @@ function CheckoutInner() {
   }
 
   async function pay(provider: "stripe") {
-    if (!plan || !allAccepted) return;
+    if (!plan || !canPay) return;
     setLoading(provider);
     setError(null);
 
@@ -179,7 +188,7 @@ function CheckoutInner() {
   // Der zu zahlende Betrag wird serverseitig aus Plan + Rabattcode berechnet —
   // das Frontend übergibt nur den eingegebenen Code, keinen Betrag.
   async function payValidopay() {
-    if (!plan || !allAccepted) return;
+    if (!plan || !canPay) return;
     setLoading("validopay");
     setError(null);
 
@@ -386,13 +395,34 @@ function CheckoutInner() {
             )}
           </div>
 
-          {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind.
-              Genau zwei Zahlwege: Stripe (Karte) und Validopay (Krypto). */}
+          {/* Kundenvertrag (Clickwrap) — verpflichtender Onboarding-Schritt
+              VOR dem Kauf. Erst wenn der Kunde hier zustimmt (onAccepted),
+              werden die Bezahl-Buttons freigeschaltet. Die Zustimmung wird
+              serverseitig in das separate Audit-Log geschrieben (nicht in
+              user_metadata). */}
+          <div className="mt-6">
+            {agreementAccepted ? (
+              <p className="rounded-xl border border-accent/20 bg-accent/[0.06] px-4 py-3 text-sm text-accent">
+                {lang === "en"
+                  ? "Customer Agreement accepted."
+                  : "Kundenvertrag zugestimmt."}
+              </p>
+            ) : (
+              <AgreementGate
+                lang={lang}
+                onAccepted={() => setAgreementAccepted(true)}
+              />
+            )}
+          </div>
+
+          {/* Bezahl-Buttons — deaktiviert, bis alle Checkboxen aktiv sind und
+              der Kundenvertrag zugestimmt wurde. Genau zwei Zahlwege: Stripe
+              (Karte) und Validopay (Krypto). */}
           <div className="mt-6 space-y-3">
             <button
               type="button"
               onClick={() => pay("stripe")}
-              disabled={!allAccepted || loading !== null}
+              disabled={!canPay || loading !== null}
               aria-busy={loading === "stripe"}
               className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
             >
@@ -401,7 +431,7 @@ function CheckoutInner() {
             <button
               type="button"
               onClick={() => payValidopay()}
-              disabled={!allAccepted || loading !== null}
+              disabled={!canPay || loading !== null}
               aria-busy={loading === "validopay"}
               className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -409,7 +439,7 @@ function CheckoutInner() {
             </button>
           </div>
 
-          {!allAccepted && (
+          {!canPay && (
             <p className="mt-3 text-center text-xs text-faint">{c.acceptHint}</p>
           )}
         </div>
