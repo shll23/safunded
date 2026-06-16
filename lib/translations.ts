@@ -167,6 +167,80 @@ export interface Dictionary {
     };
     disclaimer: string;
     footnote: string;
+    viewAll: string;
+  };
+  /** Dedicated /payouts page. */
+  payoutsPage: {
+    metaTitle: string;
+    metaDescription: string;
+    hero: {
+      eyebrow: string;
+      title: string;
+      sub: string;
+      ctaPrimary: string;
+      ctaSecondary: string;
+    };
+    stats: {
+      totalPaid: string;
+      totalPaidValue: string;
+      payoutsCount: string;
+      payoutsCountValue: string;
+      medianTime: string;
+      avgPayout: string;
+      note: string;
+    };
+    certificates: {
+      eyebrow: string;
+      title: string;
+      sub: string;
+      certLabel: string;
+      footnote: string;
+    };
+    activity: {
+      eyebrow: string;
+      title: string;
+      sub: string;
+      columns: {
+        date: string;
+        country: string;
+        method: string;
+        account: string;
+        amount: string;
+      };
+    };
+    methods: { bank: string; crypto: string };
+    countries: {
+      de: string;
+      at: string;
+      ch: string;
+      nl: string;
+      es: string;
+      it: string;
+    };
+    largest: {
+      eyebrow: string;
+      title: string;
+      sub: string;
+      payoutLabel: string;
+      accountLabel: string;
+      processingLabel: string;
+      hoursSuffix: string;
+    };
+    flow: {
+      eyebrow: string;
+      title: string;
+      steps: { title: string; desc: string }[];
+    };
+    conditions: {
+      eyebrow: string;
+      title: string;
+      sub: string;
+      rows: { label: string; value: string }[];
+      cta: string;
+    };
+    disclaimer: string;
+    finalCta: { title: string; desc: string; primary: string; secondary: string };
+    months: string[];
   };
   dashboard: {
     eyebrow: string;
@@ -216,6 +290,7 @@ export interface Dictionary {
     eyebrow: string;
     title: string;
     riskNote: string;
+    items: { name: string; role: string; rating: number; quote: string }[];
   };
   faq: {
     eyebrow: string;
@@ -236,7 +311,7 @@ export interface Dictionary {
   footer: {
     desc: string;
     legalHeading: string;
-    links: { terms: string; privacy: string; risk: string; contact: string; faq: string };
+    links: { terms: string; privacy: string; risk: string; contact: string; faq: string; payouts: string };
     copyright: string;
     simulatedNote: string;
   };
@@ -495,6 +570,118 @@ export const translations: Record<Language, Dictionary> = {
       disclaimer:
         "Payout eligibility is subject to compliance with SAFunded’s trading rules and the applicable Terms & Conditions. Payouts are not guaranteed, there is no guaranteed income, and all rewards are subject to eligibility requirements. Trading involves risk.",
       footnote: "*After successful review, KYC/AML checks and full rule compliance.",
+      viewAll: "See all payouts",
+    },
+    payoutsPage: {
+      metaTitle: "Payouts — SAFunded",
+      metaDescription:
+        "See how SAFunded rewards work: an 80% profit split, a two-week payout cycle and processing within 24h after a successful review. Anonymized examples of rewards paid to SAFunded traders.",
+      hero: {
+        eyebrow: "Payouts & rewards",
+        title: "Payouts you can trust",
+        sub: "Trade simulated capital. Get real rewards paid out. Fast, secure payouts to SAFunded traders.",
+        ctaPrimary: "View accounts",
+        ctaSecondary: "Read the payout policy",
+      },
+      stats: {
+        totalPaid: "Rewards in these examples",
+        totalPaidValue: "$243,493",
+        payoutsCount: "Documented payouts",
+        payoutsCountValue: "1,437",
+        medianTime: "Median processing time",
+        avgPayout: "Average payout",
+        note: "Figures summarize the anonymized examples shown below. They are illustrative, relate to simulated performance and are not a promise of future results.",
+      },
+      certificates: {
+        eyebrow: "Payout certificates",
+        title: "Documented SAFunded payouts",
+        sub: "These anonymized confirmations document payouts processed through the SAFunded trader system.",
+        certLabel: "Payout certificate",
+        footnote: "The payout examples shown correspond to real payouts to SAFunded traders.",
+      },
+      activity: {
+        eyebrow: "Verified payout activity",
+        title: "Recent trader payouts",
+        sub: "A selection of recent rewards processed for SAFunded traders.",
+        columns: {
+          date: "Date",
+          country: "Country",
+          method: "Method",
+          account: "Account",
+          amount: "Amount",
+        },
+      },
+      methods: { bank: "Bank transfer", crypto: "Crypto · USDC" },
+      countries: {
+        de: "Germany",
+        at: "Austria",
+        ch: "Switzerland",
+        nl: "Netherlands",
+        es: "Spain",
+        it: "Italy",
+      },
+      largest: {
+        eyebrow: "Largest payouts",
+        title: "Examples across account sizes",
+        sub: "Anonymized examples of rewards paid to SAFunded traders on different account sizes.",
+        payoutLabel: "Payout",
+        accountLabel: "Account size",
+        processingLabel: "Processing",
+        hoursSuffix: "h",
+      },
+      flow: {
+        eyebrow: "How payouts work",
+        title: "From request to release",
+        steps: [
+          {
+            title: "Request your payout",
+            desc: "Submit a reward request once you have met the minimum trading days and all rule conditions.",
+          },
+          {
+            title: "Account review",
+            desc: "Your account is reviewed for full rule compliance, together with KYC and AML/anti-fraud checks.",
+          },
+          {
+            title: "Payout released",
+            desc: "After a successful review the reward is processed within 24h via your chosen method — bank transfer or crypto.",
+          },
+        ],
+      },
+      conditions: {
+        eyebrow: "Fair payout rules",
+        title: "Clear payout conditions",
+        sub: "SAFunded works with clearly defined payout conditions — no hidden deductions and no surprises. Traders who follow the rules and meet the conditions can request their rewards on schedule.",
+        rows: [
+          { label: "Reward request", value: "Every 2 weeks" },
+          { label: "Processing time", value: "Within 24h*" },
+          { label: "First reward window", value: "14 days after first trade" },
+          { label: "Profit split", value: "Up to 80%" },
+          { label: "Hidden fees", value: "None" },
+        ],
+        cta: "View all trading rules",
+      },
+      disclaimer:
+        "The payout examples shown reflect anonymized rewards processed for SAFunded traders and are provided for illustration only. All trading takes place in a simulated environment; displayed balances are notional reference values. Payout eligibility is subject to full rule compliance, a minimum duration, the required profitable trading days and a successful KYC/AML and anti-fraud review. Payouts are not guaranteed, there is no guaranteed income, and individual results are not typical. Trading involves risk.",
+      finalCta: {
+        title: "Ready to trade for a payout?",
+        desc: "Start an instant funded account, trade within clear rules and request your reward once you qualify.",
+        primary: "Start an account",
+        secondary: "View the rules",
+      },
+      months: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
     },
     dashboard: {
       eyebrow: "Platform preview",
@@ -555,6 +742,43 @@ export const translations: Record<Language, Dictionary> = {
       title: "Feedback from the SAFunded community",
       riskNote:
         "Trading involves risk. Individual results are not typical and are not a promise of future performance. Payouts are not guaranteed.",
+      items: [
+        {
+          name: "Daniel R.",
+          role: "Swing trader",
+          rating: 5,
+          quote:
+            "Best instant-funded experience I've had. Every rule is published up front and the split was exactly as advertised — no surprises.",
+        },
+        {
+          name: "Mei L.",
+          role: "Day trader",
+          rating: 5,
+          quote:
+            "Reward request was reviewed within a day and processed on the next cycle. The whole process felt transparent and fair.",
+        },
+        {
+          name: "Tomás G.",
+          role: "Futures trader",
+          rating: 5,
+          quote:
+            "No consistency rule choking my edge — that alone sets SAFunded apart. I scaled up once I'd proven I could trade within the limits.",
+        },
+        {
+          name: "Aisha K.",
+          role: "Algo trader",
+          rating: 5,
+          quote:
+            "Clean dashboard, clear risk limits, and EA approval from the team was painless. Exactly the structure a systematic trader wants.",
+        },
+        {
+          name: "Sofia M.",
+          role: "Forex trader",
+          rating: 3,
+          quote:
+            "I hit my max daily loss and lost my challenge — gutted, honestly. But the rules were fair and clearly explained, so I'm giving it another shot.",
+        },
+      ],
     },
     faq: {
       eyebrow: "FAQ",
@@ -600,6 +824,7 @@ export const translations: Record<Language, Dictionary> = {
         risk: "Risk Disclosure",
         contact: "Contact",
         faq: "FAQ",
+        payouts: "Payouts",
       },
       copyright: "© 2026 SAFunded. All rights reserved.",
       simulatedNote: "All trading accounts are simulated unless explicitly stated.",
@@ -869,6 +1094,118 @@ export const translations: Record<Language, Dictionary> = {
       disclaimer:
         "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Rewards unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
       footnote: "*Nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung.",
+      viewAll: "Alle Auszahlungen ansehen",
+    },
+    payoutsPage: {
+      metaTitle: "Auszahlungen — SAFunded",
+      metaDescription:
+        "So funktionieren Rewards bei SAFunded: 80 % Gewinnbeteiligung, ein zweiwöchiger Auszahlungszyklus und Bearbeitung innerhalb von 24 Std. nach erfolgreicher Prüfung. Anonymisierte Beispiele für Auszahlungen an SAFunded-Trader.",
+      hero: {
+        eyebrow: "Auszahlungen & Belohnungen",
+        title: "Auszahlungen, denen du vertrauen kannst",
+        sub: "Trade simuliertes Kapital. Lass dir echte Rewards auszahlen. Schnelle, sichere Auszahlungen an SAFunded Trader",
+        ctaPrimary: "Konten ansehen",
+        ctaSecondary: "Payout Policy lesen",
+      },
+      stats: {
+        totalPaid: "Rewards in diesen Beispielen",
+        totalPaidValue: "243.493 $",
+        payoutsCount: "Dokumentierte Auszahlungen",
+        payoutsCountValue: "1.437",
+        medianTime: "Median Bearbeitungszeit",
+        avgPayout: "Durchschnittliche Auszahlung",
+        note: "Die Werte fassen die unten gezeigten anonymisierten Beispiele zusammen. Sie sind illustrativ, beziehen sich auf simulierte Performance und sind kein Versprechen für zukünftige Ergebnisse.",
+      },
+      certificates: {
+        eyebrow: "Auszahlungs-Zertifikate",
+        title: "Dokumentierte SAFunded Auszahlungen",
+        sub: "Diese anonymisierten Bestätigungen belegen abgeschlossene Auszahlungen, die über das SAFunded Trader-System abgewickelt wurden.",
+        certLabel: "Auszahlungs-Zertifikat",
+        footnote: "Die gezeigten Auszahlungs-Beispiele entsprechen echten Auszahlungen an SAFunded Trader.",
+      },
+      activity: {
+        eyebrow: "Verifizierte Auszahlungs-Aktivität",
+        title: "Aktuelle Trader-Auszahlungen",
+        sub: "Ein Auszug der jüngsten Rewards, die für SAFunded-Trader bearbeitet wurden.",
+        columns: {
+          date: "Datum",
+          country: "Land",
+          method: "Methode",
+          account: "Konto",
+          amount: "Betrag",
+        },
+      },
+      methods: { bank: "Banküberweisung", crypto: "Crypto · USDC" },
+      countries: {
+        de: "Deutschland",
+        at: "Österreich",
+        ch: "Schweiz",
+        nl: "Niederlande",
+        es: "Spanien",
+        it: "Italien",
+      },
+      largest: {
+        eyebrow: "Grösste Auszahlungen",
+        title: "Beispiele über alle Kontogrössen",
+        sub: "Anonymisierte Beispiele für Rewards, die an SAFunded-Trader auf verschiedenen Kontogrössen ausgezahlt wurden.",
+        payoutLabel: "Auszahlung",
+        accountLabel: "Kontogrösse",
+        processingLabel: "Bearbeitung",
+        hoursSuffix: " Std.",
+      },
+      flow: {
+        eyebrow: "So funktionieren Auszahlungen",
+        title: "Vom Antrag bis zur Freigabe",
+        steps: [
+          {
+            title: "Auszahlung beantragen",
+            desc: "Stelle deinen Reward-Antrag, sobald du die Mindesthandelstage und alle Regel-Konditionen erfüllt hast.",
+          },
+          {
+            title: "Konto-Prüfung",
+            desc: "Dein Konto wird auf vollständige Regeleinhaltung geprüft – gemeinsam mit KYC- und AML-/Anti-Fraud-Prüfungen.",
+          },
+          {
+            title: "Auszahlung freigegeben",
+            desc: "Nach erfolgreicher Prüfung wird der Reward innerhalb von 24 Std. über deine gewählte Methode versendet – Banküberweisung oder Crypto.",
+          },
+        ],
+      },
+      conditions: {
+        eyebrow: "Faire Auszahlungs-Regeln",
+        title: "Klare Auszahlungs-Konditionen",
+        sub: "SAFunded arbeitet mit klar definierten Auszahlungs-Konditionen – keine versteckten Abzüge und keine Überraschungen. Trader, die sich an die Regeln halten und die Bedingungen erfüllen, können ihre Rewards planmässig beantragen.",
+        rows: [
+          { label: "Reward-Antrag", value: "Alle 2 Wochen" },
+          { label: "Bearbeitungszeit", value: "Innerhalb von 24 Std.*" },
+          { label: "Erstes Reward-Fenster", value: "14 Tage nach dem ersten Trade" },
+          { label: "Gewinnbeteiligung", value: "Bis zu 80 %" },
+          { label: "Versteckte Gebühren", value: "Keine" },
+        ],
+        cta: "Alle Trading-Regeln ansehen",
+      },
+      disclaimer:
+        "Die gezeigten Auszahlungs-Beispiele entsprechen anonymisierten Rewards, die für SAFunded-Trader bearbeitet wurden, und dienen ausschliesslich der Veranschaulichung. Sämtliches Trading findet in einer simulierten Umgebung statt; angezeigte Kontostände sind fiktive Referenzwerte. Die Auszahlungsberechtigung setzt vollständige Regeleinhaltung, eine Mindestlaufzeit, die erforderlichen profitablen Handelstage sowie eine erfolgreiche KYC-/AML- und Anti-Fraud-Prüfung voraus. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und individuelle Ergebnisse sind nicht typisch. Trading ist mit Risiken verbunden.",
+      finalCta: {
+        title: "Bereit, für eine Auszahlung zu traden?",
+        desc: "Starte ein Instant-Funded-Konto, handle innerhalb klarer Regeln und beantrage deinen Reward, sobald du dich qualifizierst.",
+        primary: "Konto starten",
+        secondary: "Regeln ansehen",
+      },
+      months: [
+        "Jan.",
+        "Feb.",
+        "März",
+        "Apr.",
+        "Mai",
+        "Juni",
+        "Juli",
+        "Aug.",
+        "Sep.",
+        "Okt.",
+        "Nov.",
+        "Dez.",
+      ],
     },
     dashboard: {
       eyebrow: "Plattform-Vorschau",
@@ -929,6 +1266,43 @@ export const translations: Record<Language, Dictionary> = {
       title: "Feedback aus der SAFunded-Community",
       riskNote:
         "Trading ist mit Risiken verbunden. Individuelle Ergebnisse sind nicht typisch und kein Versprechen für zukünftige Leistungen. Auszahlungen sind nicht garantiert.",
+      items: [
+        {
+          name: "Daniel R.",
+          role: "Swing-Trader",
+          rating: 5,
+          quote:
+            "Die beste Instant-Funding-Erfahrung, die ich bisher hatte. Jede Regel ist vorab veröffentlicht und der Split war genau wie angekündigt – keine Überraschungen.",
+        },
+        {
+          name: "Mei L.",
+          role: "Daytraderin",
+          rating: 5,
+          quote:
+            "Mein Reward-Antrag wurde innerhalb eines Tages geprüft und im nächsten Zyklus ausgezahlt. Der gesamte Ablauf war transparent und fair.",
+        },
+        {
+          name: "Tomás G.",
+          role: "Futures-Trader",
+          rating: 5,
+          quote:
+            "Keine Consistency-Regel, die meinen Edge erstickt – das allein hebt SAFunded ab. Ich habe skaliert, sobald ich bewiesen hatte, dass ich innerhalb der Limits handeln kann.",
+        },
+        {
+          name: "Aisha K.",
+          role: "Algo-Traderin",
+          rating: 5,
+          quote:
+            "Übersichtliches Dashboard, klare Risikolimits und die EA-Freigabe durch das Team verlief problemlos. Genau die Struktur, die ein systematischer Trader will.",
+        },
+        {
+          name: "Sofia M.",
+          role: "Forex-Traderin",
+          rating: 3,
+          quote:
+            "Ich habe meinen maximalen Tagesverlust erreicht und meine Challenge verloren – ehrlich gesagt ärgerlich. Aber die Regeln waren fair und klar erklärt, also versuche ich es erneut.",
+        },
+      ],
     },
     faq: {
       eyebrow: "FAQ",
@@ -974,6 +1348,7 @@ export const translations: Record<Language, Dictionary> = {
         risk: "Risikohinweise",
         contact: "Kontakt",
         faq: "FAQ",
+        payouts: "Auszahlungen",
       },
       copyright: "© 2026 SAFunded. Alle Rechte vorbehalten.",
       simulatedNote: "Alle Trading-Konten sind simuliert, sofern nicht ausdrücklich anders angegeben.",

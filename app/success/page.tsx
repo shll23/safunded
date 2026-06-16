@@ -45,7 +45,7 @@ export default function SuccessPage() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/"
-              className="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
+              className="cta-shimmer inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
             >
               {t.success.backHome}
             </Link>

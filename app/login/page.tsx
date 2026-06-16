@@ -95,7 +95,7 @@ function LoginForm() {
           type="submit"
           disabled={loading}
           aria-busy={loading}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-60"
+          className="cta-shimmer inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Wird angemeldet …" : "Anmelden"}
         </button>

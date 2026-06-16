@@ -2,6 +2,7 @@
 
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
+import Link from "next/link";
 
 export default function Payouts() {
   const t = useT();
@@ -42,6 +43,15 @@ export default function Payouts() {
           <p className="text-sm leading-relaxed text-muted">
             {t.payouts.disclaimer}
           </p>
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/payouts"
+            className="inline-flex items-center justify-center rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5"
+          >
+            {t.payouts.viewAll} →
+          </Link>
         </div>
 
         <p className="mx-auto mt-6 max-w-3xl text-center text-xs text-faint">

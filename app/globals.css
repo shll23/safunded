@@ -80,6 +80,63 @@ textarea {
   background: rgba(45, 212, 167, 0.3);
 }
 
+/* Subtle animated sheen for the primary green CTA buttons (Konto starten,
+   Konto erhalten, Konten ansehen, Programme ansehen, …). A soft diagonal
+   highlight sweeps across the button on a slow loop, with a long pause between
+   passes so it reads as a gentle shimmer rather than a constant shine. The
+   button keeps its own background/glow; this only adds the moving gloss.
+   `overflow: hidden` clips the sheen to the rounded shape (box-shadow glow is
+   unaffected, as it paints outside the overflow box). Disabled under
+   prefers-reduced-motion via the block above, which freezes it off-screen. */
+.cta-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cta-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /* A narrow highlight band, wider than it needs to be so the soft edges stay
+     off the button until it sweeps through. */
+  width: 60%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 40%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.35) 60%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  /* Animate only `transform` so the sweep runs on the GPU compositor instead of
+     repainting the gradient every frame — this is what keeps it from stuttering.
+     Starts and rests off-screen to the left/right. */
+  transform: translateX(-180%);
+  will-change: transform;
+  animation: cta-sheen 5s ease-in-out infinite;
+}
+/* Keep the label above the sheen. Text nodes can't take z-index, so most
+   buttons wrap their label in an element; this lifts any such child. */
+.cta-shimmer > * {
+  position: relative;
+  z-index: 2;
+}
+@keyframes cta-sheen {
+  /* Sweep across in the first ~35% of the cycle, then rest off-screen right. */
+  0% {
+    transform: translateX(-180%);
+  }
+  35%,
+  100% {
+    transform: translateX(320%);
+  }
+}
+
 /* Modal entrance (Rules Summary dialog). Disabled under reduced-motion via the
    prefers-reduced-motion block above, which zeroes animation durations. */
 @keyframes fadeIn {

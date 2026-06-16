@@ -56,6 +56,14 @@ export default function Footer({ lang }: { lang?: Language } = {}) {
                 </li>
               ))}
               <li>
+                <Link
+                  href="/payouts"
+                  className="text-sm text-muted transition-colors hover:text-white"
+                >
+                  {t.footer.links.payouts}
+                </Link>
+              </li>
+              <li>
                 <a
                   href="/#faq"
                   className="text-sm text-muted transition-colors hover:text-white"

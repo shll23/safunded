@@ -30,6 +30,22 @@ const config: Config = {
           "0 0 0 1px rgba(45,212,167,0.25), 0 18px 60px -12px rgba(45,212,167,0.5)",
         card: "0 24px 80px -24px rgba(0,0,0,0.65)",
       },
+      keyframes: {
+        // Continuous certificate marquees. The track holds the row's cards
+        // twice, so translating by -50% loops seamlessly.
+        "marquee-left": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "marquee-right": {
+          from: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "marquee-left": "marquee-left 38s linear infinite",
+        "marquee-right": "marquee-right 38s linear infinite",
+      },
     },
   },
   plugins: [],

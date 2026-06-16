@@ -1,6 +1,5 @@
 "use client";
 
-import { testimonials } from "@/lib/plans";
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
 
@@ -40,18 +39,18 @@ export default function Testimonials() {
         />
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
+          {t.reviews.items.map((item) => (
             <figure
-              key={t.name}
+              key={item.name}
               className="flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 transition-colors hover:border-white/15"
             >
-              <Stars rating={t.rating} />
+              <Stars rating={item.rating} />
               <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                &ldquo;{t.quote}&rdquo;
+                &ldquo;{item.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-5 border-t border-white/[0.06] pt-4">
-                <p className="text-sm font-semibold text-white">{t.name}</p>
-                <p className="text-xs text-faint">{t.role}</p>
+                <p className="text-sm font-semibold text-white">{item.name}</p>
+                <p className="text-xs text-faint">{item.role}</p>
               </figcaption>
             </figure>
           ))}

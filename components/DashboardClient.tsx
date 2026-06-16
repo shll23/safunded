@@ -400,7 +400,7 @@ export default function DashboardClient({
           <button
             type="button"
             onClick={goToCheckout}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
+            className="cta-shimmer inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
           >
             Mit Karte zahlen
           </button>

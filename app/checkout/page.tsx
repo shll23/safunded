@@ -132,7 +132,7 @@ function CheckoutInner() {
         <p className="mt-3 text-sm text-muted">{c.noPlan.desc}</p>
         <Link
           href="/#accounts"
-          className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
+          className="cta-shimmer mt-8 inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright"
         >
           {c.noPlan.cta}
         </Link>
@@ -424,7 +424,7 @@ function CheckoutInner() {
               onClick={() => pay("stripe")}
               disabled={!canPay || loading !== null}
               aria-busy={loading === "stripe"}
-              className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+              className="cta-shimmer inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
             >
               {loading === "stripe" ? c.payStripeLoading : c.payStripe}
             </button>
