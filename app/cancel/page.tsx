@@ -31,7 +31,7 @@ export default function CancelPage() {
           <div className="mt-8">
             <Link
               href="/#accounts"
-              className="inline-flex items-center justify-center rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
+              className="cta-shimmer inline-flex items-center justify-center rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-accent-bright"
             >
               {t.cancel.viewAccounts}
             </Link>

@@ -25,7 +25,7 @@ export default function CheckoutButton({
     "relative inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
   const styles =
     variant === "primary"
-      ? "bg-accent text-ink shadow-glow hover:bg-accent-bright hover:shadow-glow-lg"
+      ? "cta-shimmer bg-accent text-ink shadow-glow hover:bg-accent-bright hover:shadow-glow-lg"
       : "border border-white/15 bg-white/[0.03] text-white hover:bg-white/[0.07]";
 
   return (

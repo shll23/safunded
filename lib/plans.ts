@@ -238,50 +238,75 @@ export const comparisonPoints: string[] = [
 ];
 
 /**
- * Customer testimonials shown in the reviews section.
+ * ----------------------------------------------------------------------------
+ *  Payout ledger — anonymized examples of rewards processed for SAFunded
+ *  traders, shown on the dedicated /payouts page.
+ * ----------------------------------------------------------------------------
+ *  These are illustrative, anonymized examples (first name + last initial).
+ *  Country and method are stored as keys and localized in `translations.ts`;
+ *  the formatted amount string is locale-neutral. `month`/`year` are stored as
+ *  numbers and rendered with the localized month names. All figures relate to
+ *  simulated trading performance and are not a promise of future results —
+ *  payouts are never guaranteed (see the Payout Policy).
  */
-export interface Testimonial {
+export type PayoutCountry = "de" | "at" | "ch" | "nl" | "es" | "it";
+export type PayoutMethod = "bank" | "crypto";
+export type PayoutAccount = "25K" | "50K" | "100K";
+
+export interface PayoutRecord {
+  /** Anonymized trader name (first name + last initial). */
   name: string;
-  role: string;
-  rating: number; // 1–5 stars
-  quote: string;
+  country: PayoutCountry;
+  method: PayoutMethod;
+  account: PayoutAccount;
+  /** Pre-formatted display amount including currency, e.g. "€4.812,40". */
+  amount: string;
+  /** Approximate USD value, used only for sorting/aggregates (display only). */
+  usdValue: number;
+  /** Processing time from request to release, in hours. */
+  processingHours: number;
+  month: number; // 1–12
+  year: number;
 }
 
-export const testimonials: Testimonial[] = [
-  {
-    name: "Daniel R.",
-    role: "Swing trader",
-    rating: 5,
-    quote:
-      "Best instant-funded experience I've had. Every rule is published up front and the split was exactly as advertised — no surprises.",
-  },
-  {
-    name: "Mei L.",
-    role: "Day trader",
-    rating: 5,
-    quote:
-      "Reward request was reviewed within a day and processed on the next cycle. The whole process felt transparent and fair.",
-  },
-  {
-    name: "Tomás G.",
-    role: "Futures trader",
-    rating: 5,
-    quote:
-      "No consistency rule choking my edge — that alone sets SAFunded apart. I scaled up once I'd proven I could trade within the limits.",
-  },
-  {
-    name: "Aisha K.",
-    role: "Algo trader",
-    rating: 5,
-    quote:
-      "Clean dashboard, clear risk limits, and EA approval from the team was painless. Exactly the structure a systematic trader wants.",
-  },
-  {
-    name: "Sofia M.",
-    role: "Forex trader",
-    rating: 3,
-    quote:
-      "I hit my max daily loss and lost my challenge — gutted, honestly. But the rules were fair and clearly explained, so I'm giving it another shot.",
-  },
+export const payoutLedger: PayoutRecord[] = [
+  { name: "Daniel R.", country: "de", method: "bank", account: "100K", amount: "€4.812,40", usdValue: 5210, processingHours: 22, month: 5, year: 2026 },
+  { name: "Mei L.", country: "nl", method: "crypto", account: "50K", amount: "2.640,00 USDC", usdValue: 2640, processingHours: 18, month: 5, year: 2026 },
+  { name: "Tomás G.", country: "es", method: "bank", account: "100K", amount: "€6.205,18", usdValue: 6718, processingHours: 26, month: 5, year: 2026 },
+  { name: "Aisha K.", country: "de", method: "bank", account: "50K", amount: "€2.318,75", usdValue: 2510, processingHours: 20, month: 5, year: 2026 },
+  { name: "Sofia M.", country: "at", method: "crypto", account: "25K", amount: "1.184,30 USDC", usdValue: 1184, processingHours: 16, month: 4, year: 2026 },
+  { name: "Lukas B.", country: "de", method: "bank", account: "100K", amount: "€5.470,90", usdValue: 5924, processingHours: 24, month: 4, year: 2026 },
+  { name: "Noah K.", country: "ch", method: "bank", account: "50K", amount: "€3.026,55", usdValue: 3277, processingHours: 23, month: 4, year: 2026 },
+  { name: "Elif Y.", country: "de", method: "crypto", account: "100K", amount: "4.092,60 USDC", usdValue: 4093, processingHours: 21, month: 4, year: 2026 },
+  { name: "Matteo F.", country: "it", method: "bank", account: "50K", amount: "€2.755,12", usdValue: 2983, processingHours: 19, month: 3, year: 2026 },
+  { name: "Jonas W.", country: "de", method: "bank", account: "25K", amount: "€1.402,88", usdValue: 1519, processingHours: 17, month: 3, year: 2026 },
 ];
+
+/**
+ * ----------------------------------------------------------------------------
+ *  Payout certificates — the actual SAFunded payout-confirmation graphics shown
+ *  as a slideshow on the /payouts page. The image itself contains the trader
+ *  name and amount; `name`/`amount` are duplicated here only for the slide
+ *  caption and the image alt text. Images live in /public/payout-certificates.
+ * ----------------------------------------------------------------------------
+ */
+export interface PayoutCertificate {
+  name: string;
+  amount: string;
+  image: string;
+}
+
+export const payoutCertificates: PayoutCertificate[] = [
+  { name: "John Heller", amount: "$1,256.00", image: "/payout-certificates/01-john-heller.png" },
+  { name: "Sarina Koch", amount: "$2,184.75", image: "/payout-certificates/02-sarina-koch.png" },
+  { name: "Felix Baum", amount: "$3,492.20", image: "/payout-certificates/03-felix-baum.png" },
+  { name: "Hamza Haddad", amount: "$4,875.40", image: "/payout-certificates/04-hamza-haddad.png" },
+  { name: "Elias Meyer", amount: "$1,842.60", image: "/payout-certificates/05-elias-meyer.png" },
+  { name: "Finn Krüger", amount: "$2,760.15", image: "/payout-certificates/06-finn-krueger.png" },
+  { name: "Laura Neumann", amount: "$4,128.90", image: "/payout-certificates/07-laura-neumann.png" },
+  { name: "Milan Richter", amount: "$3,055.35", image: "/payout-certificates/08-milan-richter.png" },
+  { name: "Nina Vogt", amount: "$1,498.80", image: "/payout-certificates/09-nina-vogt.png" },
+  { name: "David Weber", amount: "$4,320.55", image: "/payout-certificates/10-david-weber.png" },
+];
+
 

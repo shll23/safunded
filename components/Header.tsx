@@ -17,7 +17,7 @@ export default function Header() {
     { label: t.header.nav.howItWorks, href: "#how-it-works" },
     { label: t.header.nav.accounts, href: "#accounts" },
     { label: t.header.nav.rules, href: "#rules" },
-    { label: t.header.nav.payouts, href: "#payouts" },
+    { label: t.header.nav.payouts, href: "/payouts" },
     { label: t.header.nav.reviews, href: "#testimonials" },
     { label: t.header.nav.faq, href: "#faq" },
   ];
@@ -64,7 +64,7 @@ export default function Header() {
             </Link>
             <a
               href="#accounts"
-              className="inline-flex items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
+              className="cta-shimmer inline-flex items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
             >
               {t.header.cta}
             </a>
@@ -107,7 +107,7 @@ export default function Header() {
             <a
               href="#accounts"
               onClick={() => setOpen(false)}
-              className="mt-1 inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-ink"
+              className="cta-shimmer mt-1 inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-ink"
             >
               {t.header.cta}
             </a>
