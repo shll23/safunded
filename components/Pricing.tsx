@@ -1,13 +1,16 @@
 "use client";
 
-import { plans } from "@/lib/plans";
+import { useState } from "react";
+import { plans, type PlanId } from "@/lib/plans";
 import CheckoutButton from "./CheckoutButton";
+import RulesModal from "./RulesModal";
 import PromoBanner from "./PromoBanner";
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
 
 export default function Pricing() {
   const t = useT();
+  const [openPlan, setOpenPlan] = useState<PlanId | null>(null);
   return (
     <section id="accounts" className="relative py-20 sm:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_30%,rgba(45,212,167,0.06),transparent_60%)]" />
@@ -84,6 +87,16 @@ export default function Pricing() {
                     label={copy.cta}
                     variant={plan.mostPopular ? "primary" : "ghost"}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setOpenPlan(plan.id)}
+                    className="mt-3 inline-flex w-full items-center justify-center gap-1.5 text-xs font-medium text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 4h8a1 1 0 011 1v11l-5-2.5L5 17V5a1 1 0 011-1z" />
+                    </svg>
+                    {t.pricing.rulesModal.trigger}
+                  </button>
                 </div>
               </div>
             );
@@ -94,6 +107,15 @@ export default function Pricing() {
           {t.pricing.note}
         </p>
       </div>
+
+      {plans.map((plan) => (
+        <RulesModal
+          key={plan.id}
+          plan={plan}
+          open={openPlan === plan.id}
+          onClose={() => setOpenPlan(null)}
+        />
+      ))}
     </section>
   );
 }
