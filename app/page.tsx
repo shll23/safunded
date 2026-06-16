@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
+import TrustHighlights from "@/components/TrustHighlights";
 import Rules from "@/components/Rules";
 import Payouts from "@/components/Payouts";
 import DashboardPreview from "@/components/DashboardPreview";
@@ -24,13 +25,14 @@ export default function Page() {
         <TrustBar />
         <HowItWorks />
         <Pricing />
+        <TrustHighlights />
+        <FAQ />
         <Rules />
         <Payouts />
         <DashboardPreview />
         <Comparison />
         <LaunchOffer />
         <Testimonials />
-        <FAQ />
         <CTA />
         <SeoSection />
         <Disclaimer />
