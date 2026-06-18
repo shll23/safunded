@@ -20,6 +20,8 @@ export interface DashboardAccount {
   mt5_login: string | null;
   mt5_password: string | null;
   mt5_server: string | null;
+  /** Whether MT5 credentials are available (resolved server-side). */
+  has_credentials?: boolean;
 }
 
 export interface PlanTile {
@@ -68,6 +70,154 @@ const discountLabel = (q: Quote) => {
 
 const SUPPORT_MAILTO = "mailto:support@safunded.com";
 
+// Kleine Inline-Icons (16px) im Stil des Dashboards – dünne Striche, currentColor.
+const CopyIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+    <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" strokeWidth="1.6" />
+    <path
+      d="M5 15V5a2 2 0 0 1 2-2h8"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+    <path
+      d="M5 12.5 10 17.5 19 7"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const EyeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+    <path
+      d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
+    />
+    <circle cx="12" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.6" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+    <path
+      d="M4 4 20 20M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a16 16 0 0 1-2.9 3.5M6.4 7.9A16 16 0 0 0 2.5 12S6 18.5 12 18.5c.8 0 1.5-.1 2.2-.3"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M9.8 9.9a3 3 0 0 0 4.3 4.2" stroke="currentColor" strokeWidth="1.6" />
+  </svg>
+);
+
+const iconBtn =
+  "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/[0.03] text-muted transition-all hover:bg-white/[0.07] hover:text-white";
+
+/**
+ * MT5-Zugangsdaten-Karte: Login, Passwort (standardmäßig maskiert, per Auge-Icon
+ * einblendbar) und Server – jede Zeile mit kleinem Kopieren-Button. Erscheint nur,
+ * wenn serverseitig Zugangsdaten gefunden wurden.
+ */
+function CredentialsCard({
+  login,
+  password,
+  server,
+}: {
+  login: string | null;
+  password: string | null;
+  server: string | null;
+}) {
+  const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copy = async (field: string, value: string | null) => {
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(field);
+      setTimeout(() => setCopied((c) => (c === field ? null : c)), 1500);
+    } catch {
+      /* Zwischenablage nicht verfügbar – still ignorieren. */
+    }
+  };
+
+  const rows: {
+    key: string;
+    label: string;
+    value: string | null;
+    display: string;
+  }[] = [
+    { key: "login", label: "Login", value: login, display: login ?? "—" },
+    {
+      key: "password",
+      label: "Passwort",
+      value: password,
+      display: revealed ? password ?? "—" : "••••••••••",
+    },
+    { key: "server", label: "Server", value: server, display: server ?? "—" },
+  ];
+
+  return (
+    <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
+        Deine MT5-Zugangsdaten
+      </p>
+      <dl className="mt-4 divide-y divide-white/[0.06]">
+        {rows.map((row) => (
+          <div
+            key={row.key}
+            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
+          >
+            <dt className="text-xs uppercase tracking-[0.14em] text-faint">
+              {row.label}
+            </dt>
+            <dd className="flex min-w-0 items-center gap-2">
+              <span className="truncate font-mono text-sm text-white">
+                {row.display}
+              </span>
+              {row.key === "password" ? (
+                <button
+                  type="button"
+                  onClick={() => setRevealed((v) => !v)}
+                  aria-label={
+                    revealed ? "Passwort verbergen" : "Passwort anzeigen"
+                  }
+                  className={iconBtn}
+                >
+                  {revealed ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => copy(row.key, row.value)}
+                aria-label={`${row.label} kopieren`}
+                title={copied === row.key ? "Kopiert" : `${row.label} kopieren`}
+                className={iconBtn}
+              >
+                {copied === row.key ? <CheckIcon /> : <CopyIcon />}
+              </button>
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-4 text-xs leading-relaxed text-faint">
+        Logge dich damit in MetaTrader&nbsp;5 ein. Teile diese Daten mit
+        niemandem.
+      </p>
+    </div>
+  );
+}
+
 export default function DashboardClient({
   accounts,
   plans,
@@ -75,9 +225,8 @@ export default function DashboardClient({
   accounts: DashboardAccount[];
   plans: PlanTile[];
 }) {
-  // Which account's live dashboard / credentials panel is currently expanded.
+  // Which account's live dashboard is currently expanded.
   const [openTrackingId, setOpenTrackingId] = useState<string | null>(null);
-  const [openCredsId, setOpenCredsId] = useState<string | null>(null);
   // Which account's Order-ID is currently revealed (hidden behind a link until
   // the user taps it).
   const [openOrderId, setOpenOrderId] = useState<string | null>(null);
@@ -161,9 +310,8 @@ export default function DashboardClient({
             {accounts.map((acc) => {
               const isSetup = !acc.tracking_token;
               const trackingOpen = openTrackingId === acc.account_id;
-              const credsOpen = openCredsId === acc.account_id;
               const orderOpen = openOrderId === acc.account_id;
-              const hasCreds = Boolean(acc.mt5_login);
+              const hasCreds = acc.has_credentials === true;
 
               return (
                 <div
@@ -263,21 +411,11 @@ export default function DashboardClient({
                       </span>
                     )}
 
-                    {hasCreds ? (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenCredsId(credsOpen ? null : acc.account_id)
-                        }
-                        className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
-                      >
-                        {credsOpen ? "Zugangsdaten ausblenden" : "Zugangsdaten"}
-                      </button>
-                    ) : (
+                    {!hasCreds ? (
                       <span className="inline-flex cursor-not-allowed items-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-2.5 text-sm font-semibold text-faint">
                         Zugangsdaten folgen
                       </span>
-                    )}
+                    ) : null}
 
                     <a
                       href={SUPPORT_MAILTO}
@@ -288,33 +426,12 @@ export default function DashboardClient({
                   </div>
 
                   {/* Zugangsdaten (MT5) */}
-                  {credsOpen && hasCreds ? (
-                    <dl className="mt-5 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] sm:grid-cols-3">
-                      <div className="bg-ink/40 p-4">
-                        <dt className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
-                          MT5 Login
-                        </dt>
-                        <dd className="mt-1 break-all font-mono text-sm text-white">
-                          {acc.mt5_login}
-                        </dd>
-                      </div>
-                      <div className="bg-ink/40 p-4">
-                        <dt className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
-                          Passwort
-                        </dt>
-                        <dd className="mt-1 break-all font-mono text-sm text-white">
-                          {acc.mt5_password ?? "—"}
-                        </dd>
-                      </div>
-                      <div className="bg-ink/40 p-4">
-                        <dt className="text-xs font-medium uppercase tracking-[0.16em] text-faint">
-                          Server
-                        </dt>
-                        <dd className="mt-1 break-all font-mono text-sm text-white">
-                          {acc.mt5_server ?? "—"}
-                        </dd>
-                      </div>
-                    </dl>
+                  {hasCreds ? (
+                    <CredentialsCard
+                      login={acc.mt5_login}
+                      password={acc.mt5_password}
+                      server={acc.mt5_server}
+                    />
                   ) : null}
 
                   {/* Live-Dashboard (Tracking-Widget für dieses Konto) */}

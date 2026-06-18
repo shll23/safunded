@@ -6,6 +6,7 @@ import DashboardClient, {
 } from "@/components/DashboardClient";
 import { createClient } from "@/lib/supabase/server";
 import { readAccounts } from "@/lib/compliance";
+import { fetchCredentials } from "@/lib/credentials";
 import { plans } from "@/lib/plans";
 
 export const metadata = {
@@ -27,7 +28,29 @@ export default async function DashboardPage() {
 
   // Alle Konten des Users aus dem accounts[]-Array (Mehrkonten-Modell). Stripe-
   // und Krypto-Käufe hängen je ein Konto an; die Stammdaten bleiben oben.
-  const accounts = readAccounts(user.user_metadata) as DashboardAccount[];
+  const baseAccounts = readAccounts(user.user_metadata);
+
+  // MT5-Zugangsdaten werden serverseitig über denselben Kunden-Token wie die
+  // Live-Stats geholt (safcheck.de). So bleibt der Token – und vor allem das
+  // Master-Passwort – aus dem Browser heraus; nur die fertigen Werte gehen an
+  // den Client. Schlägt ein Abruf fehl, bleibt das Konto einfach ohne Daten.
+  const accounts: DashboardAccount[] = await Promise.all(
+    baseAccounts.map(async (acc) => {
+      if (!acc.tracking_token) return acc as DashboardAccount;
+      const creds = await fetchCredentials(acc.tracking_token);
+      if (!creds || !creds.hasCredentials) {
+        return { ...acc, has_credentials: false } as DashboardAccount;
+      }
+      return {
+        ...acc,
+        has_credentials: true,
+        mt5_login: creds.login,
+        mt5_password: creds.password,
+        mt5_server: creds.server,
+      } as DashboardAccount;
+    })
+  );
+
   const count = accounts.length;
   const countLabel = count === 1 ? "1 Konto" : `${count} Konten`;
 
