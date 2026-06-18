@@ -4,7 +4,6 @@ import { useState } from "react";
 import { plans, type PlanId } from "@/lib/plans";
 import CheckoutButton from "./CheckoutButton";
 import RulesModal from "./RulesModal";
-import PromoBanner from "./PromoBanner";
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
 
@@ -20,8 +19,6 @@ export default function Pricing() {
           title={t.pricing.title}
           sub={t.pricing.sub}
         />
-
-        <PromoBanner />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => {

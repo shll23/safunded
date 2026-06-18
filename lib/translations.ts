@@ -80,6 +80,7 @@ export interface Dictionary {
   };
   trust: {
     eyebrow: string;
+    statement: string;
     items: { title: string; desc: string }[];
   };
   how: {
@@ -420,15 +421,15 @@ export const translations: Record<Language, Dictionary> = {
     },
     hero: {
       badge: "Instant Funded Accounts — now available",
-      titleLead: "Instant Funded. ",
-      titleAccent: "No Challenge.",
+      titleLead: "Instant Funded Trading Accounts ",
+      titleAccent: "without a Challenge Phase",
       titleTail: "",
-      desc: "Start with a simulated funded MT5 account from day one. Clear risk limits, transparent rules and performance-based rewards for disciplined traders.",
+      desc: "Start with a simulated MT5 account, trade within clear rules, and become eligible for performance-based rewards after review.",
       offerLine: "Launch offer: 35% off with code LAUNCH35 — limited time only.",
       priceLine: "Starting from $161.85 for 25K simulated capital.",
-      riskNote: "Simulated capital · Rewards subject to rules & T&Cs · Trading involves risk",
-      ctaStart: "Start with 25K",
-      viewOptions: "Compare accounts",
+      riskNote: "All accounts are simulated. Rewards are subject to rules, review and eligibility requirements.",
+      ctaStart: "View Accounts",
+      viewOptions: "How It Works",
       trustBadges: [
         "Instant Funded Accounts",
         "Clear Trading Rules",
@@ -450,13 +451,12 @@ export const translations: Record<Language, Dictionary> = {
     },
     trust: {
       eyebrow: "What SAFunded stands for",
+      statement: "Built for disciplined traders who want clear rules, instant simulated access and transparent reward eligibility.",
       items: [
-        { title: "Transparent rules", desc: "Every limit is published up front. No surprises, no hidden conditions." },
-        { title: "Secure payments via Stripe & Confirmo", desc: "Card and crypto payments are handled by Stripe and Confirmo. SAFunded does not store your card details." },
-        { title: "Built for disciplined traders", desc: "A structure that rewards consistency and risk management." },
-        { title: "Simple account structure", desc: "Three clear sizes — 25K, 50K, 100K. No hidden account types." },
-        { title: "Clear payout process", desc: "Reward eligibility and review steps are documented and consistent." },
-        { title: "Risk disclosed honestly", desc: "Simulated capital, performance-based rewards — stated plainly." },
+        { title: "Transparent rules", desc: "Every limit is published up front — no surprises, no hidden conditions." },
+        { title: "Secure payments", desc: "Card and crypto payments are handled by Stripe and Confirmo. We never store your card details." },
+        { title: "Simulated trading", desc: "All accounts are simulated. No real client capital is deposited, held or traded." },
+        { title: "Clear payout review", desc: "Reward eligibility and review steps are documented, consistent and disclosed plainly." },
       ],
     },
     how: {
@@ -719,9 +719,9 @@ export const translations: Record<Language, Dictionary> = {
       footnote: "All accounts are simulated trading accounts — no real capital is provided. Rewards are subject to a successful review, KYC/AML checks and full rule compliance.",
     },
     launch: {
-      badge: "Limited time only",
-      title: "Launch Offer: 35% Off",
-      sub: "Use code LAUNCH35 and start with a 25K simulated funded account from $161.85.",
+      badge: "Launch offer",
+      title: "35% off all accounts",
+      sub: "Use code LAUNCH35 at checkout. Start with a 25K simulated account from $161.85.",
       bullets: [
         "No challenge phase",
         "Instant funded MT5 accounts",
@@ -730,7 +730,7 @@ export const translations: Record<Language, Dictionary> = {
         "10% max overall loss",
         "Payouts processed within 24h after successful review",
       ],
-      cta: "Claim Launch Offer",
+      cta: "View accounts",
     },
     seo: {
       eyebrow: "About SAFunded",
@@ -944,15 +944,15 @@ export const translations: Record<Language, Dictionary> = {
     },
     hero: {
       badge: "Instant-Funded-Konten — jetzt verfügbar",
-      titleLead: "Instant Funded. ",
-      titleAccent: "Ohne Challenge.",
+      titleLead: "Instant Funded Trading-Konten ",
+      titleAccent: "ohne Challenge-Phase",
       titleTail: "",
-      desc: "Starte ab Tag eins mit einem simulierten funded MT5-Konto. Klare Risikolimits, transparente Regeln und leistungsbasierte Rewards für disziplinierte Trader.",
+      desc: "Starte mit einem simulierten MT5-Konto, handle innerhalb klarer Regeln und werde nach einer Prüfung für leistungsbasierte Rewards berechtigt.",
       offerLine: "Launch-Angebot: 35% Rabatt mit Code LAUNCH35 — nur für kurze Zeit.",
       priceLine: "Ab $161.85 für 25K simuliertes Kapital.",
-      riskNote: "Simuliertes Kapital · Rewards unterliegen Regeln & AGB · Trading beinhaltet Risiko",
-      ctaStart: "Mit 25K starten",
-      viewOptions: "Konten vergleichen",
+      riskNote: "Alle Konten sind simuliert. Rewards unterliegen den Regeln, einer Prüfung und Eignungsvoraussetzungen.",
+      ctaStart: "Konten ansehen",
+      viewOptions: "So funktioniert’s",
       trustBadges: [
         "Instant-Funded-Konten",
         "Klare Trading-Regeln",
@@ -974,13 +974,12 @@ export const translations: Record<Language, Dictionary> = {
     },
     trust: {
       eyebrow: "Wofür SAFunded steht",
+      statement: "Gemacht für disziplinierte Trader, die klare Regeln, sofortigen simulierten Zugang und transparente Reward-Berechtigung wollen.",
       items: [
-        { title: "Transparente Regeln", desc: "Jedes Limit wird offen kommuniziert. Keine Überraschungen, keine versteckten Bedingungen." },
-        { title: "Sichere Zahlungen über Stripe & Confirmo", desc: "Karten- und Krypto-Zahlungen werden über Stripe und Confirmo abgewickelt. SAFunded speichert keine Kartendaten." },
-        { title: "Für disziplinierte Trader gemacht", desc: "Eine Struktur, die Konstanz und Risikomanagement belohnt." },
-        { title: "Einfache Kontostruktur", desc: "Drei klare Größen — 25K, 50K, 100K. Keine versteckten Kontotypen." },
-        { title: "Klarer Auszahlungsprozess", desc: "Belohnungsberechtigung und Prüfschritte sind dokumentiert und konsistent." },
-        { title: "Risiken ehrlich offengelegt", desc: "Simuliertes Kapital, leistungsbasierte Rewards — klar benannt." },
+        { title: "Transparente Regeln", desc: "Jedes Limit wird offen kommuniziert — keine Überraschungen, keine versteckten Bedingungen." },
+        { title: "Sichere Zahlungen", desc: "Karten- und Krypto-Zahlungen laufen über Stripe und Confirmo. Wir speichern keine Kartendaten." },
+        { title: "Simuliertes Trading", desc: "Alle Konten sind simuliert. Es wird kein echtes Kundenkapital eingezahlt, gehalten oder gehandelt." },
+        { title: "Klare Auszahlungsprüfung", desc: "Reward-Berechtigung und Prüfschritte sind dokumentiert, konsistent und klar offengelegt." },
       ],
     },
     how: {
@@ -1243,9 +1242,9 @@ export const translations: Record<Language, Dictionary> = {
       footnote: "Alle Accounts sind simulierte Trading-Accounts — es wird kein echtes Kapital bereitgestellt. Rewards setzen eine erfolgreiche Prüfung, KYC/AML-Checks und vollständige Regeleinhaltung voraus.",
     },
     launch: {
-      badge: "Nur für kurze Zeit",
-      title: "Launch-Angebot: 35% Rabatt",
-      sub: "Nutze den Code LAUNCH35 und starte mit einem 25K simulierten funded Account ab $161.85.",
+      badge: "Launch-Angebot",
+      title: "35% Rabatt auf alle Konten",
+      sub: "Nutze beim Checkout den Code LAUNCH35. Starte mit einem 25K simulierten Konto ab $161.85.",
       bullets: [
         "Keine Challenge-Phase",
         "Instant funded MT5-Konten",
@@ -1254,7 +1253,7 @@ export const translations: Record<Language, Dictionary> = {
         "10% Max Overall Loss",
         "Auszahlungen werden nach erfolgreicher Prüfung innerhalb von 24h bearbeitet",
       ],
-      cta: "Launch-Angebot sichern",
+      cta: "Konten ansehen",
     },
     seo: {
       eyebrow: "Über SAFunded",

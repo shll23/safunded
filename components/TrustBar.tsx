@@ -2,25 +2,32 @@
 
 import { useT } from "@/lib/i18n";
 
+/**
+ * Calm trust band. Rather than a wall of bordered cards, it leads with a single
+ * neutral statement about who SAFunded is built for, followed by four short,
+ * open trust points separated only by hairlines — plenty of breathing room and
+ * no boxed-in feel.
+ */
 export default function TrustBar() {
   const t = useT();
   return (
-    <section className="border-y border-white/[0.06] bg-white/[0.015] py-16 sm:py-20">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-faint">
+    <section className="border-y border-white/[0.06] py-20 sm:py-24">
+      <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
           {t.trust.eyebrow}
         </p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {t.trust.items.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 transition-colors hover:border-white/15"
-            >
-              <h3 className="text-base font-semibold text-white">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{item.desc}</p>
-            </div>
-          ))}
-        </div>
+        <p className="mx-auto mt-4 max-w-2xl font-display text-xl font-medium leading-relaxed text-white sm:text-2xl">
+          {t.trust.statement}
+        </p>
+      </div>
+
+      <div className="mx-auto mt-14 grid max-w-5xl gap-x-10 gap-y-10 px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+        {t.trust.items.map((item) => (
+          <div key={item.title} className="text-center sm:text-left">
+            <h3 className="text-sm font-semibold text-white">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{item.desc}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -8,9 +8,9 @@
 
 html {
   scroll-behavior: smooth;
-  /* Offset in-page anchor jumps so headings land below the fixed header
-     (announcement bar + nav) instead of being hidden underneath it. */
-  scroll-padding-top: 6.5rem;
+  /* Offset in-page anchor jumps so headings land comfortably below the fixed
+     navigation instead of being hidden underneath it. */
+  scroll-padding-top: 5.5rem;
 }
 
 /* Belt-and-braces guard against horizontal overflow on any viewport.
