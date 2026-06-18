@@ -78,6 +78,9 @@ export default function DashboardClient({
   // Which account's live dashboard / credentials panel is currently expanded.
   const [openTrackingId, setOpenTrackingId] = useState<string | null>(null);
   const [openCredsId, setOpenCredsId] = useState<string | null>(null);
+  // Which account's Order-ID is currently revealed (hidden behind a link until
+  // the user taps it).
+  const [openOrderId, setOpenOrderId] = useState<string | null>(null);
 
   // Buy-another-account section state.
   const [selectedPlan, setSelectedPlan] = useState<string>(
@@ -159,6 +162,7 @@ export default function DashboardClient({
               const isSetup = !acc.tracking_token;
               const trackingOpen = openTrackingId === acc.account_id;
               const credsOpen = openCredsId === acc.account_id;
+              const orderOpen = openOrderId === acc.account_id;
               const hasCreds = Boolean(acc.mt5_login);
 
               return (
@@ -195,11 +199,51 @@ export default function DashboardClient({
                       <p className="text-[10px] uppercase tracking-[0.16em] text-faint">
                         Order-ID
                       </p>
-                      <p className="mt-0.5 break-all font-mono text-xs text-muted">
-                        {acc.order_id}
-                      </p>
+                      {orderOpen ? (
+                        <button
+                          type="button"
+                          onClick={() => setOpenOrderId(null)}
+                          title="Order-ID ausblenden"
+                          className="mt-0.5 break-all font-mono text-xl font-bold text-white transition-colors hover:text-accent sm:text-2xl"
+                        >
+                          {acc.order_id}
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setOpenOrderId(acc.account_id)}
+                          className="mt-0.5 inline-block break-all text-lg font-bold text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent sm:text-xl"
+                        >
+                          Order-ID anzeigen
+                        </button>
+                      )}
                     </div>
                   </div>
+
+                  {/* Hinweis solange die Zugangsdaten noch nicht da sind.
+                      Verschwindet automatisch, sobald die Logindaten (hasCreds)
+                      eingerichtet sind. */}
+                  {!hasCreds ? (
+                    <div className="mt-5 flex items-start gap-3 rounded-2xl border border-amber-400/20 bg-amber-400/[0.06] p-4">
+                      <span
+                        className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300"
+                        aria-hidden="true"
+                      />
+                      <p className="text-sm leading-relaxed text-amber-100/90">
+                        Die Einrichtung deines Accounts kann bis zu 12&nbsp;Stunden
+                        dauern – im besten Fall sind es nur wenige Minuten. Sobald
+                        deine Zugangsdaten bereitstehen, erscheinen sie hier
+                        automatisch. Bei Problemen melde dich unter{" "}
+                        <a
+                          href={SUPPORT_MAILTO}
+                          className="font-semibold text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                        >
+                          support@safunded.com
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  ) : null}
 
                   {/* Aktionen */}
                   <div className="mt-5 flex flex-wrap gap-2.5">
