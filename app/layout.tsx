@@ -26,6 +26,10 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  // Required so Next.js renders absolute URLs for the auto-generated
+  // og:image / twitter:image tags — WhatsApp, Telegram, X and other
+  // social previews only resolve absolute image URLs.
+  metadataBase: new URL("https://safunded.com"),
   title: "SAFunded — Instant Funded Trading Accounts without a Challenge Phase",
   description:
     "SAFunded offers instant funded MT5 accounts with simulated trading capital — 25K, 50K and 100K with no challenge phase, no consistency rule, an 80% profit split and payout processing within 24h after a successful review.",
