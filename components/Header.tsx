@@ -16,6 +16,7 @@ export default function Header() {
     { label: t.header.nav.howItWorks, href: "/how-it-works" },
     { label: t.header.nav.accounts, href: "/#accounts" },
     { label: t.header.nav.rules, href: "/#rules" },
+    { label: t.header.nav.markets, href: "/markets" },
     { label: t.header.nav.payouts, href: "/payouts" },
     { label: t.header.nav.about, href: "/about" },
     { label: t.header.nav.faq, href: "/#faq" },
@@ -95,13 +96,6 @@ export default function Header() {
                 {l.label}
               </a>
             ))}
-            <Link
-              href="/markets"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-sm text-muted hover:bg-white/5 hover:text-white"
-            >
-              {t.header.nav.markets}
-            </Link>
             <Link
               href="/login"
               onClick={() => setOpen(false)}
