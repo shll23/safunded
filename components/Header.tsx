@@ -96,6 +96,13 @@ export default function Header() {
               </a>
             ))}
             <Link
+              href="/markets"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-3 text-sm text-muted hover:bg-white/5 hover:text-white"
+            >
+              {t.header.nav.markets}
+            </Link>
+            <Link
               href="/login"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center rounded-xl border border-white/15 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5"
