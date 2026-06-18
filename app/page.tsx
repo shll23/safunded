@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
-import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import Rules from "@/components/Rules";
 import Payouts from "@/components/Payouts";
@@ -9,16 +8,15 @@ import DashboardPreview from "@/components/DashboardPreview";
 import Comparison from "@/components/Comparison";
 import LaunchOffer from "@/components/LaunchOffer";
 import FAQ from "@/components/FAQ";
-import SeoSection from "@/components/SeoSection";
 import Disclaimer from "@/components/Disclaimer";
 import Footer from "@/components/Footer";
 
 /**
  * Landing page section order is intentionally calm and process-led: establish
- * trust first, present the accounts, explain the process, then compare, show
- * the rules/product, and only afterwards surface the (low-key) launch offer.
- * The discount is no longer the headline — it sits as a quiet banner deep in
- * the page rather than competing with the hero.
+ * trust first, present the accounts, then compare, show the rules/product, and
+ * surface the launch offer. "How it works" and "About SAFunded" now live on
+ * their own pages reachable from the menu (/how-it-works, /about), keeping the
+ * home page shorter and more open.
  */
 export default function Page() {
   return (
@@ -28,14 +26,12 @@ export default function Page() {
         <Hero />
         <TrustBar />
         <Pricing />
-        <HowItWorks />
         <LaunchOffer />
         <Comparison />
         <Rules />
         <DashboardPreview />
         <Payouts />
         <FAQ />
-        <SeoSection />
         <Disclaimer />
       </main>
       <Footer />

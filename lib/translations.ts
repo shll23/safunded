@@ -23,8 +23,13 @@ export interface Dictionary {
     label: string;
     ariaLabel: string;
   };
+  /** Small shared UI strings reused across sections (accordion toggles, …). */
+  common: {
+    showMore: string;
+    showLess: string;
+  };
   header: {
-    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string };
+    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string; about: string };
     cta: string;
     login: string;
     menu: string;
@@ -296,7 +301,8 @@ export interface Dictionary {
   faq: {
     eyebrow: string;
     title: string;
-    items: { q: string; a: string }[];
+    /** Grouped FAQ categories — each is its own accordion of Q&A entries. */
+    categories: { title: string; items: { q: string; a: string }[] }[];
   };
   cta: {
     title: string;
@@ -385,6 +391,7 @@ export interface Dictionary {
 export const translations: Record<Language, Dictionary> = {
   en: {
     langToggle: { label: "DE", ariaLabel: "Auf Deutsch umschalten" },
+    common: { showMore: "Show more", showLess: "Show less" },
     header: {
       nav: {
         howItWorks: "How It Works",
@@ -393,6 +400,7 @@ export const translations: Record<Language, Dictionary> = {
         payouts: "Payouts",
         reviews: "Reviews",
         faq: "FAQ",
+        about: "About",
       },
       cta: "Get Funded",
       login: "Login",
@@ -446,7 +454,7 @@ export const translations: Record<Language, Dictionary> = {
         overallLossLimit: "Overall Loss Limit",
         profitSplit: "Profit split",
         profitSplitValue: "up to 80%",
-        rewardNote: "Reward eligibility subject to rules & T&Cs.",
+        rewardNote: "Payout eligibility subject to rules & T&Cs.",
       },
     },
     trust: {
@@ -552,14 +560,14 @@ export const translations: Record<Language, Dictionary> = {
       ],
     },
     payouts: {
-      eyebrow: "Payouts & rewards",
-      title: "Rewards for consistent, rule-compliant performance",
-      sub: "Trade within the rules, perform positively, and you may become eligible for performance-based rewards.",
+      eyebrow: "Payouts",
+      title: "Payouts for consistent, rule-compliant performance",
+      sub: "Trade within the rules, perform positively, and you may become eligible for a performance-based payout.",
       cards: [
-        { title: "Profit split", desc: "The share of eligible simulated performance that may be paid as a reward. Exact terms are defined in the payout policy." },
-        { title: "Payout cycle", desc: "How often eligible reward requests are processed once requirements are met." },
+        { title: "Profit split", desc: "The share of eligible simulated performance that may be paid out. Exact terms are defined in the payout policy." },
+        { title: "Payout cycle", desc: "How often eligible payout requests are processed once requirements are met." },
         { title: "Payout processing", desc: "Payouts are processed within 24h after a successful review, KYC/AML checks and full rule compliance." },
-        { title: "First reward window", desc: "The earliest point at which an account may request its first reward." },
+        { title: "First payout window", desc: "The earliest point at which an account may request its first payout." },
       ],
       values: {
         profitSplit: "up to 80%",
@@ -568,7 +576,7 @@ export const translations: Record<Language, Dictionary> = {
         firstPayoutWindow: "14 days after first trade",
       },
       disclaimer:
-        "Payout eligibility is subject to compliance with SAFunded’s trading rules and the applicable Terms & Conditions. Payouts are not guaranteed, there is no guaranteed income, and all rewards are subject to eligibility requirements. Trading involves risk.",
+        "Payout eligibility is subject to compliance with SAFunded’s trading rules and the applicable Terms & Conditions. Payouts are not guaranteed, there is no guaranteed income, and all payouts are subject to eligibility requirements. Trading involves risk.",
       footnote: "*After successful review, KYC/AML checks and full rule compliance.",
       viewAll: "See all payouts",
     },
@@ -686,7 +694,7 @@ export const translations: Record<Language, Dictionary> = {
     dashboard: {
       eyebrow: "Platform preview",
       title: "A clear view of your account",
-      sub: "Track balance, equity, risk limits and reward eligibility at a glance. (Visual preview — figures are illustrative.)",
+      sub: "Track balance, equity, risk limits and payout eligibility at a glance.",
       accountLabel: "Instant Funded · 100K",
       active: "Active",
       metrics: {
@@ -695,7 +703,7 @@ export const translations: Record<Language, Dictionary> = {
         openPl: "Open P/L",
         dailyLossLimit: "Daily loss limit",
         overallLossLimit: "Overall loss limit",
-        rewardTarget: "Reward target",
+        rewardTarget: "Payout target",
       },
       rewardTargetValue: "3 days × 1%",
       equityCurve: "Equity curve (illustrative)",
@@ -711,12 +719,12 @@ export const translations: Record<Language, Dictionary> = {
       traditionalLabel: "Traditional Challenge",
       rows: [
         { point: "Start", safunded: "Instantly with a simulated account", traditional: "Pass a challenge first" },
-        { point: "Profit split", safunded: "Up to 80% reward", traditional: "Often only after 2 phases" },
+        { point: "Profit split", safunded: "Up to 80% payout", traditional: "Often only after 2 phases" },
         { point: "Time pressure", safunded: "No unnecessary evaluation stress", traditional: "Often tight rules & phases" },
         { point: "Capital", safunded: "Simulated MT5 account", traditional: "Simulated challenge account" },
         { point: "Payout", safunded: "Possible after a rule review", traditional: "Only after passing & review" },
       ],
-      footnote: "All accounts are simulated trading accounts — no real capital is provided. Rewards are subject to a successful review, KYC/AML checks and full rule compliance.",
+      footnote: "All accounts are simulated trading accounts — no real capital is provided. Payouts are subject to a successful review, KYC/AML checks and full rule compliance.",
     },
     launch: {
       badge: "Launch offer",
@@ -730,7 +738,7 @@ export const translations: Record<Language, Dictionary> = {
         "10% max overall loss",
         "Payouts processed within 24h after successful review",
       ],
-      cta: "View accounts",
+      cta: "Claim Launch Offer",
     },
     seo: {
       eyebrow: "About SAFunded",
@@ -783,25 +791,50 @@ export const translations: Record<Language, Dictionary> = {
     faq: {
       eyebrow: "FAQ",
       title: "Questions, answered plainly",
-      items: [
-        { q: "Is the capital real or simulated?", a: "All trading takes place in a simulated environment. No real capital is deposited, held or traded; displayed balances are notional reference values used to measure performance. SAFunded does not provide investment or financial advice and does not offer brokerage services." },
-        { q: "When can I receive a payout?", a: "The following are required cumulatively: compliance with all rules, a minimum duration of 14 calendar days, at least 3 profitable trading days with ≥ 1% profit of the account reference value each, and a successful KYC, AML and anti-fraud review. After a successful review, payouts are processed within 24 hours; SAFunded charges no additional payout fees." },
-        { q: "Which rules do I have to follow?", a: "A maximum daily loss of 5% and a maximum overall loss of 10% of the respective account reference value apply. Open positions count, and even a temporary breach of a limit is treated as a violation. The daily reset time is UTC+2 (Berlin-Prague time)." },
-        { q: "Why is KYC necessary?", a: "Before a reward is paid out, SAFunded verifies your identity (KYC) together with AML and anti-fraud checks. This protects payouts against fraud, ensures rewards reach the legitimate account holder and keeps the platform compliant. KYC is required before your first payout." },
-        { q: "What happens if I breach a rule?", a: "A rule violation may lead to disqualification, refusal of a payout and the blocking, closure or termination of the account. In these cases there is no entitlement to a payout." },
-        { q: "Is there a refund?", a: "Consumers generally have a 14-day right of withdrawal from the conclusion of the contract. For digital services it expires early if, during the order process, you expressly consent to performance beginning immediately and confirm that you thereby lose your right of withdrawal. A refund may be considered in particular if the service is not provided or a fault attributable to SAFunded occurs; in the event of a rule violation, fraud or chargeback abuse there is no refund entitlement." },
-        { q: "Which trading practices are prohibited?", a: "Prohibited practices include scalping, martingale, grid, hedging, latency and tick arbitrage, exploiting platform or price errors, unapproved bots, multi-account abuse and the artificial creation of profitable days. Copy trading is allowed as long as it is transparent, rule-compliant and not used to circumvent the rules." },
-        { q: "Which platform is used, and which instruments can I trade?", a: "Trading takes place on MetaTrader 5 (MT5). You can trade Forex, precious metals (in particular gold), indices and other CFDs available via MT5 and approved by SAFunded. Single stocks are not tradable. The standard leverage is 1:100; SAFunded may adjust leverage depending on the instrument, account model or market conditions." },
-        { q: "What is an Instant Funded Account?", a: "After purchase, a simulated MT5 account with a defined account reference value (25K, 50K or 100K) is provided to you immediately — with no separate multi-step evaluation. You trade within clearly defined risk rules from day one." },
-        { q: "How do I purchase and pay for an account?", a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or Confirmo (crypto); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined." },
-        { q: "When do I receive my account access?", a: "Account access is provided after successful payment — generally immediately or shortly thereafter. Onboarding details are sent to the email address associated with your purchase." },
-        { q: "Can I hold trades overnight or over the weekend?", a: "Yes. Overnight holding and weekend trading are permitted. The trader bears the risk from gaps, slippage, spread widening and swaps, and such positions are fully included in the drawdown monitoring." },
-        { q: "Can I trade news?", a: "Within a window of 5 minutes before and 5 minutes after relevant high-impact news, positions may not be opened, closed or modified. Outside this window, news trading is allowed. SAFunded determines relevant news using recognised economic calendars and internal risk assessment." },
-        { q: "Can I use Expert Advisors (EAs) or bots?", a: "Automated systems, EAs, bots and scripts are only permitted after prior approval. SAFunded may review the strategy, functionality and risk logic, and may withdraw approval for previously approved systems." },
-        { q: "Is there a consistency rule?", a: "No. SAFunded applies no consistency rule — your performance is not capped by single-day or single-trade limits." },
-        { q: "How does the profit split work — and are payouts guaranteed?", a: "The recognised profit share is split 80% (trader) / 20% (SAFunded). However, a payout is not an automatic or guaranteed entitlement: in the event of a rule violation, manipulation or false information, there is no payout entitlement. Trading involves risk." },
-        { q: "Who can open an account?", a: "Opening an account requires that you are of legal age (at least 18) and have full legal capacity. Users from or residing in Ukraine, Iran, Israel and Afghanistan may not open or use accounts; SAFunded may extend this list for legal or regulatory reasons." },
-        { q: "Who operates SAFunded, and where can I read the terms and rules?", a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer." },
+      categories: [
+        {
+          title: "Accounts & Start",
+          items: [
+            { q: "What is an Instant Funded Account?", a: "After purchase, a simulated MT5 account with a defined account reference value (25K, 50K or 100K) is provided to you immediately — with no separate multi-step evaluation. You trade within clearly defined risk rules from day one." },
+            { q: "Is the capital real or simulated?", a: "All trading takes place in a simulated environment. No real capital is deposited, held or traded; displayed balances are notional reference values used to measure performance. SAFunded does not provide investment or financial advice and does not offer brokerage services." },
+            { q: "Which platform is used, and which instruments can I trade?", a: "Trading takes place on MetaTrader 5 (MT5). You can trade Forex, precious metals (in particular gold), indices and other CFDs available via MT5 and approved by SAFunded. Single stocks are not tradable. The standard leverage is 1:100; SAFunded may adjust leverage depending on the instrument, account model or market conditions." },
+            { q: "When do I receive my account access?", a: "Account access is provided after successful payment — generally immediately or shortly thereafter. Onboarding details are sent to the email address associated with your purchase." },
+            { q: "Who can open an account?", a: "Opening an account requires that you are of legal age (at least 18) and have full legal capacity. Users from or residing in Ukraine, Iran, Israel and Afghanistan may not open or use accounts; SAFunded may extend this list for legal or regulatory reasons." },
+            { q: "Who operates SAFunded, and where can I read the terms and rules?", a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer." },
+          ],
+        },
+        {
+          title: "Trading Rules",
+          items: [
+            { q: "Which rules do I have to follow?", a: "A maximum daily loss of 5% and a maximum overall loss of 10% of the respective account reference value apply. Open positions count, and even a temporary breach of a limit is treated as a violation. The daily reset time is UTC+2 (Berlin-Prague time)." },
+            { q: "What happens if I breach a rule?", a: "A rule violation may lead to disqualification, refusal of a payout and the blocking, closure or termination of the account. In these cases there is no entitlement to a payout." },
+            { q: "Which trading practices are prohibited?", a: "Prohibited practices include scalping, martingale, grid, hedging, latency and tick arbitrage, exploiting platform or price errors, unapproved bots, multi-account abuse and the artificial creation of profitable days. Copy trading is allowed as long as it is transparent, rule-compliant and not used to circumvent the rules." },
+            { q: "Can I hold trades overnight or over the weekend?", a: "Yes. Overnight holding and weekend trading are permitted. The trader bears the risk from gaps, slippage, spread widening and swaps, and such positions are fully included in the drawdown monitoring." },
+            { q: "Can I trade news?", a: "Within a window of 5 minutes before and 5 minutes after relevant high-impact news, positions may not be opened, closed or modified. Outside this window, news trading is allowed. SAFunded determines relevant news using recognised economic calendars and internal risk assessment." },
+            { q: "Can I use Expert Advisors (EAs) or bots?", a: "Automated systems, EAs, bots and scripts are only permitted after prior approval. SAFunded may review the strategy, functionality and risk logic, and may withdraw approval for previously approved systems." },
+            { q: "Is there a consistency rule?", a: "No. SAFunded applies no consistency rule — your performance is not capped by single-day or single-trade limits." },
+          ],
+        },
+        {
+          title: "Payouts",
+          items: [
+            { q: "When can I receive a payout?", a: "The following are required cumulatively: compliance with all rules, a minimum duration of 14 calendar days, at least 3 profitable trading days with ≥ 1% profit of the account reference value each, and a successful KYC, AML and anti-fraud review. After a successful review, payouts are processed within 24 hours; SAFunded charges no additional payout fees." },
+            { q: "How does the profit split work — and are payouts guaranteed?", a: "The recognised profit share is split 80% (trader) / 20% (SAFunded). However, a payout is not an automatic or guaranteed entitlement: in the event of a rule violation, manipulation or false information, there is no payout entitlement. Trading involves risk." },
+          ],
+        },
+        {
+          title: "Verification & KYC",
+          items: [
+            { q: "Why is KYC necessary?", a: "Before a payout is made, SAFunded verifies your identity (KYC) together with AML and anti-fraud checks. This protects payouts against fraud, ensures payouts reach the legitimate account holder and keeps the platform compliant. KYC is required before your first payout." },
+          ],
+        },
+        {
+          title: "Payments & Refunds",
+          items: [
+            { q: "How do I purchase and pay for an account?", a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or Confirmo (crypto); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined." },
+            { q: "Is there a refund?", a: "Consumers generally have a 14-day right of withdrawal from the conclusion of the contract. For digital services it expires early if, during the order process, you expressly consent to performance beginning immediately and confirm that you thereby lose your right of withdrawal. A refund may be considered in particular if the service is not provided or a fault attributable to SAFunded occurs; in the event of a rule violation, fraud or chargeback abuse there is no refund entitlement." },
+          ],
+        },
       ],
     },
     cta: {
@@ -908,6 +941,7 @@ export const translations: Record<Language, Dictionary> = {
 
   de: {
     langToggle: { label: "EN", ariaLabel: "Switch to English" },
+    common: { showMore: "Mehr anzeigen", showLess: "Weniger anzeigen" },
     header: {
       nav: {
         howItWorks: "So funktioniert’s",
@@ -916,6 +950,7 @@ export const translations: Record<Language, Dictionary> = {
         payouts: "Auszahlungen",
         reviews: "Bewertungen",
         faq: "FAQ",
+        about: "Über uns",
       },
       cta: "Konto erhalten",
       login: "Anmelden",
@@ -969,7 +1004,7 @@ export const translations: Record<Language, Dictionary> = {
         overallLossLimit: "Gesamtverlustlimit",
         profitSplit: "Gewinnbeteiligung",
         profitSplitValue: "bis zu 80 %",
-        rewardNote: "Belohnungsberechtigung vorbehaltlich der Regeln & AGB.",
+        rewardNote: "Auszahlungsberechtigung vorbehaltlich der Regeln & AGB.",
       },
     },
     trust: {
@@ -1075,14 +1110,14 @@ export const translations: Record<Language, Dictionary> = {
       ],
     },
     payouts: {
-      eyebrow: "Auszahlungen & Belohnungen",
-      title: "Belohnungen für konstante, regelkonforme Performance",
-      sub: "Handle innerhalb der Regeln, erziele positive Ergebnisse und du kannst für leistungsbasierte Belohnungen berechtigt werden.",
+      eyebrow: "Payouts",
+      title: "Auszahlungen für konstante, regelkonforme Performance",
+      sub: "Handle innerhalb der Regeln, erziele positive Ergebnisse und du kannst für eine leistungsbasierte Auszahlung berechtigt werden.",
       cards: [
-        { title: "Gewinnbeteiligung", desc: "Der Anteil der berechtigten simulierten Performance, der als Reward ausgezahlt werden kann. Die genauen Bedingungen sind in der Payout Policy definiert." },
-        { title: "Auszahlungszyklus", desc: "Wie oft berechtigte Reward-Anträge bearbeitet werden, sobald die Anforderungen erfüllt sind." },
+        { title: "Gewinnbeteiligung", desc: "Der Anteil der berechtigten simulierten Performance, der ausgezahlt werden kann. Die genauen Bedingungen sind in der Payout Policy definiert." },
+        { title: "Auszahlungszyklus", desc: "Wie oft berechtigte Auszahlungsanträge bearbeitet werden, sobald die Anforderungen erfüllt sind." },
         { title: "Auszahlungsbearbeitung", desc: "Auszahlungen werden nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung innerhalb von 24h bearbeitet." },
-        { title: "Erstes Reward-Fenster", desc: "Der früheste Zeitpunkt, zu dem ein Konto seinen ersten Reward beantragen kann." },
+        { title: "Erstes Auszahlungsfenster", desc: "Der früheste Zeitpunkt, zu dem ein Konto seine erste Auszahlung beantragen kann." },
       ],
       values: {
         profitSplit: "bis zu 80 %",
@@ -1091,7 +1126,7 @@ export const translations: Record<Language, Dictionary> = {
         firstPayoutWindow: "14 Tage nach dem ersten Trade",
       },
       disclaimer:
-        "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Rewards unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
+        "Die Auszahlungsberechtigung unterliegt der Einhaltung der Trading-Regeln von SAFunded und den geltenden AGB. Auszahlungen sind nicht garantiert, es gibt kein garantiertes Einkommen und alle Auszahlungen unterliegen Berechtigungsvoraussetzungen. Trading ist mit Risiken verbunden.",
       footnote: "*Nach erfolgreicher Prüfung, KYC/AML-Prüfung und vollständiger Regeleinhaltung.",
       viewAll: "Alle Auszahlungen ansehen",
     },
@@ -1209,7 +1244,7 @@ export const translations: Record<Language, Dictionary> = {
     dashboard: {
       eyebrow: "Plattform-Vorschau",
       title: "Ein klarer Blick auf dein Konto",
-      sub: "Behalte Kontostand, Eigenkapital, Risikolimits und Belohnungsberechtigung auf einen Blick im Auge. (Visuelle Vorschau — Zahlen sind beispielhaft.)",
+      sub: "Behalte Kontostand, Eigenkapital, Risikolimits und Auszahlungsberechtigung auf einen Blick im Auge.",
       accountLabel: "Instant Funded · 100K",
       active: "Aktiv",
       metrics: {
@@ -1218,7 +1253,7 @@ export const translations: Record<Language, Dictionary> = {
         openPl: "Offenes G/V",
         dailyLossLimit: "Tägliches Verlustlimit",
         overallLossLimit: "Gesamtverlustlimit",
-        rewardTarget: "Belohnungsziel",
+        rewardTarget: "Auszahlungsziel",
       },
       rewardTargetValue: "3 Tage × 1 %",
       equityCurve: "Eigenkapitalkurve (beispielhaft)",
@@ -1234,12 +1269,12 @@ export const translations: Record<Language, Dictionary> = {
       traditionalLabel: "Klassische Challenge",
       rows: [
         { point: "Start", safunded: "Sofort mit simuliertem Account", traditional: "Erst Challenge bestehen" },
-        { point: "Profit Split", safunded: "Bis zu 80 % Reward", traditional: "Meist erst nach 2 Phasen" },
+        { point: "Profit Split", safunded: "Bis zu 80 % Auszahlung", traditional: "Meist erst nach 2 Phasen" },
         { point: "Zeitdruck", safunded: "Kein unnötiger Prüfungsstress", traditional: "Oft enge Regeln & Phasen" },
         { point: "Kapital", safunded: "Simulierter MT5-Account", traditional: "Simulierter Challenge-Account" },
         { point: "Auszahlung", safunded: "Nach Regelprüfung möglich", traditional: "Erst nach Bestehen & Prüfung" },
       ],
-      footnote: "Alle Accounts sind simulierte Trading-Accounts — es wird kein echtes Kapital bereitgestellt. Rewards setzen eine erfolgreiche Prüfung, KYC/AML-Checks und vollständige Regeleinhaltung voraus.",
+      footnote: "Alle Accounts sind simulierte Trading-Accounts — es wird kein echtes Kapital bereitgestellt. Auszahlungen setzen eine erfolgreiche Prüfung, KYC/AML-Checks und vollständige Regeleinhaltung voraus.",
     },
     launch: {
       badge: "Launch-Angebot",
@@ -1253,7 +1288,7 @@ export const translations: Record<Language, Dictionary> = {
         "10% Max Overall Loss",
         "Auszahlungen werden nach erfolgreicher Prüfung innerhalb von 24h bearbeitet",
       ],
-      cta: "Konten ansehen",
+      cta: "Launch-Angebot sichern",
     },
     seo: {
       eyebrow: "Über SAFunded",
@@ -1306,25 +1341,50 @@ export const translations: Record<Language, Dictionary> = {
     faq: {
       eyebrow: "FAQ",
       title: "Fragen, klar beantwortet",
-      items: [
-        { q: "Ist das echtes Kapital?", a: "Sämtliches Trading findet in einer simulierten Umgebung statt. Es wird kein echtes Kapital eingezahlt, gehalten oder gehandelt; angezeigte Kontostände sind fiktive Referenzwerte zur Leistungsmessung. SAFunded erbringt keine Anlage- oder Finanzberatung und bietet keine Brokerage-Dienstleistungen an." },
-        { q: "Wann kann ich eine Auszahlung erhalten?", a: "Kumulativ erforderlich sind: Einhaltung aller Regeln, eine Mindestlaufzeit von 14 Kalendertagen, mindestens 3 profitable Handelstage mit jeweils ≥ 1 % Gewinn des Account-Referenzwertes sowie eine erfolgreiche KYC-, AML- und Anti-Fraud-Prüfung. Nach erfolgreicher Prüfung werden Payouts innerhalb von 24 Stunden bearbeitet; SAFunded erhebt keine zusätzlichen Payout-Gebühren." },
-        { q: "Welche Regeln muss ich einhalten?", a: "Es gelten ein maximaler Tagesverlust von 5 % und ein maximaler Gesamtverlust von 10 % des jeweiligen Account-Referenzwertes. Offene Positionen zählen mit; bereits eine temporäre Überschreitung gilt als Verstoß. Die tägliche Reset-Zeit ist UTC+2 (Berlin-Prag-Zeit)." },
-        { q: "Warum ist KYC notwendig?", a: "Vor einer Auszahlung verifiziert SAFunded deine Identität (KYC) zusammen mit AML- und Anti-Fraud-Prüfungen. Das schützt Auszahlungen vor Betrug, stellt sicher, dass Rewards an den rechtmäßigen Kontoinhaber gehen, und hält die Plattform regelkonform. KYC ist vor deiner ersten Auszahlung erforderlich." },
-        { q: "Was passiert bei einem Regelverstoß?", a: "Ein Regelverstoß kann zur Disqualifikation, zur Ablehnung einer Auszahlung sowie zur Sperrung, Schließung oder Beendigung des Accounts führen. In diesen Fällen besteht kein Anspruch auf einen Payout." },
-        { q: "Gibt es eine Rückerstattung?", a: "Verbrauchern steht grundsätzlich ein 14-tägiges Widerrufsrecht ab Vertragsabschluss zu. Bei digitalen Leistungen erlischt es vorzeitig, wenn du im Bestellvorgang ausdrücklich zustimmst, dass die Ausführung sofort beginnt, und bestätigst, dass du dadurch dein Widerrufsrecht verlierst. Eine Rückerstattung kommt insbesondere bei Nichtbereitstellung oder einem von SAFunded zu vertretenden Fehler in Betracht; bei Regelverstoß, Betrug oder Chargeback-Missbrauch besteht kein Erstattungsanspruch." },
-        { q: "Welche Trading-Praktiken sind verboten?", a: "Verboten sind u. a. Scalping, Martingale, Grid, Hedging, Latenz- und Tick-Arbitrage, das Ausnutzen von Plattform- oder Preisfehlern, nicht genehmigte Bots, Multi-Account-Abuse sowie die künstliche Erzeugung profitabler Tage. Copy Trading ist erlaubt, solange es transparent und regelkonform ist und nicht der Regelumgehung dient." },
-        { q: "Welche Plattform wird genutzt?", a: "Gehandelt wird auf MetaTrader 5 (MT5). Handelbar sind Forex, Edelmetalle (insbesondere Gold), Indizes sowie weitere über MT5 verfügbare und von SAFunded freigegebene CFDs. Einzelaktien sind nicht handelbar. Der Standard-Hebel beträgt 1:100; SAFunded kann den Hebel je nach Instrument, Modell oder Marktbedingungen anpassen." },
-        { q: "Was ist ein Instant-Funded-Konto?", a: "Nach dem Kauf wird dir unmittelbar ein simulierter MT5-Account mit einem definierten Account-Referenzwert (25K, 50K oder 100K) bereitgestellt – ohne separate mehrstufige Evaluierung. Du handelst ab dem ersten Tag innerhalb klar definierter Risikoregeln." },
-        { q: "Wie kaufe und bezahle ich ein Konto?", a: "Wähle im Bereich „Konten“ eine Kontogröße und schließe einen sicheren Checkout ab. Die Zahlung erfolgt über Stripe (Karte) oder Confirmo (Krypto); SAFunded speichert keine Kartendaten. Zahlungen müssen vom rechtmäßigen Karten- bzw. Kontoinhaber stammen – Drittzahlungen können abgelehnt werden." },
-        { q: "Wann erhalte ich meinen Kontozugang?", a: "Der Account-Zugang wird nach erfolgreichem Zahlungseingang bereitgestellt – in der Regel unmittelbar bzw. zeitnah. Die Onboarding-Details werden an die mit deinem Kauf verknüpfte E-Mail-Adresse gesendet." },
-        { q: "Darf ich Trades über Nacht oder über das Wochenende halten?", a: "Ja. Overnight Holding und Weekend Trading sind erlaubt. Das Risiko aus Gaps, Slippage, Spread-Ausweitungen und Swaps trägt der Trader, und solche Positionen werden vollständig in die Drawdown-Überwachung einbezogen." },
-        { q: "Darf ich News traden?", a: "Innerhalb eines Fensters von 5 Minuten vor und 5 Minuten nach relevanten High-Impact-News dürfen Positionen weder eröffnet noch geschlossen noch verändert werden. Außerhalb dieses Fensters ist News-Trading zulässig. SAFunded bestimmt relevante News anhand anerkannter Wirtschaftskalender und interner Risikobewertung." },
-        { q: "Kann ich Expert Advisors (EAs) oder Bots verwenden?", a: "Automatisierte Systeme, EAs, Bots und Skripte sind nur nach vorheriger Genehmigung erlaubt. SAFunded kann Strategie, Funktionsweise und Risikologik prüfen und bereits genehmigte Systeme nachträglich untersagen." },
-        { q: "Gibt es eine Consistency Rule?", a: "Nein. SAFunded wendet keine Consistency Rule an – deine Performance wird nicht durch Einzeltag- oder Einzeltrade-Grenzen gedeckelt." },
-        { q: "Wie funktioniert die Gewinnbeteiligung – und sind Auszahlungen garantiert?", a: "Der anerkannte Gewinnanteil wird im Verhältnis 80 % (Trader) / 20 % (SAFunded) aufgeteilt. Ein Payout ist jedoch kein automatischer oder garantierter Anspruch: Bei Regelverstoß, Manipulation oder falschen Angaben besteht kein Auszahlungsanspruch. Trading ist mit Risiken verbunden." },
-        { q: "Wer darf ein Konto eröffnen?", a: "Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Nutzer aus bzw. mit Aufenthalt in der Ukraine, im Iran, in Israel und in Afghanistan dürfen keine Accounts eröffnen oder nutzen; SAFunded kann diese Liste aus rechtlichen oder regulatorischen Gründen erweitern." },
-        { q: "Wer betreibt SAFunded und wo finde ich AGB und Regeln?", a: "Betreiber ist AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt." },
+      categories: [
+        {
+          title: "Konten & Start",
+          items: [
+            { q: "Was ist ein Instant-Funded-Konto?", a: "Nach dem Kauf wird dir unmittelbar ein simulierter MT5-Account mit einem definierten Account-Referenzwert (25K, 50K oder 100K) bereitgestellt – ohne separate mehrstufige Evaluierung. Du handelst ab dem ersten Tag innerhalb klar definierter Risikoregeln." },
+            { q: "Ist das echtes Kapital?", a: "Sämtliches Trading findet in einer simulierten Umgebung statt. Es wird kein echtes Kapital eingezahlt, gehalten oder gehandelt; angezeigte Kontostände sind fiktive Referenzwerte zur Leistungsmessung. SAFunded erbringt keine Anlage- oder Finanzberatung und bietet keine Brokerage-Dienstleistungen an." },
+            { q: "Welche Plattform wird genutzt?", a: "Gehandelt wird auf MetaTrader 5 (MT5). Handelbar sind Forex, Edelmetalle (insbesondere Gold), Indizes sowie weitere über MT5 verfügbare und von SAFunded freigegebene CFDs. Einzelaktien sind nicht handelbar. Der Standard-Hebel beträgt 1:100; SAFunded kann den Hebel je nach Instrument, Modell oder Marktbedingungen anpassen." },
+            { q: "Wann erhalte ich meinen Kontozugang?", a: "Der Account-Zugang wird nach erfolgreichem Zahlungseingang bereitgestellt – in der Regel unmittelbar bzw. zeitnah. Die Onboarding-Details werden an die mit deinem Kauf verknüpfte E-Mail-Adresse gesendet." },
+            { q: "Wer darf ein Konto eröffnen?", a: "Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Nutzer aus bzw. mit Aufenthalt in der Ukraine, im Iran, in Israel und in Afghanistan dürfen keine Accounts eröffnen oder nutzen; SAFunded kann diese Liste aus rechtlichen oder regulatorischen Gründen erweitern." },
+            { q: "Wer betreibt SAFunded und wo finde ich AGB und Regeln?", a: "Betreiber ist AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt." },
+          ],
+        },
+        {
+          title: "Trading-Regeln",
+          items: [
+            { q: "Welche Regeln muss ich einhalten?", a: "Es gelten ein maximaler Tagesverlust von 5 % und ein maximaler Gesamtverlust von 10 % des jeweiligen Account-Referenzwertes. Offene Positionen zählen mit; bereits eine temporäre Überschreitung gilt als Verstoß. Die tägliche Reset-Zeit ist UTC+2 (Berlin-Prag-Zeit)." },
+            { q: "Was passiert bei einem Regelverstoß?", a: "Ein Regelverstoß kann zur Disqualifikation, zur Ablehnung einer Auszahlung sowie zur Sperrung, Schließung oder Beendigung des Accounts führen. In diesen Fällen besteht kein Anspruch auf einen Payout." },
+            { q: "Welche Trading-Praktiken sind verboten?", a: "Verboten sind u. a. Scalping, Martingale, Grid, Hedging, Latenz- und Tick-Arbitrage, das Ausnutzen von Plattform- oder Preisfehlern, nicht genehmigte Bots, Multi-Account-Abuse sowie die künstliche Erzeugung profitabler Tage. Copy Trading ist erlaubt, solange es transparent und regelkonform ist und nicht der Regelumgehung dient." },
+            { q: "Darf ich Trades über Nacht oder über das Wochenende halten?", a: "Ja. Overnight Holding und Weekend Trading sind erlaubt. Das Risiko aus Gaps, Slippage, Spread-Ausweitungen und Swaps trägt der Trader, und solche Positionen werden vollständig in die Drawdown-Überwachung einbezogen." },
+            { q: "Darf ich News traden?", a: "Innerhalb eines Fensters von 5 Minuten vor und 5 Minuten nach relevanten High-Impact-News dürfen Positionen weder eröffnet noch geschlossen noch verändert werden. Außerhalb dieses Fensters ist News-Trading zulässig. SAFunded bestimmt relevante News anhand anerkannter Wirtschaftskalender und interner Risikobewertung." },
+            { q: "Kann ich Expert Advisors (EAs) oder Bots verwenden?", a: "Automatisierte Systeme, EAs, Bots und Skripte sind nur nach vorheriger Genehmigung erlaubt. SAFunded kann Strategie, Funktionsweise und Risikologik prüfen und bereits genehmigte Systeme nachträglich untersagen." },
+            { q: "Gibt es eine Consistency Rule?", a: "Nein. SAFunded wendet keine Consistency Rule an – deine Performance wird nicht durch Einzeltag- oder Einzeltrade-Grenzen gedeckelt." },
+          ],
+        },
+        {
+          title: "Auszahlungen",
+          items: [
+            { q: "Wann kann ich eine Auszahlung erhalten?", a: "Kumulativ erforderlich sind: Einhaltung aller Regeln, eine Mindestlaufzeit von 14 Kalendertagen, mindestens 3 profitable Handelstage mit jeweils ≥ 1 % Gewinn des Account-Referenzwertes sowie eine erfolgreiche KYC-, AML- und Anti-Fraud-Prüfung. Nach erfolgreicher Prüfung werden Payouts innerhalb von 24 Stunden bearbeitet; SAFunded erhebt keine zusätzlichen Payout-Gebühren." },
+            { q: "Wie funktioniert die Gewinnbeteiligung – und sind Auszahlungen garantiert?", a: "Der anerkannte Gewinnanteil wird im Verhältnis 80 % (Trader) / 20 % (SAFunded) aufgeteilt. Ein Payout ist jedoch kein automatischer oder garantierter Anspruch: Bei Regelverstoß, Manipulation oder falschen Angaben besteht kein Auszahlungsanspruch. Trading ist mit Risiken verbunden." },
+          ],
+        },
+        {
+          title: "Verifizierung & KYC",
+          items: [
+            { q: "Warum ist KYC notwendig?", a: "Vor einer Auszahlung verifiziert SAFunded deine Identität (KYC) zusammen mit AML- und Anti-Fraud-Prüfungen. Das schützt Auszahlungen vor Betrug, stellt sicher, dass Auszahlungen an den rechtmäßigen Kontoinhaber gehen, und hält die Plattform regelkonform. KYC ist vor deiner ersten Auszahlung erforderlich." },
+          ],
+        },
+        {
+          title: "Zahlungen & Rückerstattungen",
+          items: [
+            { q: "Wie kaufe und bezahle ich ein Konto?", a: "Wähle im Bereich „Konten“ eine Kontogröße und schließe einen sicheren Checkout ab. Die Zahlung erfolgt über Stripe (Karte) oder Confirmo (Krypto); SAFunded speichert keine Kartendaten. Zahlungen müssen vom rechtmäßigen Karten- bzw. Kontoinhaber stammen – Drittzahlungen können abgelehnt werden." },
+            { q: "Gibt es eine Rückerstattung?", a: "Verbrauchern steht grundsätzlich ein 14-tägiges Widerrufsrecht ab Vertragsabschluss zu. Bei digitalen Leistungen erlischt es vorzeitig, wenn du im Bestellvorgang ausdrücklich zustimmst, dass die Ausführung sofort beginnt, und bestätigst, dass du dadurch dein Widerrufsrecht verlierst. Eine Rückerstattung kommt insbesondere bei Nichtbereitstellung oder einem von SAFunded zu vertretenden Fehler in Betracht; bei Regelverstoß, Betrug oder Chargeback-Missbrauch besteht kein Erstattungsanspruch." },
+          ],
+        },
       ],
     },
     cta: {

@@ -42,7 +42,7 @@ export default function Hero() {
               {t.hero.ctaStart}
             </a>
             <a
-              href="#how-it-works"
+              href="/how-it-works"
               className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
             >
               {t.hero.viewOptions}

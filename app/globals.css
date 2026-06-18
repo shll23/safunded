@@ -80,6 +80,16 @@ textarea {
   background: rgba(45, 212, 167, 0.3);
 }
 
+/* Hide scrollbars on horizontal swipe rails (account cards) while keeping the
+   element scrollable via touch / trackpad. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Subtle animated sheen for the primary green CTA buttons (Konto starten,
    Konto erhalten, Konten ansehen, Programme ansehen, …). A soft diagonal
    highlight sweeps across the button on a slow loop, with a long pause between

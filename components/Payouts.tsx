@@ -1,9 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { SectionHeading } from "./HowItWorks";
 import { useT } from "@/lib/i18n";
 import Link from "next/link";
 
+/**
+ * Payout highlights. Each card leads with its headline value; the longer
+ * explanation stays hidden behind a "Show more" toggle that expands inline, so
+ * the section reads as four clean figures rather than four paragraphs.
+ */
 export default function Payouts() {
   const t = useT();
   const values = [
@@ -22,17 +28,16 @@ export default function Payouts() {
           sub={t.payouts.sub}
         />
 
-        <div className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {t.payouts.cards.map((c, i) => (
-            <div key={c.title} className="text-center sm:text-left">
-              <p className="text-xs uppercase tracking-wide text-faint">
-                {c.title}
-              </p>
-              <p className="mt-2 font-display text-3xl font-semibold text-accent">
-                {values[i]}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{c.desc}</p>
-            </div>
+            <PayoutCard
+              key={c.title}
+              title={c.title}
+              value={values[i]}
+              desc={c.desc}
+              showMore={t.common.showMore}
+              showLess={t.common.showLess}
+            />
           ))}
         </div>
 
@@ -54,5 +59,55 @@ export default function Payouts() {
         </p>
       </div>
     </section>
+  );
+}
+
+function PayoutCard({
+  title,
+  value,
+  desc,
+  showMore,
+  showLess,
+}: {
+  title: string;
+  value: string;
+  desc: string;
+  showMore: string;
+  showLess: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+      <p className="text-xs uppercase tracking-wide text-faint">{title}</p>
+      <p className="mt-2 font-display text-3xl font-semibold text-accent">
+        {value}
+      </p>
+
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="mt-4 inline-flex items-center gap-1.5 self-start text-xs font-medium text-muted transition-colors hover:text-accent"
+      >
+        {open ? showLess : showMore}
+        <span
+          className={`grid h-5 w-5 place-items-center rounded-full border border-white/15 text-xs transition-transform ${
+            open ? "rotate-45" : ""
+          }`}
+          aria-hidden="true"
+        >
+          +
+        </span>
+      </button>
+
+      <div
+        className={`grid transition-all duration-300 ease-out ${
+          open ? "mt-3 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="text-sm leading-relaxed text-muted">{desc}</p>
+        </div>
+      </div>
+    </div>
   );
 }
