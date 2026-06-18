@@ -20,13 +20,18 @@ export default function Pricing() {
           sub={t.pricing.sub}
         />
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {/* Mobile: a horizontal swipe rail (FTMO-style) so all three account
+            sizes sit at the same height and the visitor swipes instead of
+            scrolling down a long stacked list. A sliver of the next card peeks
+            in to signal that the row is swipeable. From lg up it becomes a calm
+            three-column grid. */}
+        <div className="no-scrollbar -mx-5 mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 pt-4 [scroll-padding-left:1.25rem] sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
           {plans.map((plan) => {
             const copy = t.pricing.plans[plan.id];
             return (
               <div
                 key={plan.id}
-                className={`relative flex h-full flex-col rounded-2xl border p-7 transition-all ${
+                className={`relative flex h-full w-[85%] shrink-0 snap-center flex-col rounded-2xl border p-7 transition-all sm:w-[60%] md:w-[44%] lg:w-auto ${
                   plan.mostPopular
                     ? "border-accent/40 bg-gradient-to-b from-accent/[0.06] to-transparent shadow-glow"
                     : "border-white/[0.08] bg-white/[0.02] hover:border-white/20"

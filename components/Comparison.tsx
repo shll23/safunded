@@ -11,7 +11,6 @@ export default function Comparison() {
         <SectionHeading
           eyebrow={t.comparison.eyebrow}
           title={t.comparison.title}
-          sub={t.comparison.sub}
         />
 
         <div className="mx-auto mt-14 max-w-4xl overflow-hidden rounded-2xl border border-white/[0.08]">
