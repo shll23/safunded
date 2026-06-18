@@ -204,7 +204,7 @@ export default function DashboardClient({
                           type="button"
                           onClick={() => setOpenOrderId(null)}
                           title="Order-ID ausblenden"
-                          className="mt-0.5 break-all font-mono text-xl font-bold text-white transition-colors hover:text-accent sm:text-2xl"
+                          className="mt-0.5 max-w-[10rem] break-all font-mono text-xs text-muted transition-colors hover:text-accent"
                         >
                           {acc.order_id}
                         </button>
@@ -212,7 +212,7 @@ export default function DashboardClient({
                         <button
                           type="button"
                           onClick={() => setOpenOrderId(acc.account_id)}
-                          className="mt-0.5 inline-block break-all text-lg font-bold text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent sm:text-xl"
+                          className="mt-0.5 inline-block text-xs font-semibold text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
                         >
                           Order-ID anzeigen
                         </button>
