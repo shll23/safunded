@@ -29,7 +29,7 @@ export interface Dictionary {
     showLess: string;
   };
   header: {
-    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string; about: string };
+    nav: { howItWorks: string; accounts: string; rules: string; payouts: string; reviews: string; faq: string; about: string; markets: string };
     cta: string;
     login: string;
     menu: string;
@@ -401,6 +401,7 @@ export const translations: Record<Language, Dictionary> = {
         reviews: "Reviews",
         faq: "FAQ",
         about: "About",
+        markets: "Markets",
       },
       cta: "Get Funded",
       login: "Login",
@@ -951,6 +952,7 @@ export const translations: Record<Language, Dictionary> = {
         reviews: "Bewertungen",
         faq: "FAQ",
         about: "Über uns",
+        markets: "Markets",
       },
       cta: "Konto erhalten",
       login: "Anmelden",
