@@ -1,6 +1,5 @@
 "use client";
 
-import CheckoutButton from "./CheckoutButton";
 import TrustpilotBadge from "./TrustpilotBadge";
 import { useT } from "@/lib/i18n";
 
@@ -9,7 +8,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
+      className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
     >
       {/* Ambient background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -25,7 +24,7 @@ export default function Hero() {
             {t.hero.badge}
           </span>
 
-          <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.07] tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-7 font-display text-[2rem] font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl sm:leading-[1.08] lg:text-6xl">
             {t.hero.titleLead}
             <span className="text-accent">{t.hero.titleAccent}</span>
             {t.hero.titleTail}
@@ -35,39 +34,24 @@ export default function Hero() {
             {t.hero.desc}
           </p>
 
-          {/* Launch offer + price line */}
-          <div className="mt-7 space-y-2.5">
-            <span className="inline-flex items-center gap-2 rounded-full border border-rose-500/40 bg-rose-500/10 px-4 py-1.5 text-xs font-semibold text-rose-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-rose-500" />
-              {t.hero.offerLine}
-            </span>
-            <p className="text-base font-semibold text-white sm:text-lg">
-              {t.hero.priceLine}
-            </p>
-          </div>
-
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <div className="sm:w-56">
-              <CheckoutButton planId="25k" label={t.hero.ctaStart} />
-            </div>
             <a
               href="#accounts"
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
+              className="cta-shimmer inline-flex items-center justify-center rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
+            >
+              {t.hero.ctaStart}
+            </a>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/[0.07]"
             >
               {t.hero.viewOptions}
             </a>
           </div>
 
-          <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-3 sm:max-w-lg">
-            {t.hero.trustBadges.map((b) => (
-              <li key={b} className="flex items-center gap-2.5 text-sm text-muted">
-                <CheckIcon />
-                {b}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-6 text-xs text-faint">{t.hero.riskNote}</p>
+          <p className="mt-7 max-w-lg text-xs leading-relaxed text-faint">
+            {t.hero.riskNote}
+          </p>
 
           <TrustpilotBadge className="mt-8" />
         </div>
@@ -143,22 +127,5 @@ function Stat({
         {value}
       </p>
     </div>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      className="h-4 w-4 flex-none text-accent"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fillRule="evenodd"
-        d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z"
-        clipRule="evenodd"
-      />
-    </svg>
   );
 }

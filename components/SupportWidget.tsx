@@ -266,8 +266,8 @@ export default function SupportWidget() {
         aria-expanded={open}
         className={
           open
-            ? "fixed bottom-5 right-5 z-[60] grid h-14 w-14 place-items-center rounded-full bg-accent text-ink shadow-glow-lg transition-transform hover:bg-accent-bright hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
-            : "fixed bottom-5 right-5 z-[60] grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-surface ring-1 ring-accent/40 shadow-glow-lg transition-transform hover:scale-105 hover:ring-accent/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+            ? "fixed bottom-5 right-5 z-40 grid h-12 w-12 place-items-center rounded-full bg-accent text-ink shadow-glow-lg transition-transform hover:bg-accent-bright hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+            : "fixed bottom-5 right-4 z-40 grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-surface/90 ring-1 ring-accent/30 shadow-glow-lg backdrop-blur transition-transform hover:scale-105 hover:ring-accent/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base sm:right-5 sm:h-14 sm:w-14"
         }
       >
         {open ? (

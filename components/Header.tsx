@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { persistLang, useLanguage, useT } from "@/lib/i18n";
 import { legalLocaleFromPath } from "@/lib/legal";
 import type { Language } from "@/lib/translations";
-import AnnouncementBar from "./AnnouncementBar";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -18,7 +17,6 @@ export default function Header() {
     { label: t.header.nav.accounts, href: "#accounts" },
     { label: t.header.nav.rules, href: "#rules" },
     { label: t.header.nav.payouts, href: "/payouts" },
-    { label: t.header.nav.reviews, href: "#testimonials" },
     { label: t.header.nav.faq, href: "#faq" },
   ];
 
@@ -31,7 +29,6 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <AnnouncementBar />
       <div
         className={`transition-all duration-300 ${
           scrolled

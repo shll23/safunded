@@ -22,16 +22,13 @@ export default function Payouts() {
           sub={t.payouts.sub}
         />
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {t.payouts.cards.map((c, i) => (
-            <div
-              key={c.title}
-              className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6"
-            >
+            <div key={c.title} className="text-center sm:text-left">
               <p className="text-xs uppercase tracking-wide text-faint">
                 {c.title}
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold text-accent">
+              <p className="mt-2 font-display text-3xl font-semibold text-accent">
                 {values[i]}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-muted">{c.desc}</p>
@@ -39,11 +36,9 @@ export default function Payouts() {
           ))}
         </div>
 
-        <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
-          <p className="text-sm leading-relaxed text-muted">
-            {t.payouts.disclaimer}
-          </p>
-        </div>
+        <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-relaxed text-muted">
+          {t.payouts.disclaimer}
+        </p>
 
         <div className="mt-8 text-center">
           <Link
