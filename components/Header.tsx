@@ -41,35 +41,35 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
           <Logo />
 
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="text-sm text-muted transition-colors hover:text-white"
+                className="whitespace-nowrap text-[13px] text-muted transition-colors hover:text-white xl:text-sm"
               >
                 {l.label}
               </a>
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-2.5 lg:flex">
             <LanguageToggle />
             <Link
               href="/login"
-              className="inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-white"
+              className="inline-flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:text-white"
             >
               {t.header.login}
             </Link>
             <a
               href="/#accounts"
-              className="cta-shimmer inline-flex items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
+              className="cta-shimmer inline-flex items-center whitespace-nowrap rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-ink shadow-glow transition-all hover:bg-accent-bright hover:shadow-glow-lg"
             >
               {t.header.cta}
             </a>
           </div>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <LanguageToggle />
             <button
               aria-label={t.header.menu}
@@ -84,7 +84,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-base/95 backdrop-blur-xl md:hidden">
+        <div className="border-t border-white/10 bg-base/95 backdrop-blur-xl lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
             {navLinks.map((l) => (
               <a
