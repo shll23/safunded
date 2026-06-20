@@ -95,9 +95,9 @@ export default function AgbPage() {
         beachten.
       </P>
 
-      <H3>10. Zahlungsbedingungen (Stripe und Confirmo)</H3>
+      <H3>10. Zahlungsbedingungen (Stripe und Validopay)</H3>
       <P>
-        (1) Zahlungen erfolgen über Stripe und Confirmo. (2) Zahlungen müssen vom
+        (1) Zahlungen erfolgen über Stripe und Validopay. (2) Zahlungen müssen vom
         rechtmäßigen Konto- bzw. Karteninhaber stammen; Drittzahlungen können
         abgelehnt oder geprüft werden. (3) Chargeback-Missbrauch und
         Zahlungsbetrug sind verboten und führen zur Sperrung. (4) Bei
@@ -266,7 +266,7 @@ export default function AgbPage() {
         45.3 Aus regulatorischen Gründen sowie aufgrund einer internen Risiko-
         und Compliance-Entscheidung des Anbieters sind darüber hinaus
         ausgeschlossen: Vereinigte Staaten von Amerika (einschließlich ihrer
-        Territorien), Indien, Indonesien, Kasachstan, Kirgisistan, Tadschikistan,
+        Territorien), Israel, Indien, Indonesien, Kasachstan, Kirgisistan, Tadschikistan,
         Turkmenistan, Usbekistan, Bhutan, Anguilla, Antigua und Barbuda, St.
         Kitts und Nevis, St. Lucia, St. Vincent und die Grenadinen, Cookinseln
         sowie Vanuatu. Der Ausschluss der Vereinigten Staaten erfolgt insbesondere

@@ -33,7 +33,7 @@ export default function RefundPolicyPage() {
 
       <H3>8.4 Externe Gebühren</H3>
       <P>
-        Externe Gebühren von Stripe, Confirmo, Banken oder Blockchain-Netzwerken
+        Externe Gebühren von Stripe, Validopay, Banken oder Blockchain-Netzwerken
         können nicht erstattungsfähig sein.
       </P>
 

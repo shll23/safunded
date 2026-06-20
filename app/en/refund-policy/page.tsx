@@ -34,7 +34,7 @@ export default function RefundPolicyEnPage() {
 
       <H3>8.4 External fees</H3>
       <P>
-        External fees from Stripe, Confirmo, banks or blockchain networks may
+        External fees from Stripe, Validopay, banks or blockchain networks may
         not be refundable.
       </P>
 

@@ -93,9 +93,9 @@ export default function AgbEnPage() {
         multiple-account or identity abuse and to observe applicable law.
       </P>
 
-      <H3>10. Payment terms (Stripe and Confirmo)</H3>
+      <H3>10. Payment terms (Stripe and Validopay)</H3>
       <P>
-        (1) Payments are made via Stripe and Confirmo. (2) Payments must
+        (1) Payments are made via Stripe and Validopay. (2) Payments must
         originate from the legitimate account or card holder; third-party
         payments may be refused or reviewed. (3) Chargeback abuse and payment
         fraud are prohibited and lead to a block. (4) In the event of payment
@@ -258,7 +258,7 @@ export default function AgbEnPage() {
         45.3 For regulatory reasons and on the basis of an internal risk and
         compliance decision by the provider, the following are additionally
         excluded: the United States of America (including its territories),
-        India, Indonesia, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan,
+        Israel, India, Indonesia, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan,
         Uzbekistan, Bhutan, Anguilla, Antigua and Barbuda, Saint Kitts and Nevis,
         Saint Lucia, Saint Vincent and the Grenadines, the Cook Islands, and
         Vanuatu. The exclusion of the United States is made in particular with

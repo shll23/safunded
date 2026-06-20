@@ -97,6 +97,13 @@ export const getPlan = (id: string): Plan | undefined =>
   plans.find((p) => p.id === id);
 
 /**
+ * Hard end of the LAUNCH35 promotion (UTC). The launch banner shows a live
+ * countdown to this moment so the discount reads as genuinely time-limited
+ * rather than a permanent price. Update this date to extend or end the offer.
+ */
+export const LAUNCH_OFFER_ENDS_AT = "2026-06-30T23:59:59Z";
+
+/**
  * Trading rules shown on the marketing site. The full, binding rules live in
  * the Trading Rules, Prohibited Trading Practices and Terms & Conditions.
  */
@@ -172,7 +179,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How do I purchase and pay for an account?",
-    a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or Confirmo (crypto); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined.",
+    a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or crypto (BTC); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined.",
   },
   {
     q: "When do I receive my account access?",
