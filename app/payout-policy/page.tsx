@@ -29,7 +29,7 @@ export default function PayoutPolicyPage() {
       <P>
         Der anerkannte Gewinnanteil wird im Verhältnis 80 % (Trader) / 20 %
         (SAFunded) aufgeteilt. Auszahlungen erfolgen über die unterstützten
-        Methoden (Stripe/Confirmo bzw. die jeweils angebotenen Auszahlungswege).
+        Methoden (Stripe/Validopay bzw. die jeweils angebotenen Auszahlungswege).
       </P>
 
       <H3>7.4 Bearbeitung und Fristen</H3>

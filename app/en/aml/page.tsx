@@ -24,7 +24,7 @@ export default function AmlEnPage() {
       <P>
         This policy applies to all users, accounts, purchases, payout requests
         and transactions in connection with SAFunded as well as to all payment
-        service providers used (Stripe and Confirmo).
+        service providers used (Stripe and Validopay).
       </P>
 
       <H3>3.3 Risk-based approach</H3>
@@ -53,9 +53,9 @@ export default function AmlEnPage() {
         to a separate review.
       </P>
 
-      <H3>3.6 Stripe and Confirmo payments</H3>
+      <H3>3.6 Stripe and Validopay payments</H3>
       <P>
-        Payments are processed via Stripe (card/standard payments) and Confirmo
+        Payments are processed via Stripe (card/standard payments) and Validopay
         (crypto payments). The terms and compliance requirements of the
         respective payment service providers apply in addition. SAFunded may
         halt or refuse transactions if they violate the requirements of the

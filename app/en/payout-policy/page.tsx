@@ -30,7 +30,7 @@ export default function PayoutPolicyEnPage() {
       <H3>7.3 Profit split and payout</H3>
       <P>
         The recognised profit share is split in the ratio 80% (trader) / 20%
-        (SAFunded). Payouts are made via the supported methods (Stripe/Confirmo
+        (SAFunded). Payouts are made via the supported methods (Stripe/Validopay
         or the respective payout channels offered).
       </P>
 

@@ -285,6 +285,10 @@ export interface Dictionary {
     sub: string;
     bullets: string[];
     cta: string;
+    endsIn: string;
+    endsOn: string;
+    expired: string;
+    units: { days: string; hours: string; mins: string; secs: string };
   };
   /** SEO / plain-language explainer section. */
   seo: {
@@ -442,7 +446,7 @@ export const translations: Record<Language, Dictionary> = {
       trustBadges: [
         "Instant Funded Accounts",
         "Clear Trading Rules",
-        "Stripe & Confirmo Checkout",
+        "Stripe & Crypto Checkout",
         "Performance-Based Rewards",
       ],
       mock: {
@@ -463,7 +467,7 @@ export const translations: Record<Language, Dictionary> = {
       statement: "Built for disciplined traders who want clear rules, instant simulated access and transparent reward eligibility.",
       items: [
         { title: "Transparent rules", desc: "Every limit is published up front — no surprises, no hidden conditions." },
-        { title: "Secure payments", desc: "Card and crypto payments are handled by Stripe and Confirmo. We never store your card details." },
+        { title: "Secure payments", desc: "Card and crypto payments are handled via Stripe (card) and crypto (BTC). We never store your card details." },
         { title: "Simulated trading", desc: "All accounts are simulated. No real client capital is deposited, held or traded." },
         { title: "Clear payout review", desc: "Reward eligibility and review steps are documented, consistent and disclosed plainly." },
       ],
@@ -474,7 +478,7 @@ export const translations: Record<Language, Dictionary> = {
       sub: "Four straightforward steps. No multi-stage evaluation to begin.",
       steps: [
         { title: "Choose your account size", desc: "Pick a 25K, 50K or 100K Instant Funded Account based on the amount of simulated capital you want to trade." },
-        { title: "Complete secure checkout", desc: "Pay securely via Stripe (card) or Confirmo (crypto). Your card details are handled by Stripe and Confirmo, not by SAFunded." },
+        { title: "Complete secure checkout", desc: "Pay securely via Stripe (card) or crypto (BTC). Your card details are handled by Stripe, not by SAFunded." },
         { title: "Receive account access", desc: "After a successful payment, your onboarding details are sent to your email so you can get started." },
         { title: "Trade within the rules", desc: "Trade inside the defined risk rules. With positive performance and full rule compliance, you may become eligible for performance-based rewards according to the payout policy." },
       ],
@@ -539,7 +543,7 @@ export const translations: Record<Language, Dictionary> = {
       title: "Serious, transparent and secure by design",
       items: [
         { icon: "flag", title: "Operated from Germany", desc: "SAFunded is operated by a German company with a clear legal notice, transparent provider information and direct communication." },
-        { icon: "shield", title: "Secure payment", desc: "Payments are handled by secure providers such as Stripe and Confirmo. SAFunded never stores your sensitive payment details." },
+        { icon: "shield", title: "Secure payment", desc: "Payments are handled securely via Stripe (card) and crypto (BTC). SAFunded never stores your sensitive payment details." },
         { icon: "check", title: "Clear payout review", desc: "Rewards are processed after a transparent review of the trading rules, identity (KYC) and prohibited trading practices." },
         { icon: "sim", title: "Simulated trading", desc: "All accounts are simulated trading accounts. No real client capital is deposited, held or traded — risk is disclosed plainly." },
       ],
@@ -740,6 +744,10 @@ export const translations: Record<Language, Dictionary> = {
         "Payouts processed within 24h after successful review",
       ],
       cta: "Claim Launch Offer",
+      endsIn: "Offer ends in",
+      endsOn: "Ends on",
+      expired: "The launch offer has ended.",
+      units: { days: "d", hours: "h", mins: "m", secs: "s" },
     },
     seo: {
       eyebrow: "About SAFunded",
@@ -800,7 +808,7 @@ export const translations: Record<Language, Dictionary> = {
             { q: "Is the capital real or simulated?", a: "All trading takes place in a simulated environment. No real capital is deposited, held or traded; displayed balances are notional reference values used to measure performance. SAFunded does not provide investment or financial advice and does not offer brokerage services." },
             { q: "Which platform is used, and which instruments can I trade?", a: "Trading takes place on MetaTrader 5 (MT5). You can trade Forex, precious metals (in particular gold), indices and other CFDs available via MT5 and approved by SAFunded. Single stocks are not tradable. The standard leverage is 1:100; SAFunded may adjust leverage depending on the instrument, account model or market conditions." },
             { q: "When do I receive my account access?", a: "Account access is provided after successful payment — generally immediately or shortly thereafter. Onboarding details are sent to the email address associated with your purchase." },
-            { q: "Who can open an account?", a: "Opening an account requires that you are of legal age (at least 18) and have full legal capacity. Users from or residing in Ukraine, Iran, Israel and Afghanistan may not open or use accounts; SAFunded may extend this list for legal or regulatory reasons." },
+            { q: "Who can open an account?", a: "You must be of legal age (at least 18) and have full legal capacity. In addition, for sanctions, anti-money-laundering and regulatory reasons, persons from certain countries and regions are excluded from registration, purchase and account use. The complete and binding list is set out in our Terms (§45). If a payment is nevertheless received from an excluded person, no account is provided and the amount is refunded in full." },
             { q: "Who operates SAFunded, and where can I read the terms and rules?", a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer." },
           ],
         },
@@ -832,7 +840,7 @@ export const translations: Record<Language, Dictionary> = {
         {
           title: "Payments & Refunds",
           items: [
-            { q: "How do I purchase and pay for an account?", a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or Confirmo (crypto); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined." },
+            { q: "How do I purchase and pay for an account?", a: "Choose an account size in the Accounts section and complete a secure checkout. Payment is processed via Stripe (card) or crypto (BTC); SAFunded does not store your card details. Payments must come from the legitimate card or account holder — third-party payments may be declined." },
             { q: "Is there a refund?", a: "Consumers generally have a 14-day right of withdrawal from the conclusion of the contract. For digital services it expires early if, during the order process, you expressly consent to performance beginning immediately and confirm that you thereby lose your right of withdrawal. A refund may be considered in particular if the service is not provided or a fault attributable to SAFunded occurs; in the event of a rule violation, fraud or chargeback abuse there is no refund entitlement." },
           ],
         },
@@ -840,7 +848,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     cta: {
       title: "Ready to start with simulated capital?",
-      desc: "Pick an account size, complete a secure checkout via Stripe or Confirmo, and trade within clear, published rules.",
+      desc: "Pick an account size, complete a secure checkout via Stripe (card) or crypto (BTC), and trade within clear, published rules.",
       start: "Start with 50K",
       compare: "Compare accounts",
       note: "Payouts are not guaranteed. Trading involves risk.",
@@ -993,7 +1001,7 @@ export const translations: Record<Language, Dictionary> = {
       trustBadges: [
         "Instant-Funded-Konten",
         "Klare Trading-Regeln",
-        "Stripe- & Confirmo-Checkout",
+        "Stripe- & Krypto-Checkout",
         "Leistungsbasierte Rewards",
       ],
       mock: {
@@ -1014,7 +1022,7 @@ export const translations: Record<Language, Dictionary> = {
       statement: "Gemacht für disziplinierte Trader, die klare Regeln, sofortigen simulierten Zugang und transparente Reward-Berechtigung wollen.",
       items: [
         { title: "Transparente Regeln", desc: "Jedes Limit wird offen kommuniziert — keine Überraschungen, keine versteckten Bedingungen." },
-        { title: "Sichere Zahlungen", desc: "Karten- und Krypto-Zahlungen laufen über Stripe und Confirmo. Wir speichern keine Kartendaten." },
+        { title: "Sichere Zahlungen", desc: "Karten- und Krypto-Zahlungen laufen über Stripe (Karte) und Krypto (BTC). Wir speichern keine Kartendaten." },
         { title: "Simuliertes Trading", desc: "Alle Konten sind simuliert. Es wird kein echtes Kundenkapital eingezahlt, gehalten oder gehandelt." },
         { title: "Klare Auszahlungsprüfung", desc: "Reward-Berechtigung und Prüfschritte sind dokumentiert, konsistent und klar offengelegt." },
       ],
@@ -1025,7 +1033,7 @@ export const translations: Record<Language, Dictionary> = {
       sub: "Vier unkomplizierte Schritte. Kein mehrstufiges Evaluierungsverfahren zu Beginn.",
       steps: [
         { title: "Wähle deine Kontogröße", desc: "Wähle ein Instant-Funded-Konto mit 25K, 50K oder 100K — je nach Höhe des simulierten Kapitals, mit dem du handeln möchtest." },
-        { title: "Sicheren Checkout abschließen", desc: "Bezahle sicher über Stripe (Karte) oder Confirmo (Krypto). Deine Kartendaten werden über Stripe und Confirmo verarbeitet, nicht von SAFunded." },
+        { title: "Sicheren Checkout abschließen", desc: "Bezahle sicher über Stripe (Karte) oder per Krypto (BTC). Deine Kartendaten werden über Stripe verarbeitet, nicht von SAFunded." },
         { title: "Kontozugang erhalten", desc: "Nach erfolgreicher Zahlung werden deine Onboarding-Details an deine E-Mail-Adresse gesendet, damit du loslegen kannst." },
         { title: "Innerhalb der Regeln handeln", desc: "Handle innerhalb der definierten Risikoregeln. Bei positiver Performance und vollständiger Regeleinhaltung kannst du gemäß der Auszahlungsrichtlinie für leistungsbasierte Belohnungen berechtigt werden." },
       ],
@@ -1090,7 +1098,7 @@ export const translations: Record<Language, Dictionary> = {
       title: "Seriös, transparent und sicher aufgebaut",
       items: [
         { icon: "flag", title: "Betreiber aus Deutschland", desc: "SAFunded wird von einem deutschen Unternehmen betrieben. Klare Anbieterinformationen, Impressum und transparente Kommunikation." },
-        { icon: "shield", title: "Sichere Zahlung", desc: "Zahlungen erfolgen über sichere Zahlungsanbieter wie Stripe und/oder Confirmo. Keine Speicherung sensibler Zahlungsdaten durch SAFunded." },
+        { icon: "shield", title: "Sichere Zahlung", desc: "Zahlungen erfolgen sicher über Stripe (Karte) und/oder Krypto (BTC). Keine Speicherung sensibler Zahlungsdaten durch SAFunded." },
         { icon: "check", title: "Klare Payout-Prüfung", desc: "Rewards werden nach einer transparenten Prüfung der Trading-Regeln, der Identität (KYC) und verbotener Trading-Praktiken bearbeitet." },
         { icon: "sim", title: "Simuliertes Trading", desc: "Alle Accounts sind simulierte Trading-Accounts. Es wird kein echtes Kundengeld eingezahlt, gehalten oder gehandelt — Risiken werden klar benannt." },
       ],
@@ -1291,6 +1299,10 @@ export const translations: Record<Language, Dictionary> = {
         "Auszahlungen werden nach erfolgreicher Prüfung innerhalb von 24h bearbeitet",
       ],
       cta: "Launch-Angebot sichern",
+      endsIn: "Angebot endet in",
+      endsOn: "Endet am",
+      expired: "Das Launch-Angebot ist abgelaufen.",
+      units: { days: "T", hours: "Std", mins: "Min", secs: "Sek" },
     },
     seo: {
       eyebrow: "Über SAFunded",
@@ -1351,7 +1363,7 @@ export const translations: Record<Language, Dictionary> = {
             { q: "Ist das echtes Kapital?", a: "Sämtliches Trading findet in einer simulierten Umgebung statt. Es wird kein echtes Kapital eingezahlt, gehalten oder gehandelt; angezeigte Kontostände sind fiktive Referenzwerte zur Leistungsmessung. SAFunded erbringt keine Anlage- oder Finanzberatung und bietet keine Brokerage-Dienstleistungen an." },
             { q: "Welche Plattform wird genutzt?", a: "Gehandelt wird auf MetaTrader 5 (MT5). Handelbar sind Forex, Edelmetalle (insbesondere Gold), Indizes sowie weitere über MT5 verfügbare und von SAFunded freigegebene CFDs. Einzelaktien sind nicht handelbar. Der Standard-Hebel beträgt 1:100; SAFunded kann den Hebel je nach Instrument, Modell oder Marktbedingungen anpassen." },
             { q: "Wann erhalte ich meinen Kontozugang?", a: "Der Account-Zugang wird nach erfolgreichem Zahlungseingang bereitgestellt – in der Regel unmittelbar bzw. zeitnah. Die Onboarding-Details werden an die mit deinem Kauf verknüpfte E-Mail-Adresse gesendet." },
-            { q: "Wer darf ein Konto eröffnen?", a: "Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Nutzer aus bzw. mit Aufenthalt in der Ukraine, im Iran, in Israel und in Afghanistan dürfen keine Accounts eröffnen oder nutzen; SAFunded kann diese Liste aus rechtlichen oder regulatorischen Gründen erweitern." },
+            { q: "Wer darf ein Konto eröffnen?", a: "Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Aus Sanktions-, Geldwäsche- und Regulierungsgründen sind zudem Personen aus bestimmten Ländern und Regionen von Registrierung, Kauf und Kontonutzung ausgeschlossen. Die vollständige und verbindliche Liste findest du in unseren AGB unter §45. Geht trotz dieser Beschränkungen eine Zahlung einer ausgeschlossenen Person ein, wird kein Konto bereitgestellt und der Betrag vollständig zurückerstattet." },
             { q: "Wer betreibt SAFunded und wo finde ich AGB und Regeln?", a: "Betreiber ist AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt." },
           ],
         },
@@ -1383,7 +1395,7 @@ export const translations: Record<Language, Dictionary> = {
         {
           title: "Zahlungen & Rückerstattungen",
           items: [
-            { q: "Wie kaufe und bezahle ich ein Konto?", a: "Wähle im Bereich „Konten“ eine Kontogröße und schließe einen sicheren Checkout ab. Die Zahlung erfolgt über Stripe (Karte) oder Confirmo (Krypto); SAFunded speichert keine Kartendaten. Zahlungen müssen vom rechtmäßigen Karten- bzw. Kontoinhaber stammen – Drittzahlungen können abgelehnt werden." },
+            { q: "Wie kaufe und bezahle ich ein Konto?", a: "Wähle im Bereich „Konten“ eine Kontogröße und schließe einen sicheren Checkout ab. Die Zahlung erfolgt über Stripe (Karte) oder per Krypto (BTC); SAFunded speichert keine Kartendaten. Zahlungen müssen vom rechtmäßigen Karten- bzw. Kontoinhaber stammen – Drittzahlungen können abgelehnt werden." },
             { q: "Gibt es eine Rückerstattung?", a: "Verbrauchern steht grundsätzlich ein 14-tägiges Widerrufsrecht ab Vertragsabschluss zu. Bei digitalen Leistungen erlischt es vorzeitig, wenn du im Bestellvorgang ausdrücklich zustimmst, dass die Ausführung sofort beginnt, und bestätigst, dass du dadurch dein Widerrufsrecht verlierst. Eine Rückerstattung kommt insbesondere bei Nichtbereitstellung oder einem von SAFunded zu vertretenden Fehler in Betracht; bei Regelverstoß, Betrug oder Chargeback-Missbrauch besteht kein Erstattungsanspruch." },
           ],
         },
@@ -1391,7 +1403,7 @@ export const translations: Record<Language, Dictionary> = {
     },
     cta: {
       title: "Bereit, mit simuliertem Kapital zu starten?",
-      desc: "Wähle eine Kontogröße, schließe einen sicheren Checkout über Stripe oder Confirmo ab und handle innerhalb klarer, offen kommunizierter Regeln.",
+      desc: "Wähle eine Kontogröße, schließe einen sicheren Checkout über Stripe (Karte) oder per Krypto (BTC) ab und handle innerhalb klarer, offen kommunizierter Regeln.",
       start: "Mit 50K starten",
       compare: "Konten vergleichen",
       note: "Auszahlungen sind nicht garantiert. Trading ist mit Risiken verbunden.",

@@ -51,7 +51,7 @@ export default function DatenschutzEnPage() {
 
       <H3>12.5 Recipients / processors</H3>
       <P>
-        Payment service providers (Stripe, Confirmo) and the trading platform
+        Payment service providers (Stripe, Validopay) and the trading platform
         (MT5) as well as technical service providers, insofar as necessary for
         the stated purposes. Data transfers take place on the basis of the
         respective applicable legal bases and safeguards.

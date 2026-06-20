@@ -87,7 +87,7 @@ besteht kein Auszahlungsanspruch.
 
 ## Bezahlung
 Account-Größe im Bereich "Accounts" wählen und sicher auschecken. Zahlung über
-Stripe (Karte) oder Confirmo (Krypto). SAFunded speichert keine Kartendaten.
+Stripe (Karte) oder per Krypto (BTC). SAFunded speichert keine Kartendaten.
 Zahlungen müssen vom rechtmäßigen Karten-/Kontoinhaber stammen — Zahlungen
 Dritter können abgelehnt werden.
 
@@ -142,7 +142,7 @@ export const SUPPORT_KB_CONTENTS: string[] = [
   "Auszahlungen: bis 80 % Profit-Split, 2-Wochen-Zyklus, 24h-Bearbeitung, SEPA in EUR + BTC in USD",
   "Auszahlungs-Voraussetzungen (KYC/AML, 14 Tage, 3 profitable Tage ≥1 %)",
   "Folgen von Regelverstößen (Disqualifikation/Sperre/keine Auszahlung)",
-  "Bezahlung (Stripe/Confirmo, keine Drittzahlungen)",
+  "Bezahlung (Stripe/Krypto BTC, keine Drittzahlungen)",
   "Account-Zugang nach Zahlung / Onboarding per E-Mail",
   "Teilnahmevoraussetzungen (min. 18, Geschäftsfähigkeit)",
   "Länder-Ausschlüsse (kurze Liste + vollständige AGB-§45-Liste)",

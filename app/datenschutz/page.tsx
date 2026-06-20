@@ -50,7 +50,7 @@ export default function DatenschutzPage() {
 
       <H3>12.5 Empfänger / Auftragsverarbeiter</H3>
       <P>
-        Zahlungsdienstleister (Stripe, Confirmo) und die Trading-Plattform (MT5)
+        Zahlungsdienstleister (Stripe, Validopay) und die Trading-Plattform (MT5)
         sowie technische Dienstleister, soweit für die genannten Zwecke
         erforderlich. Datenübermittlungen erfolgen auf Grundlage der jeweils
         einschlägigen Rechtsgrundlagen und Garantien.

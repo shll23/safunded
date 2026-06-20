@@ -22,7 +22,7 @@ export default function AmlPage() {
       <P>
         Diese Policy gilt für alle Nutzer, Accounts, Käufe, Auszahlungsanfragen
         und Transaktionen im Zusammenhang mit SAFunded sowie für sämtliche
-        eingesetzten Zahlungsdienstleister (Stripe und Confirmo).
+        eingesetzten Zahlungsdienstleister (Stripe und Validopay).
       </P>
 
       <H3>3.3 Risikobasierter Ansatz</H3>
@@ -52,9 +52,9 @@ export default function AmlPage() {
         zurückgehalten oder einer gesonderten Prüfung unterzogen werden.
       </P>
 
-      <H3>3.6 Stripe- und Confirmo-Zahlungen</H3>
+      <H3>3.6 Stripe- und Validopay-Zahlungen</H3>
       <P>
-        Zahlungen werden über Stripe (Karten-/Standardzahlungen) und Confirmo
+        Zahlungen werden über Stripe (Karten-/Standardzahlungen) und Validopay
         (Krypto-Zahlungen) abgewickelt. Es gelten ergänzend die Bedingungen und
         Compliance-Anforderungen der jeweiligen Zahlungsdienstleister. SAFunded
         kann Transaktionen anhalten oder ablehnen, wenn diese gegen Vorgaben der

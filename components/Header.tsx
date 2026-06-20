@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { persistLang, useLanguage, useT } from "@/lib/i18n";
 import { legalLocaleFromPath } from "@/lib/legal";
 import type { Language } from "@/lib/translations";
+import AnnouncementBar from "@/components/AnnouncementBar";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,6 +32,7 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
+      <AnnouncementBar />
       <div
         className={`transition-all duration-300 ${
           scrolled
