@@ -328,8 +328,8 @@ function buildHtml(p: OrderConfirmationParams): string {
           <tr>
             <td class="px" style="padding:16px 40px 40px 40px;">
               <p style="margin:0 0 10px 0; font-size:12px; line-height:1.7; color:#8C96A8;">
-                <strong style="color:#A6B0C2;">AB Digital Management</strong><br>
-                Alex Taino Blass &middot; Hauptstraße 6 &middot; 72622 Nürtingen &middot; Deutschland<br>
+                <strong style="color:#A6B0C2;">SaFunded UG (i.G)</strong><br>
+                Marbachweg 1 &middot; 72622 Nürtingen &middot; Deutschland<br>
                 <a href="mailto:info@safunded.com" style="color:#2DD4A7; text-decoration:none;">info@safunded.com</a>
               </p>
               <p style="margin:0 0 14px 0; font-size:12px; line-height:1.7;">
@@ -573,8 +573,8 @@ function buildAgreementCopyHtml(
           <tr>
             <td class="px" style="padding:16px 40px 40px 40px;">
               <p style="margin:0 0 10px 0; font-size:12px; line-height:1.7; color:#8C96A8;">
-                <strong style="color:#A6B0C2;">AB Digital Management</strong><br>
-                Hauptstraße 6 &middot; 72622 Nürtingen &middot; Deutschland<br>
+                <strong style="color:#A6B0C2;">SaFunded UG (i.G)</strong><br>
+                Marbachweg 1 &middot; 72622 Nürtingen &middot; Deutschland<br>
                 <a href="mailto:info@safunded.com" style="color:#2DD4A7; text-decoration:none;">info@safunded.com</a>
               </p>
               <p style="margin:0; font-size:11px; line-height:1.7; color:#5E6678;">

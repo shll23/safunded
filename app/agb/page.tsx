@@ -11,8 +11,7 @@ export default function AgbPage() {
     <LegalShell title="Allgemeine Geschäftsbedingungen (AGB)">
       <H3>1. Anbieter und Geltungsbereich</H3>
       <P>
-        (1) Anbieter ist AB Digital Management, vertreten durch Alex Taino
-        Blass, Hauptstraße 6, 72622 Nürtingen, Deutschland (nachfolgend
+        (1) Anbieter ist SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Deutschland (nachfolgend
         „SAFunded"). (2) Diese AGB gelten für alle über die Plattform SAFunded
         (safunded.com) angebotenen Leistungen und für das Vertragsverhältnis
         zwischen SAFunded und dem Nutzer. (3) Abweichenden Bedingungen des

@@ -35,7 +35,7 @@ Account-Referenzwert (25K, 50K oder 100K) bereitgestellt — ohne separate,
 mehrstufige Evaluierung. Es wird kein echtes Kapital eingezahlt, gehalten oder
 gehandelt; angezeigte Salden sind fiktive Referenzwerte zur Leistungsmessung.
 SAFunded bietet keine Anlage- oder Finanzberatung und keine Brokerage-Dienste.
-Betreiber: AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Deutschland.
+Betreiber: SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Deutschland.
 Allgemeine Kontaktadresse: info@safunded.com.
 
 ## Account-Größen und Preise (USD, Anzeige)

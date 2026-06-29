@@ -21,19 +21,19 @@ export const WIDERRUF_TITLE = "Widerrufsbelehrung";
 export const WIDERRUF_META: { label: string; value: string }[] = [
   {
     label: "Betreiber",
-    value: "AB Digital Management, vertreten durch Alex Taino Blass",
+    value: "SaFunded UG (i.G), vertreten durch ",
   },
   { label: "Marke / Plattform", value: "SAFunded" },
-  { label: "Anschrift", value: "Hauptstraße 6, 72622 Nürtingen, Deutschland" },
+  { label: "Anschrift", value: "Marbachweg 1, 72622 Nürtingen, Deutschland" },
   { label: "E-Mail", value: "info@safunded.com" },
   { label: "Stand", value: "Juni 2026" },
 ];
 
 /** A single contact/address block, rendered as plain stacked lines. */
 const CONTACT_LINES = [
-  "AB Digital Management",
-  "Alex Taino Blass",
-  "Hauptstraße 6",
+  "SaFunded UG (i.G)",
+  "",
+  "Marbachweg 1",
   "72622 Nürtingen",
   "Deutschland",
   "E-Mail: info@safunded.com",
@@ -163,18 +163,18 @@ export const WIDERRUF_TITLE_EN = "Right of Withdrawal";
 export const WIDERRUF_META_EN: { label: string; value: string }[] = [
   {
     label: "Operator",
-    value: "AB Digital Management, represented by Alex Taino Blass",
+    value: "SaFunded UG (i.G), represented by ",
   },
   { label: "Brand / Platform", value: "SAFunded" },
-  { label: "Address", value: "Hauptstraße 6, 72622 Nürtingen, Germany" },
+  { label: "Address", value: "Marbachweg 1, 72622 Nürtingen, Germany" },
   { label: "Email", value: "info@safunded.com" },
   { label: "As of", value: "June 2026" },
 ];
 
 const CONTACT_LINES_EN = [
-  "AB Digital Management",
-  "Alex Taino Blass",
-  "Hauptstraße 6",
+  "SaFunded UG (i.G)",
+  "",
+  "Marbachweg 1",
   "72622 Nürtingen",
   "Germany",
   "Email: info@safunded.com",
