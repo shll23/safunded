@@ -50,14 +50,6 @@ export interface Dictionary {
     copy: string;
     copied: string;
   };
-  /** Compact Trustpilot rating badge (social proof). */
-  trustpilot: {
-    rated: string;
-    score: string;
-    outOf: string;
-    brand: string;
-    count: string;
-  };
   hero: {
     badge: string;
     titleLead: string;
@@ -424,13 +416,6 @@ export const translations: Record<Language, Dictionary> = {
       code: "LAUNCH35",
       copy: "Copy code",
       copied: "Copied!",
-    },
-    trustpilot: {
-      rated: "Excellent",
-      score: "4.8",
-      outOf: "out of 5",
-      brand: "Trustpilot",
-      count: "127 traders",
     },
     hero: {
       badge: "Instant Funded Accounts — now available",
@@ -809,7 +794,7 @@ export const translations: Record<Language, Dictionary> = {
             { q: "Which platform is used, and which instruments can I trade?", a: "Trading takes place on MetaTrader 5 (MT5). You can trade Forex, precious metals (in particular gold), indices and other CFDs available via MT5 and approved by SAFunded. Single stocks are not tradable. The standard leverage is 1:100; SAFunded may adjust leverage depending on the instrument, account model or market conditions." },
             { q: "When do I receive my account access?", a: "Account access is provided after successful payment — generally immediately or shortly thereafter. Onboarding details are sent to the email address associated with your purchase." },
             { q: "Who can open an account?", a: "You must be of legal age (at least 18) and have full legal capacity. In addition, for sanctions, anti-money-laundering and regulatory reasons, persons from certain countries and regions are excluded from registration, purchase and account use. The complete and binding list is set out in our Terms (§45). If a payment is nevertheless received from an excluded person, no account is provided and the amount is refunded in full." },
-            { q: "Who operates SAFunded, and where can I read the terms and rules?", a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer." },
+            { q: "Who operates SAFunded, and where can I read the terms and rules?", a: "The operator is SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer." },
           ],
         },
         {
@@ -979,13 +964,6 @@ export const translations: Record<Language, Dictionary> = {
       code: "LAUNCH35",
       copy: "Code kopieren",
       copied: "Kopiert!",
-    },
-    trustpilot: {
-      rated: "Hervorragend",
-      score: "4,8",
-      outOf: "von 5",
-      brand: "Trustpilot",
-      count: "127 Trader",
     },
     hero: {
       badge: "Instant-Funded-Konten — jetzt verfügbar",
@@ -1364,7 +1342,7 @@ export const translations: Record<Language, Dictionary> = {
             { q: "Welche Plattform wird genutzt?", a: "Gehandelt wird auf MetaTrader 5 (MT5). Handelbar sind Forex, Edelmetalle (insbesondere Gold), Indizes sowie weitere über MT5 verfügbare und von SAFunded freigegebene CFDs. Einzelaktien sind nicht handelbar. Der Standard-Hebel beträgt 1:100; SAFunded kann den Hebel je nach Instrument, Modell oder Marktbedingungen anpassen." },
             { q: "Wann erhalte ich meinen Kontozugang?", a: "Der Account-Zugang wird nach erfolgreichem Zahlungseingang bereitgestellt – in der Regel unmittelbar bzw. zeitnah. Die Onboarding-Details werden an die mit deinem Kauf verknüpfte E-Mail-Adresse gesendet." },
             { q: "Wer darf ein Konto eröffnen?", a: "Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Aus Sanktions-, Geldwäsche- und Regulierungsgründen sind zudem Personen aus bestimmten Ländern und Regionen von Registrierung, Kauf und Kontonutzung ausgeschlossen. Die vollständige und verbindliche Liste findest du in unseren AGB unter §45. Geht trotz dieser Beschränkungen eine Zahlung einer ausgeschlossenen Person ein, wird kein Konto bereitgestellt und der Betrag vollständig zurückerstattet." },
-            { q: "Wer betreibt SAFunded und wo finde ich AGB und Regeln?", a: "Betreiber ist AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt." },
+            { q: "Wer betreibt SAFunded und wo finde ich AGB und Regeln?", a: "Betreiber ist SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt." },
           ],
         },
         {

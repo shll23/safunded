@@ -13,7 +13,7 @@ export default function DatenschutzEnPage() {
     <LegalShell title="Privacy Policy" lang="en">
       <H3>12.1 Controller</H3>
       <P>
-        AB Digital Management, Alex Taino Blass, Hauptstraße 6, 72622 Nürtingen,
+        SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen,
         Germany, info@safunded.com.
       </P>
 

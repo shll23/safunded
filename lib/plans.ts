@@ -231,7 +231,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Who operates SAFunded, and where can I read the terms and rules?",
-    a: "The operator is AB Digital Management, Hauptstraße 6, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer.",
+    a: "The operator is SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Germany. The full Terms & Conditions, Trading Rules, Instant Funded Account Rules, Payout Policy, Privacy Policy, Risk Disclosure and Right of Withdrawal are linked in the footer.",
   },
 ];
 

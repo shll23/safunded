@@ -11,7 +11,7 @@ export default function DatenschutzPage() {
     <LegalShell title="Datenschutzerklärung">
       <H3>12.1 Verantwortlicher</H3>
       <P>
-        AB Digital Management, Alex Taino Blass, Hauptstraße 6, 72622 Nürtingen,
+        SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen,
         Deutschland, info@safunded.com.
       </P>
 

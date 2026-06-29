@@ -13,8 +13,7 @@ export default function AgbEnPage() {
     <LegalShell title="General Terms & Conditions (AGB)" lang="en">
       <H3>1. Provider and scope</H3>
       <P>
-        (1) The provider is AB Digital Management, represented by Alex Taino
-        Blass, Hauptstraße 6, 72622 Nürtingen, Germany (hereinafter
+        (1) The provider is SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Germany (hereinafter
         “SAFunded”). (2) These Terms &amp; Conditions apply to all services
         offered via the SAFunded platform (safunded.com) and to the contractual
         relationship between SAFunded and the user. (3) Deviating terms of the

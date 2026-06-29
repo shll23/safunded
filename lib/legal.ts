@@ -104,7 +104,7 @@ export function legalAlternates(slug: string) {
  * ("Website-Footer-Version (Kurz)") of the source document.
  */
 export const footerDisclaimer =
-  "SAFunded ist eine Marke von AB Digital Management (Alex Taino Blass), Hauptstraße 6, 72622 Nürtingen, Deutschland. SAFunded bietet digitale, simulierte Prop-Trading-Programme. Es findet kein Handel mit echtem Kapital statt; angezeigte Beträge sind simulierte Referenzwerte. Belohnungen sind leistungsabhängig, bedingt und nicht garantiert. Keine Anlageberatung, keine Finanzberatung, keine Vermögensverwaltung, kein Investmentprodukt, keine garantierte Rendite. Trading ist mit Risiken verbunden. Es gelten die AGB, Trading Rules, Payout Policy, Refund Policy, Risk Disclosure, KYC Policy, AML-Policy und Datenschutzerklärung.";
+  "SAFunded ist eine Marke von SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Deutschland. SAFunded bietet digitale, simulierte Prop-Trading-Programme. Es findet kein Handel mit echtem Kapital statt; angezeigte Beträge sind simulierte Referenzwerte. Belohnungen sind leistungsabhängig, bedingt und nicht garantiert. Keine Anlageberatung, keine Finanzberatung, keine Vermögensverwaltung, kein Investmentprodukt, keine garantierte Rendite. Trading ist mit Risiken verbunden. Es gelten die AGB, Trading Rules, Payout Policy, Refund Policy, Risk Disclosure, KYC Policy, AML-Policy und Datenschutzerklärung.";
 
 /**
  * English courtesy translation of the short website-footer disclaimer. The
@@ -113,4 +113,4 @@ export const footerDisclaimer =
  * involves risk".
  */
 export const footerDisclaimerEn =
-  "SAFunded is a brand of AB Digital Management (Alex Taino Blass), Hauptstraße 6, 72622 Nürtingen, Germany. SAFunded offers digital, simulated prop-trading programs. No trading with real capital takes place; displayed amounts are simulated reference values. Rewards are performance-based, conditional and not guaranteed. No investment advice, no financial advice, no asset management, no investment product, no guaranteed returns. Trading involves risk. The General Terms & Conditions (AGB), Trading Rules, Payout Policy, Refund Policy, Risk Disclosure, KYC Policy, AML Policy and Privacy Policy apply.";
+  "SAFunded is a brand of SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Germany. SAFunded offers digital, simulated prop-trading programs. No trading with real capital takes place; displayed amounts are simulated reference values. Rewards are performance-based, conditional and not guaranteed. No investment advice, no financial advice, no asset management, no investment product, no guaranteed returns. Trading involves risk. The General Terms & Conditions (AGB), Trading Rules, Payout Policy, Refund Policy, Risk Disclosure, KYC Policy, AML Policy and Privacy Policy apply.";

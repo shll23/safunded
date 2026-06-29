@@ -13,11 +13,9 @@ export default function ImpressumPage() {
         <B>Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)</B>
       </P>
       <P>
-        AB Digital Management
+        SaFunded UG (i.G)
         <br />
-        Alex Taino Blass
-        <br />
-        Hauptstraße 6
+        Marbachweg 1
         <br />
         72622 Nürtingen
         <br />
@@ -28,16 +26,13 @@ export default function ImpressumPage() {
       <P>E-Mail: info@safunded.com</P>
 
       <H2>Rechtsform</H2>
-      <P>
-        Einzelunternehmen: AB Digital Management, vertreten durch Alex Taino
-        Blass.
-      </P>
+      <P>Unternehmergesellschaft (haftungsbeschränkt) in Gründung.</P>
 
       <H2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</H2>
       <P>
-        Alex Taino Blass
+        SaFunded UG (i.G)
         <br />
-        Hauptstraße 6
+        Marbachweg 1
         <br />
         72622 Nürtingen
         <br />
