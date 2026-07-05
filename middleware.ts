@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const SITE_OFFLINE = true;
+const SITE_OFFLINE = false;
 const OFFLINE_HTML = `<!doctype html>
 <html lang="de">
   <head>
@@ -54,6 +54,13 @@ const OFFLINE_HTML = `<!doctype html>
   </body>
 </html>`;
 
+// Mobile User-Agents get the mobile landing design; everything else the
+// desktop design. This is only the first-paint guess — the landing page itself
+// re-checks the real screen width and sets the `afunded_view` cookie (below)
+// to correct edge cases (narrow desktop windows, tablets, etc.).
+const MOBILE_UA =
+  /Mobi|Android|iPhone|iPod|Windows Phone|IEMobile|BlackBerry|Opera Mini|webOS/i;
+
 export async function middleware(request: NextRequest) {
   if (SITE_OFFLINE) {
     return new NextResponse(OFFLINE_HTML, {
@@ -64,6 +71,24 @@ export async function middleware(request: NextRequest) {
         "retry-after": "3600",
       },
     });
+  }
+
+  // Landing page: serve the redesigned Mobile or Desktop standalone design by
+  // device. A `afunded_view` cookie (set client-side from the real viewport
+  // width) always wins; otherwise fall back to a User-Agent guess. This is an
+  // internal rewrite, so the URL stays "/". Auth/session, API routes and every
+  // other path are untouched and continue to updateSession() below.
+  if (request.nextUrl.pathname === "/") {
+    const forced = request.cookies.get("afunded_view")?.value;
+    const view =
+      forced === "mobile" || forced === "desktop"
+        ? forced
+        : MOBILE_UA.test(request.headers.get("user-agent") ?? "")
+          ? "mobile"
+          : "desktop";
+    const url = request.nextUrl.clone();
+    url.pathname = `/landing/${view}.html`;
+    return NextResponse.rewrite(url);
   }
 
   if (request.nextUrl.pathname === "/payouts") {
@@ -90,6 +115,6 @@ export const config = {
      * - favicon.ico
      * - gängige Bild-/Asset-Dateiendungen
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2|woff|ttf|otf|html)$).*)",
   ],
 };
