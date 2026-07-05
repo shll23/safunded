@@ -320,6 +320,10 @@ html,body{margin:0;padding:0;background:#02040A}
 body{font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 @keyframes afPulse{0%,100%{opacity:.55}50%{opacity:1}}
 @keyframes afTicker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.af-swipe{scrollbar-width:none;-ms-overflow-style:none}
+.af-swipe::-webkit-scrollbar{display:none}
+.af-step{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.af-step.af-in{opacity:1;transform:none}
 </style>
 </head>
 <body>
@@ -337,9 +341,8 @@ body{font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 <!-- mobile hero -->
 <div style="position:relative;background:radial-gradient(ellipse 90% 42% at 20% 8%, rgba(14,165,233,.45), transparent 60%), radial-gradient(ellipse 80% 38% at 90% 30%, rgba(109,141,255,.35), transparent 60%), radial-gradient(ellipse 100% 30% at 50% 55%, rgba(34,211,238,.14), transparent 65%), #02040A;padding:110px 24px 0;overflow:hidden">
   <div style="text-align:center">
-    <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg, rgba(34,211,238,.2), rgba(109,141,255,.2));border:1px solid rgba(34,211,238,.5);box-shadow:0 0 24px rgba(14,165,233,.3);color:#22D3EE;font:600 12px 'Sora',sans-serif;padding:7px 16px;border-radius:100px;margin-bottom:56px"><span style="width:5px;height:5px;border-radius:50%;background:#0EA5E9;animation:afPulse 2s infinite"></span>Simulated Funding</div>
-    <div style="font:800 48px/1.12 'Sora',sans-serif;letter-spacing:-2px;color:#fff">Trade Bigger.<br>Get <span style="background:linear-gradient(110deg,#22D3EE 10%,#0EA5E9 55%,#6D8DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Funded</span>.</div>
-    <div style="font:400 15px/1.75 'Sora',sans-serif;color:#B8C0CC;margin:26px 0 44px">Simulierte Trading-Accounts mit transparenten Regeln, schneller Auswertung und fairen Payout-Bedingungen.</div>
+    <div style="font:800 48px/1.12 'Sora',sans-serif;letter-spacing:-2px;color:#fff;margin-top:24px">Trade Bigger.<br>Get <span style="background:linear-gradient(110deg,#22D3EE 10%,#0EA5E9 55%,#6D8DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Funded</span>.</div>
+    <div style="font:400 15px/1.75 'Sora',sans-serif;color:#B8C0CC;margin:26px 0 44px">Starte dein erfolgreiches Trading-Leben — transparente Regeln, schnelle Auswertung und faire Payout-Bedingungen.</div>
     <div style="display:flex;flex-direction:column;gap:12px">
       <div style="background:linear-gradient(100deg,#22D3EE,#0EA5E9 55%,#6D8DFF);color:#02040A;font:700 16px 'Sora',sans-serif;padding:17px;border-radius:100px;text-align:center;box-shadow:0 0 44px rgba(14,165,233,.55), 0 0 90px rgba(109,141,255,.3)">Get Funded</div>
       <div style="background:rgba(11,15,26,.8);border:1px solid #1B2233;color:#fff;font:600 16px 'Sora',sans-serif;padding:17px;border-radius:100px;text-align:center">View Accounts</div>
@@ -368,58 +371,92 @@ body{font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   <div style="text-align:center;margin-bottom:64px">
     <div style="font:800 32px 'Sora',sans-serif;letter-spacing:-1.5px;color:#fff">Dein Account.<br><span style="background:linear-gradient(120deg,#22D3EE,#0EA5E9 60%,#6D8DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Deine Größe.</span></div>
   </div>
-  <div style="display:flex;flex-direction:column;gap:32px">
-    <div style="background:radial-gradient(ellipse 90% 60% at 0% 0%, rgba(34,211,238,.14), transparent 60%), #0B0F1A;border:1px solid rgba(34,211,238,.3);border-radius:26px;padding:42px 30px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">25K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#22D3EE">€249</div></div>
-      <div style="font:400 13px 'Sora',sans-serif;color:#B8C0CC;margin:14px 0 28px">Max Daily Loss 5% · Max Loss 10% · Split 80%</div>
-      <div style="border:1px solid #0EA5E9;color:#22D3EE;font:600 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center">Start Now</div>
-    </div>
-    <div style="background:linear-gradient(150deg,#22D3EE, #0EA5E9 35%, rgba(14,165,233,.25) 60%, #6D8DFF);padding:2px;border-radius:24px;box-shadow:0 0 70px rgba(14,165,233,.4), 0 0 120px rgba(109,141,255,.2)">
-      <div style="position:relative;background:linear-gradient(170deg,#0B0F1A 40%,#06283A);border-radius:26px;padding:42px 30px">
-        <div style="position:absolute;top:18px;right:20px;background:#0EA5E9;color:#fff;font:600 10px 'Sora',sans-serif;padding:5px 12px;border-radius:100px">Beliebt</div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-right:70px"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">50K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#22D3EE">€449</div></div>
+  <div class="af-swipe" data-swipe="accounts" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:6px 11%;margin:0 -24px;align-items:stretch">
+    <div class="af-slide" style="flex:0 0 78%;scroll-snap-align:center;display:flex">
+      <div style="background:radial-gradient(ellipse 90% 60% at 0% 0%, rgba(34,211,238,.14), transparent 60%), #0B0F1A;border:1px solid rgba(34,211,238,.3);border-radius:26px;padding:42px 30px;width:100%;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">25K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#22D3EE">€249</div></div>
         <div style="font:400 13px 'Sora',sans-serif;color:#B8C0CC;margin:14px 0 28px">Max Daily Loss 5% · Max Loss 10% · Split 80%</div>
-        <div style="background:linear-gradient(100deg,#22D3EE,#0EA5E9 55%,#6D8DFF);color:#02040A;font:700 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center;box-shadow:0 0 34px rgba(14,165,233,.55)">Start Now</div>
+        <div style="margin-top:auto;border:1px solid #0EA5E9;color:#22D3EE;font:600 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center">Start Now</div>
       </div>
     </div>
-    <div style="background:radial-gradient(ellipse 90% 60% at 100% 100%, rgba(109,141,255,.16), transparent 60%), #0B0F1A;border:1px solid rgba(109,141,255,.35);border-radius:26px;padding:42px 30px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">100K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#6D8DFF">€799</div></div>
-      <div style="font:400 13px 'Sora',sans-serif;color:#B8C0CC;margin:14px 0 28px">Max Daily Loss 5% · Max Loss 10% · Split 80%</div>
-      <div style="border:1px solid #0EA5E9;color:#22D3EE;font:600 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center">Start Now</div>
+    <div class="af-slide" style="flex:0 0 78%;scroll-snap-align:center;display:flex">
+      <div style="background:linear-gradient(150deg,#22D3EE, #0EA5E9 35%, rgba(14,165,233,.25) 60%, #6D8DFF);padding:2px;border-radius:24px;box-shadow:0 0 70px rgba(14,165,233,.4), 0 0 120px rgba(109,141,255,.2);width:100%;display:flex">
+        <div style="position:relative;background:linear-gradient(170deg,#0B0F1A 40%,#06283A);border-radius:26px;padding:42px 30px;width:100%;display:flex;flex-direction:column">
+          <div style="position:absolute;top:18px;right:20px;background:#0EA5E9;color:#fff;font:600 10px 'Sora',sans-serif;padding:5px 12px;border-radius:100px">Beliebt</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-right:70px"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">50K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#22D3EE">€449</div></div>
+          <div style="font:400 13px 'Sora',sans-serif;color:#B8C0CC;margin:14px 0 28px">Max Daily Loss 5% · Max Loss 10% · Split 80%</div>
+          <div style="margin-top:auto;background:linear-gradient(100deg,#22D3EE,#0EA5E9 55%,#6D8DFF);color:#02040A;font:700 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center;box-shadow:0 0 34px rgba(14,165,233,.55)">Start Now</div>
+        </div>
+      </div>
+    </div>
+    <div class="af-slide" style="flex:0 0 78%;scroll-snap-align:center;display:flex">
+      <div style="background:radial-gradient(ellipse 90% 60% at 100% 100%, rgba(109,141,255,.16), transparent 60%), #0B0F1A;border:1px solid rgba(109,141,255,.35);border-radius:26px;padding:42px 30px;width:100%;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:800 34px 'Sora',sans-serif;color:#fff;letter-spacing:-1px">100K</div><div style="font:600 20px 'JetBrains Mono',monospace;color:#6D8DFF">€799</div></div>
+        <div style="font:400 13px 'Sora',sans-serif;color:#B8C0CC;margin:14px 0 28px">Max Daily Loss 5% · Max Loss 10% · Split 80%</div>
+        <div style="margin-top:auto;border:1px solid #0EA5E9;color:#22D3EE;font:600 14px 'Sora',sans-serif;padding:14px;border-radius:100px;text-align:center">Start Now</div>
+      </div>
     </div>
   </div>
+  <div class="af-dots" data-dots="accounts" style="display:flex;justify-content:center;gap:8px;margin-top:26px"></div>
 </div>
 
-<!-- mobile steps -->
-<div style="position:relative;overflow:hidden;padding:128px 24px;background:radial-gradient(ellipse 120% 50% at 15% 0%, rgba(14,165,233,.28), transparent 60%), radial-gradient(ellipse 100% 45% at 90% 100%, rgba(109,141,255,.22), transparent 60%), #02040A">
-  <div style="font:800 30px 'Sora',sans-serif;letter-spacing:-1px;color:#fff;text-align:center;margin-bottom:64px">In drei Schritten<br><span style="background:linear-gradient(120deg,#22D3EE,#0EA5E9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">zum Funding</span></div>
-  <div style="display:flex;flex-direction:column;gap:0">
-    <div style="display:flex;gap:18px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:44px;height:44px;border-radius:50%;background:rgba(34,211,238,.14);border:1px solid rgba(34,211,238,.5);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#22D3EE;flex:none;box-shadow:0 0 20px rgba(34,211,238,.2)">01</div><div style="width:2px;flex:1;background:linear-gradient(180deg,#22D3EE,rgba(14,165,233,.15))"></div></div><div style="padding-bottom:64px"><div style="font:700 17px 'Sora',sans-serif;color:#fff">Choose your Account</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Wähle die passende Accountgröße aus.</div></div></div>
-    <div style="display:flex;gap:18px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:44px;height:44px;border-radius:50%;background:rgba(109,141,255,.14);border:1px solid rgba(109,141,255,.5);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#6D8DFF;flex:none;box-shadow:0 0 20px rgba(109,141,255,.2)">02</div><div style="width:2px;flex:1;background:linear-gradient(180deg,#6D8DFF,rgba(109,141,255,.15))"></div></div><div style="padding-bottom:64px"><div style="font:700 17px 'Sora',sans-serif;color:#fff">Trade by the Rules</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Handle innerhalb klarer Risiko- und Profit-Regeln.</div></div></div>
-    <div style="display:flex;gap:18px"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#22D3EE,#0EA5E9 60%,#6D8DFF);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#fff;flex:none;box-shadow:0 0 24px rgba(14,165,233,.45)">03</div><div><div style="font:700 17px 'Sora',sans-serif;color:#fff">Request your Payout</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Erreiche die Bedingungen und reiche deine Auszahlung ein.</div></div></div>
+<!-- mobile steps + rules swiper --><a id="rules"></a>
+<div style="position:relative;overflow:hidden;padding:128px 0;background:radial-gradient(ellipse 120% 50% at 15% 0%, rgba(14,165,233,.28), transparent 60%), radial-gradient(ellipse 100% 45% at 90% 100%, rgba(109,141,255,.22), transparent 60%), #02040A">
+  <div class="af-swipe" data-swipe="stepsrules" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:0 11%;align-items:stretch">
+    <div class="af-slide" style="flex:0 0 82%;scroll-snap-align:center;display:flex">
+      <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:24px;padding:40px 26px;width:100%">
+        <div style="font:800 26px 'Sora',sans-serif;letter-spacing:-1px;color:#fff;text-align:center;margin-bottom:44px">In drei Schritten<br><span style="background:linear-gradient(120deg,#22D3EE,#0EA5E9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">zum Funding</span></div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div class="af-step" style="display:flex;gap:16px;transition-delay:0s"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:44px;height:44px;border-radius:50%;background:rgba(34,211,238,.14);border:1px solid rgba(34,211,238,.5);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#22D3EE;flex:none;box-shadow:0 0 20px rgba(34,211,238,.2)">01</div><div style="width:2px;flex:1;background:linear-gradient(180deg,#22D3EE,rgba(14,165,233,.15))"></div></div><div style="padding-bottom:40px"><div style="font:700 17px 'Sora',sans-serif;color:#fff">Choose your Account</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Wähle die passende Accountgröße aus.</div></div></div>
+          <div class="af-step" style="display:flex;gap:16px;transition-delay:.14s"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:44px;height:44px;border-radius:50%;background:rgba(109,141,255,.14);border:1px solid rgba(109,141,255,.5);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#6D8DFF;flex:none;box-shadow:0 0 20px rgba(109,141,255,.2)">02</div><div style="width:2px;flex:1;background:linear-gradient(180deg,#6D8DFF,rgba(109,141,255,.15))"></div></div><div style="padding-bottom:40px"><div style="font:700 17px 'Sora',sans-serif;color:#fff">Trade by the Rules</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Handle innerhalb klarer Risiko- und Profit-Regeln.</div></div></div>
+          <div class="af-step" style="display:flex;gap:16px;transition-delay:.28s"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#22D3EE,#0EA5E9 60%,#6D8DFF);display:flex;align-items:center;justify-content:center;font:600 14px 'JetBrains Mono',monospace;color:#fff;flex:none;box-shadow:0 0 24px rgba(14,165,233,.45)">03</div><div><div style="font:700 17px 'Sora',sans-serif;color:#fff">Request your Payout</div><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Erreiche die Bedingungen und reiche deine Auszahlung ein.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="af-slide" style="flex:0 0 82%;scroll-snap-align:center;display:flex">
+      <div style="background:linear-gradient(150deg, rgba(6,40,58,.9), #0B0F1A 45%, rgba(26,17,69,.55));border:1px solid #1B2233;border-radius:24px;padding:40px 26px;width:100%">
+        <div style="font:800 24px/1.2 'Sora',sans-serif;letter-spacing:-1px;color:#fff;margin-bottom:36px;text-align:center">Transparente Regeln.<br><span style="background:linear-gradient(110deg,#22D3EE,#6D8DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Faire Bewertung.</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="background:#05070F;border:1px solid #1B2233;border-radius:18px;padding:26px 20px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#22D3EE">5%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Max Daily Loss</div></div>
+          <div style="background:#05070F;border:1px solid #1B2233;border-radius:18px;padding:26px 20px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#22D3EE">10%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Max Overall Loss</div></div>
+          <div style="background:#05070F;border:1px solid #1B2233;border-radius:18px;padding:26px 20px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#fff">80%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Profit Split</div></div>
+          <div style="background:#05070F;border:1px solid #1B2233;border-radius:18px;padding:26px 20px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#fff">14d</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Earliest Payout</div></div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- mobile rules stats --><a id="rules"></a>
-<div style="padding:128px 24px;background:linear-gradient(150deg, rgba(6,40,58,.9), #05070F 45%, rgba(26,17,69,.55))">
-  <div style="font:800 28px/1.2 'Sora',sans-serif;letter-spacing:-1px;color:#fff;margin-bottom:56px">Transparente Regeln.<br><span style="background:linear-gradient(110deg,#22D3EE,#6D8DFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Faire Bewertung.</span></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#22D3EE">5%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Max Daily Loss</div></div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#22D3EE">10%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Max Overall Loss</div></div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#fff">80%</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Profit Split</div></div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="font:600 22px 'JetBrains Mono',monospace;color:#fff">14d</div><div style="font:400 12px 'Sora',sans-serif;color:#B8C0CC;margin-top:6px">Earliest Payout</div></div>
-  </div>
+  <div class="af-dots" data-dots="stepsrules" style="display:flex;justify-content:center;gap:8px;margin-top:28px"></div>
 </div>
 
 <!-- mobile FAQ --><a id="faq"></a>
 <div style="padding:128px 24px;background:radial-gradient(ellipse 120% 55% at 50% 100%, rgba(109,141,255,.2), transparent 65%), #02040A">
   <div style="font:800 28px 'Sora',sans-serif;letter-spacing:-1px;color:#fff;text-align:center;margin-bottom:56px">FAQ</div>
-  <div style="display:flex;flex-direction:column;gap:18px">
-    <div style="background:linear-gradient(160deg, rgba(14,165,233,.14), #0B0F1A 60%);border:1px solid rgba(34,211,238,.55);border-radius:18px;padding:30px 24px;box-shadow:0 0 34px rgba(14,165,233,.18)">
-      <div style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px">Ist das echtes Kapital?<span style="color:#22D3EE;font-size:20px">−</span></div>
-      <div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;margin-top:12px">Nein. Alle Accounts sind simulierte Trading-Umgebungen. Rewards sind performance-basiert und unterliegen den Terms &amp; Conditions.</div>
-    </div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px">Wann kann ich meinen ersten Payout anfragen?<span style="color:#B8C0CC;font-size:20px">+</span></div></div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px">Was passiert bei einem Regelverstoß?<span style="color:#B8C0CC;font-size:20px">+</span></div></div>
-    <div style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;padding:30px 24px"><div style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px">Welche Zahlungsarten werden akzeptiert?<span style="color:#B8C0CC;font-size:20px">+</span></div></div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:600 11px 'Sora',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#22D3EE;margin:6px 0 2px">Konten &amp; Start</div>
+    <div class="af-faq af-faq-open" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Was ist ein Instant-Funded-Konto?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Nach dem Kauf wird dir unmittelbar ein simulierter MT5-Account mit einem definierten Account-Referenzwert (25K, 50K oder 100K) bereitgestellt – ohne separate mehrstufige Evaluierung. Du handelst ab dem ersten Tag innerhalb klar definierter Risikoregeln.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Ist das echtes Kapital?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Sämtliches Trading findet in einer simulierten Umgebung statt. Es wird kein echtes Kapital eingezahlt, gehalten oder gehandelt; angezeigte Kontostände sind fiktive Referenzwerte zur Leistungsmessung. SAFunded erbringt keine Anlage- oder Finanzberatung und bietet keine Brokerage-Dienstleistungen an.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Welche Plattform wird genutzt?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Gehandelt wird auf MetaTrader 5 (MT5). Handelbar sind Forex, Edelmetalle (insbesondere Gold), Indizes sowie weitere über MT5 verfügbare und von SAFunded freigegebene CFDs. Einzelaktien sind nicht handelbar. Der Standard-Hebel beträgt 1:100; SAFunded kann den Hebel je nach Instrument, Modell oder Marktbedingungen anpassen.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wann erhalte ich meinen Kontozugang?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Der Account-Zugang wird nach erfolgreichem Zahlungseingang bereitgestellt – in der Regel unmittelbar bzw. zeitnah. Die Onboarding-Details werden an die mit deinem Kauf verknüpfte E-Mail-Adresse gesendet.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wer darf ein Konto eröffnen?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Voraussetzung sind Volljährigkeit (mindestens 18 Jahre) und unbeschränkte Geschäftsfähigkeit. Aus Sanktions-, Geldwäsche- und Regulierungsgründen sind zudem Personen aus bestimmten Ländern und Regionen von Registrierung, Kauf und Kontonutzung ausgeschlossen. Die vollständige und verbindliche Liste findest du in unseren AGB unter §45. Geht trotz dieser Beschränkungen eine Zahlung einer ausgeschlossenen Person ein, wird kein Konto bereitgestellt und der Betrag vollständig zurückerstattet.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wer betreibt SAFunded und wo finde ich AGB und Regeln?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Betreiber ist SaFunded UG (i.G), Marbachweg 1, 72622 Nürtingen, Deutschland. Die vollständigen AGB, Trading Rules, Instant Funded Account Rules, die Payout Policy, die Datenschutzerklärung, die Risikohinweise und die Widerrufsbelehrung sind im Footer verlinkt.</div></div></div>
+
+    <div style="font:600 11px 'Sora',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#22D3EE;margin:20px 0 2px">Trading-Regeln</div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Welche Regeln muss ich einhalten?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Es gelten ein maximaler Tagesverlust von 5 % und ein maximaler Gesamtverlust von 10 % des jeweiligen Account-Referenzwertes. Offene Positionen zählen mit; bereits eine temporäre Überschreitung gilt als Verstoß. Die tägliche Reset-Zeit ist UTC+2 (Berlin-Prag-Zeit).</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Was passiert bei einem Regelverstoß?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Ein Regelverstoß kann zur Disqualifikation, zur Ablehnung einer Auszahlung sowie zur Sperrung, Schließung oder Beendigung des Accounts führen. In diesen Fällen besteht kein Anspruch auf einen Payout.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Welche Trading-Praktiken sind verboten?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Verboten sind u. a. Scalping, Martingale, Grid, Hedging, Latenz- und Tick-Arbitrage, das Ausnutzen von Plattform- oder Preisfehlern, nicht genehmigte Bots, Multi-Account-Abuse sowie die künstliche Erzeugung profitabler Tage. Copy Trading ist erlaubt, solange es transparent und regelkonform ist und nicht der Regelumgehung dient.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Darf ich Trades über Nacht oder über das Wochenende halten?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Ja. Overnight Holding und Weekend Trading sind erlaubt. Das Risiko aus Gaps, Slippage, Spread-Ausweitungen und Swaps trägt der Trader, und solche Positionen werden vollständig in die Drawdown-Überwachung einbezogen.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Darf ich News traden?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Innerhalb eines Fensters von 5 Minuten vor und 5 Minuten nach relevanten High-Impact-News dürfen Positionen weder eröffnet noch geschlossen noch verändert werden. Außerhalb dieses Fensters ist News-Trading zulässig. SAFunded bestimmt relevante News anhand anerkannter Wirtschaftskalender und interner Risikobewertung.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Kann ich Expert Advisors (EAs) oder Bots verwenden?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Automatisierte Systeme, EAs, Bots und Skripte sind nur nach vorheriger Genehmigung erlaubt. SAFunded kann Strategie, Funktionsweise und Risikologik prüfen und bereits genehmigte Systeme nachträglich untersagen.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Gibt es eine Consistency Rule?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Nein. SAFunded wendet keine Consistency Rule an – deine Performance wird nicht durch Einzeltag- oder Einzeltrade-Grenzen gedeckelt.</div></div></div>
+
+    <div style="font:600 11px 'Sora',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#22D3EE;margin:20px 0 2px">Auszahlungen</div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wann kann ich eine Auszahlung erhalten?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Kumulativ erforderlich sind: Einhaltung aller Regeln, eine Mindestlaufzeit von 14 Kalendertagen, mindestens 3 profitable Handelstage mit jeweils ≥ 1 % Gewinn des Account-Referenzwertes sowie eine erfolgreiche KYC-, AML- und Anti-Fraud-Prüfung. Nach erfolgreicher Prüfung werden Payouts innerhalb von 24 Stunden bearbeitet; SAFunded erhebt keine zusätzlichen Payout-Gebühren.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wie funktioniert die Gewinnbeteiligung – und sind Auszahlungen garantiert?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Der anerkannte Gewinnanteil wird im Verhältnis 80 % (Trader) / 20 % (SAFunded) aufgeteilt. Ein Payout ist jedoch kein automatischer oder garantierter Anspruch: Bei Regelverstoß, Manipulation oder falschen Angaben besteht kein Auszahlungsanspruch. Trading ist mit Risiken verbunden.</div></div></div>
+
+    <div style="font:600 11px 'Sora',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#22D3EE;margin:20px 0 2px">Verifizierung &amp; KYC</div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Warum ist KYC notwendig?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Vor einer Auszahlung verifiziert SAFunded deine Identität (KYC) zusammen mit AML- und Anti-Fraud-Prüfungen. Das schützt Auszahlungen vor Betrug, stellt sicher, dass Auszahlungen an den rechtmäßigen Kontoinhaber gehen, und hält die Plattform regelkonform. KYC ist vor deiner ersten Auszahlung erforderlich.</div></div></div>
+
+    <div style="font:600 11px 'Sora',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#22D3EE;margin:20px 0 2px">Zahlungen &amp; Rückerstattungen</div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Wie kaufe und bezahle ich ein Konto?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Wähle im Bereich „Konten“ eine Kontogröße und schließe einen sicheren Checkout ab. Die Zahlung erfolgt über Stripe (Karte) oder per Krypto (BTC); SAFunded speichert keine Kartendaten. Zahlungen müssen vom rechtmäßigen Karten- bzw. Kontoinhaber stammen – Drittzahlungen können abgelehnt werden.</div></div></div>
+    <div class="af-faq" style="background:#0B0F1A;border:1px solid #1B2233;border-radius:18px;overflow:hidden"><div class="af-faq-h" style="display:flex;justify-content:space-between;align-items:center;font:600 14px 'Sora',sans-serif;color:#fff;gap:12px;padding:24px;cursor:pointer">Gibt es eine Rückerstattung?<span class="af-faq-ic" style="color:#B8C0CC;font-size:20px;flex:none">+</span></div><div class="af-faq-b" style="max-height:0;overflow:hidden;transition:max-height .35s ease"><div style="font:400 13px/1.6 'Sora',sans-serif;color:#B8C0CC;padding:0 24px 24px">Verbrauchern steht grundsätzlich ein 14-tägiges Widerrufsrecht ab Vertragsabschluss zu. Bei digitalen Leistungen erlischt es vorzeitig, wenn du im Bestellvorgang ausdrücklich zustimmst, dass die Ausführung sofort beginnt, und bestätigst, dass du dadurch dein Widerrufsrecht verlierst. Eine Rückerstattung kommt insbesondere bei Nichtbereitstellung oder einem von SAFunded zu vertretenden Fehler in Betracht; bei Regelverstoß, Betrug oder Chargeback-Missbrauch besteht kein Erstattungsanspruch.</div></div></div>
   </div>
 </div>
 
@@ -520,6 +557,88 @@ body{font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
       wire(el, MAP[t]);
     }
   });
+})();
+</script>
+
+<script>
+(function(){
+  // ---- horizontal swipers with dot indicators ----
+  function initSwipe(sw){
+    var key = sw.getAttribute('data-swipe');
+    var dotsC = document.querySelector('.af-dots[data-dots="' + key + '"]');
+    var slides = sw.querySelectorAll('.af-slide');
+    if (!dotsC || !slides.length) return;
+    var dots = [];
+    Array.prototype.forEach.call(slides, function(sl){
+      var d = document.createElement('span');
+      d.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#1B2233;transition:all .25s ease;cursor:pointer';
+      d.addEventListener('click', function(){ sl.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); });
+      dotsC.appendChild(d); dots.push(d);
+    });
+    function update(){
+      var swRect = sw.getBoundingClientRect();
+      var c = swRect.left + swRect.width / 2;
+      var best = 0, bestD = Infinity;
+      Array.prototype.forEach.call(slides, function(sl, i){
+        var r = sl.getBoundingClientRect();
+        var dist = Math.abs((r.left + r.width / 2) - c);
+        if (dist < bestD){ bestD = dist; best = i; }
+      });
+      dots.forEach(function(d, i){
+        var active = i === best;
+        d.style.background = active ? '#0EA5E9' : '#1B2233';
+        d.style.width = active ? '22px' : '8px';
+        if (active) d.style.boxShadow = '0 0 12px rgba(14,165,233,.6)'; else d.style.boxShadow = 'none';
+      });
+    }
+    var ticking = false;
+    sw.addEventListener('scroll', function(){
+      if (!ticking){ ticking = true; window.requestAnimationFrame(function(){ update(); ticking = false; }); }
+    });
+    update();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.af-swipe'), initSwipe);
+
+  // ---- FAQ accordions ----
+  function setOpen(item, open){
+    var body = item.querySelector('.af-faq-b');
+    var ic = item.querySelector('.af-faq-ic');
+    if (!body) return;
+    if (open){
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.style.borderColor = '#0EA5E9';
+      if (ic){ ic.textContent = '−'; ic.style.color = '#22D3EE'; }
+    } else {
+      body.style.maxHeight = '0px';
+      item.style.borderColor = '#1B2233';
+      if (ic){ ic.textContent = '+'; ic.style.color = '#B8C0CC'; }
+    }
+    item.__open = open;
+  }
+  var items = document.querySelectorAll('.af-faq');
+  Array.prototype.forEach.call(items, function(item){
+    var head = item.querySelector('.af-faq-h');
+    if (head){ head.addEventListener('click', function(){ setOpen(item, !item.__open); }); }
+    if (item.classList.contains('af-faq-open')){ setOpen(item, true); }
+  });
+  window.addEventListener('resize', function(){
+    Array.prototype.forEach.call(items, function(item){
+      if (item.__open){ var b = item.querySelector('.af-faq-b'); if (b){ b.style.maxHeight = b.scrollHeight + 'px'; } }
+    });
+  });
+
+  // ---- staggered scroll reveal for the funding steps ----
+  var steps = document.querySelectorAll('.af-step');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('af-in'); io.unobserve(en.target); }
+      });
+    }, {threshold: 0.2});
+    Array.prototype.forEach.call(steps, function(s){ io.observe(s); });
+  } else {
+    Array.prototype.forEach.call(steps, function(s){ s.classList.add('af-in'); });
+  }
 })();
 </script>
 
